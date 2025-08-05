@@ -27,10 +27,22 @@ const nextConfig: NextConfig = {
         pathname: "/wp-content/uploads/**",
       },
       {
+        protocol: "http",
+        hostname: "eurasiapeace.akdigital.fr",
+        port: "",
+        pathname: "/wp-content/uploads/**",
+      },
+      {
         protocol: "https",
         hostname: "secure.gravatar.com",
         port: "",
         pathname: "/avatar/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api-eura.akdigital.fr",
+        port: "",
+        pathname: "/**",
       },
     ],
   },
