@@ -1,0 +1,27 @@
+# Next.js build outputs
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Compiled JavaScript
+*.js.map
+
+# Build artifacts
+build/
+dist/
+
+# Logs
+*.log
+
+# Environment variables
+.env*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db 

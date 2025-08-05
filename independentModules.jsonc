@@ -1,0 +1,66 @@
+{
+    "modules": [
+        {
+            "name": "App folder",
+            "pattern": "src/app/**",
+            "allowImportsFrom": [
+                "src/app/globals.css",
+                "src/app/not-found.tsx",
+                "{sharedImports}",
+                "src/features/**"
+            ]
+        },
+        {
+            "name": "Features",
+            "pattern": "src/features/**",
+            "allowImportsFrom": [
+                "{family_3}/**",
+                "{sharedImports}"
+            ],
+            "errorMessage": "🔥 A feature may only import items from shared folders and its own family. Importing items from another feature is prohibited. 🔥"
+        },
+        {
+            "name": "Shared",
+            "pattern": [
+                "src/components/**",
+                "src/ui/**",
+                "src/hooks/**",
+                "src/context/**",
+                "src/lib/**",
+                "src/server/**",
+                "src/utils/**",
+                "src/types.ts"
+            ],
+            "allowImportsFrom": [
+                "{sharedImports}"
+            ],
+            "errorMessage": "🔥 Shared folders are not allowed to import items from the `features` and `app` folders. 🔥"
+        },
+        // All files not specified in the rules are not allowed to import anything.
+        // Ignore files in `src/tasks/*` and `src/*`.
+        {
+            "name": "Unknown files",
+            "pattern": [
+                [
+                    "src/**",
+                    "!src/*"
+                ]
+            ],
+            "allowImportsFrom": [],
+            "allowExternalImports": false,
+            "errorMessage": "🔥 This file is not specified as an independent module in `independentModules.jsonc`. 🔥"
+        }
+    ],
+    "reusableImportPatterns": {
+        "sharedImports": [
+            "src/components/**",
+            "src/ui/**",
+            "src/hooks/**",
+            "src/context/**",
+            "src/lib/**",
+            "src/server/**",
+            "src/utils/**",
+            "src/types.ts"
+        ]
+    }
+}

@@ -1,0 +1,197 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-background-primary: #fbfcfd;
+  --color-background-secondary: #fafbfd;
+  --color-background-third: #ebf0f8;
+
+  --color-background-light-blue: #528cc7;
+  --color-background-dark-blue: #32649e;
+
+  --color-btn-purple: #5d5da3;
+  --color-btn-gold: #d1a65e;
+  --color-btn-force-blue: #4a89a8;
+  --color-btn-force-blue-hover: #32649e;
+
+  --color-text-primary: #2a303b;
+  --color-text-secondary: #676767;
+  --color-text-third: #2e4a86;
+  --color-midnight-green: #084854;
+
+  --color-border-primary: #ebf0f8;
+
+  --animate-cardPop: cardPop 0.3s ease-in-out;
+  --animate-fadeIn: fadeIn 0.2s ease-in-out;
+
+  @keyframes cardPop {
+    0% {
+      opacity: 0;
+      scale: 0.9;
+    }
+
+    100% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+
+@layer components {
+  .bg-headband {
+    background: linear-gradient(to right, #528cc7, #32649e);
+  }
+
+  .bg-headband-contact::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, #084854 20%, rgba(53, 91, 124, 0.05));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .carousel-tracker {
+    animation: scroll 90s linear infinite;
+  }
+
+  .carousel-tracker:hover {
+    animation-play-state: paused;
+  }
+
+  .input-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-gray-400;
+  }
+
+  /* Prose HTML - Contrôle sur le HTML dynamique */
+  .prose-html {
+    @apply prose prose-p:text-[0.95rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none;
+  }
+
+  .menu-custom-list::before {
+    content: "";
+    display: block;
+    width: 15px;
+    height: 20px;
+    border-bottom: 2px solid #d1d5dc;
+    border-top: 0;
+    border-left: 2px solid #d1d5dc;
+    border-bottom-left-radius: 50%;
+    transform: translateX(-14px) translateY(0px);
+    left: 0;
+    top: 0;
+    position: absolute;
+  }
+
+  .Conseils_Testimonials {
+    @apply before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:bottom-0 before:bg-gradient-to-r before:from-background-third before:to-5% before:to-transparent before:z-[1000] before:pointer-events-none after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:bottom-0 after:bg-gradient-to-l after:from-background-third after:to-5% after:to-transparent after:z-[1000] after:pointer-events-none;
+  }
+
+  .modal-layout {
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .active-anchor {
+    @apply bg-gray-100;
+  }
+}
+
+/* Redéfinition de l'utilitaire container de Tailwind */
+@utility container {
+  @apply w-full mx-auto px-4 sm:max-w-[610px] md:max-w-[840px] lg:max-w-[1124px] xl:max-w-[1420px];
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: white;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  span,
+  li,
+  label,
+  th,
+  table {
+    color: var(--color-text-primary);
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  main {
+    background-color: var(--color-background-primary);
+    flex: 1 1 0;
+  }
+
+  input {
+    @apply outline-none text-text-primary;
+  }
+
+  textarea {
+    @apply outline-none text-text-primary;
+  }
+
+  input[type="checkbox"] {
+    @apply cursor-pointer;
+  }
+
+  html:has(.open-burger),
+  body:has(.open-burger),
+  body:has(#modal) {
+    overflow: hidden;
+  }
+
+  #overview,
+  #objectives,
+  #programme,
+  #evaluation,
+  #modalities {
+    @apply scroll-mt-[380px] sm:scroll-mt-[180px];
+  }
+
+  /* Animation keyframes pour le carousel */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-33.333%);
+    }
+  }
+}
