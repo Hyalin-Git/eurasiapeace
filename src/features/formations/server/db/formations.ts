@@ -74,6 +74,7 @@ export async function getFormations(
           }
         }
       `,
+      fetchPolicy: "network-only",
     });
 
     if (data?.formations?.nodes.length === 0) {

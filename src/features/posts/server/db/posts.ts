@@ -68,6 +68,7 @@ export async function getPosts(
           }
         }
       `,
+      fetchPolicy: "network-only",
     });
 
     if (data?.posts?.nodes.length === 0) {
