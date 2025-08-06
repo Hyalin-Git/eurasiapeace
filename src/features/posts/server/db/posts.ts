@@ -68,7 +68,6 @@ export async function getPosts(
           }
         }
       `,
-      pollInterval: 60000, // Poll every minute
     });
 
     if (data?.posts?.nodes.length === 0) {
