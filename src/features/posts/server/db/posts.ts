@@ -68,7 +68,7 @@ export async function getPosts(
           }
         }
       `,
-      fetchPolicy: "network-only",
+      pollInterval: 60000, // Poll every minute
     });
 
     if (data?.posts?.nodes.length === 0) {

@@ -58,7 +58,6 @@ export async function getGeopoliticalWatches(
           }
         }
       `,
-      fetchPolicy: "network-only",
     });
 
     if (data?.veillesGeopolitique?.nodes.length === 0) {

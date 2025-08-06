@@ -59,7 +59,6 @@ export async function getCultures(
           }
         }
     `,
-      fetchPolicy: "network-only",
     });
 
     if (data?.cultures?.nodes.length === 0) {

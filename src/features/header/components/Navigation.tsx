@@ -36,6 +36,7 @@ export default function Navigation({ elt }: { elt: NavigationItems }) {
           href={elt?.href || ""}
           key={elt?.label}
           ref={refs.setReference}
+          prefetch={true}
           className={`flex items-center gap-1 px-3 py-2 rounded-md group-hover:bg-btn-purple/10 group-hover:text-btn-force-blue transition-all duration-300 ease-in-out cursor-pointer ${
             isActive ? "text-btn-force-blue" : ""
           }`}
@@ -73,7 +74,7 @@ export default function Navigation({ elt }: { elt: NavigationItems }) {
           {elt.items.map((item, idx) => {
             return (
               <li key={idx}>
-                <Link href={item?.slug} onClick={handleClick}>
+                <Link href={item?.slug} prefetch={true} onClick={handleClick}>
                   {item?.name}
                 </Link>
               </li>

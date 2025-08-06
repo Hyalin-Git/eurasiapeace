@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+"use server";
 
 import { getPosts } from "@/features/posts/server/db/posts";
 import { getGeopoliticalWatches } from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
