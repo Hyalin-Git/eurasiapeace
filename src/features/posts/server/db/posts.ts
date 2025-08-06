@@ -1,8 +1,7 @@
 "use server";
-import createApolloClient from "@/lib/apollo-client";
 import { generateQuery } from "@/utils/generateQuery";
-import { gql } from "@apollo/client";
 import { Error, Filters } from "@/types";
+import { fetchGraphQL } from "@/utils/authFetch";
 
 export async function getPosts(
   limit: number = 10,
@@ -15,10 +14,8 @@ export async function getPosts(
 
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
+    const query = `
+     query {
           posts(${filterQuery}) {
             nodes {
               id
@@ -67,10 +64,19 @@ export async function getPosts(
             }
           }
         }
-      `,
-    });
+    `;
+    const res = await fetchGraphQL(query);
 
-    if (data?.posts?.nodes.length === 0) {
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération des posts",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    if (res?.data?.posts?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucun post trouvé",
@@ -82,12 +88,11 @@ export async function getPosts(
     return {
       success: true,
       message: "Posts récupérés avec succès",
-      data: data?.posts?.nodes,
-      pageInfo: data?.posts?.pageInfo,
+      data: res?.data?.posts?.nodes,
+      pageInfo: res?.data?.posts?.pageInfo,
     };
   } catch (e: unknown) {
     const err = e as Error;
-
     console.log(err?.message || "Erreur lors de la récupération des posts");
 
     return {
@@ -105,46 +110,53 @@ export async function getRelatedPosts(
   limit: number = 4
 ) {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          posts(where: { categoryName: "${slug}", notIn: "${notIn}" }, first: ${limit}) {
-            nodes {
-              id
-              title
-              slug
-              date
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                }
+    const query = `
+      query {
+        posts(where: { categoryName: "${slug}", notIn: "${notIn}" }, first: ${limit}) {
+          nodes {
+            id
+            title
+            slug
+            date
+            featuredImage {
+              node {
+                sourceUrl
+                altText
               }
-              tags {
-                nodes {
-                  name
-                  slug
-                }
+            }
+            tags {
+              nodes {
+                name
+                slug
               }
-              categories {
-                nodes {
-                  name
-                  slug
-                }
+            }
+            categories {
+              nodes {
+                name
+                slug
               }
-              contentType {
-                node {
-                  name
-                }
+            }
+            contentType {
+              node {
+                name
               }
             }
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.posts?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération des posts",
+        data: [],
+      };
+    }
+
+    if (res?.data?.posts?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucun post trouvé",
@@ -155,7 +167,7 @@ export async function getRelatedPosts(
     return {
       success: true,
       message: "Posts récupérés avec succès",
-      data: data?.posts?.nodes,
+      data: res?.data?.posts?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -172,58 +184,65 @@ export async function getRelatedPosts(
 
 export async function getPost(slug: string) {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          post(id: "${slug}", idType: SLUG) {
-            contentType {
-              node {
-                name
-              }
-            }
-            id
-            title
-            content
-            date
-            tags {
-              nodes {
-                name
-                slug
-              }
-            }
-            categories {
-              nodes {
-                name
-                slug
-              }
-            }
-            featuredImage {
-              node {
-                sourceUrl
-                altText
-              }
-            }
-            author {
-              node {
-                avatar {
-                  url
-                }
-                firstName
-                lastName
-              }
-            } 
-            wordCount
-            readingTime
-            contenuPublic {
-              isPublic 
+    const query = `
+      query {
+        post(id: "${slug}", idType: SLUG) {
+          contentType {
+            node {
+              name
             }
           }
+          id
+          title
+          content
+          date
+          tags {
+            nodes {
+              name
+              slug
+            }
+          }
+          categories {
+            nodes {
+              name
+              slug
+            }
+          }
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          author {
+            node {
+              avatar {
+                url
+              }
+              firstName
+              lastName
+            }
+          } 
+          wordCount
+          readingTime
+          contenuPublic {
+            isPublic 
+          }
         }
-      `,
-    });
+      }
+    `;
 
-    if (!data?.post) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération du post",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.post) {
       return {
         success: false,
         message: "Post non trouvé",
@@ -234,7 +253,7 @@ export async function getPost(slug: string) {
     return {
       success: true,
       message: "Post récupéré avec succès",
-      data: data?.post,
+      data: res?.data?.post,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -252,21 +271,28 @@ export async function getPost(slug: string) {
 // Get categories
 export async function getCategories() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          categories(first: 100) {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        categories(first: 100) {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.categories?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération des catégories",
+        data: [],
+      };
+    }
+
+    if (res?.data?.categories?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucune catégorie trouvée",
@@ -277,7 +303,7 @@ export async function getCategories() {
     return {
       success: true,
       message: "Catégories récupérées avec succès",
-      data: data?.categories?.nodes,
+      data: res?.data?.categories?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -294,24 +320,30 @@ export async function getCategories() {
   }
 }
 
-// // Get tags
 export async function getTags() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          tags(first: 100) {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        tags(first: 100) {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.tags?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération des tags",
+        data: [],
+      };
+    }
+
+    if (res?.data?.tags?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucun tag trouvé",
@@ -322,7 +354,7 @@ export async function getTags() {
     return {
       success: true,
       message: "Tags récupérés avec succès",
-      data: data?.tags?.nodes,
+      data: res?.data?.tags?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;

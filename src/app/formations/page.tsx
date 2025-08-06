@@ -44,7 +44,7 @@ export default async function Formations({
     },
   };
   const { data: formations, pageInfo } = await getFormations(
-    12,
+    9,
     filters,
     search,
     page

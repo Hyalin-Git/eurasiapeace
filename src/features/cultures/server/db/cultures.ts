@@ -1,9 +1,8 @@
 "use server";
 
-import createApolloClient from "@/lib/apollo-client";
 import { generateQuery } from "@/utils/generateQuery";
-import { gql } from "@apollo/client";
 import { Error, Filters } from "@/types";
+import { fetchGraphQL } from "@/utils/authFetch";
 
 export async function getCultures(
   limit: number = 10,
@@ -15,94 +14,15 @@ export async function getCultures(
     const offset = (parseInt(page) - 1) * limit;
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          cultures(${filterQuery}) {
-            nodes {
-              id
-              title
-              excerpt
-              slug
-              date
-              typesDeCulture {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              tags {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                }
-              }
-              contentType {
-                node {
-                  name
-                }
-              }
-            }
-            pageInfo {
-              hasNextPage
-              endCursor
-              total
-              hasPreviousPage
-            }
-          }
-        }
-    `,
-    });
-
-    if (data?.cultures?.nodes.length === 0) {
-      return {
-        success: false,
-        message: "Aucune culture trouvée",
-        data: [],
-        pageInfo: null,
-      };
-    }
-
-    return {
-      success: true,
-      message: "Cultures récupérées avec succès",
-      data: data?.cultures?.nodes,
-      pageInfo: data?.cultures?.pageInfo,
-    };
-  } catch (e: unknown) {
-    const err = e as Error;
-
-    console.log(err?.message || "Erreur lors de la récupération des cultures");
-
-    return {
-      success: false,
-      message: "Erreur lors de la récupération des cultures",
-      data: [],
-      pageInfo: null,
-    };
-  }
-}
-
-export async function getCulture(slug: string) {
-  try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          culture(id: "${slug}", idType: SLUG) {
+    const query = `
+      query {
+        cultures(${filterQuery}) {
+          nodes {
             id
             title
             excerpt
             slug
             date
-            content
             typesDeCulture {
               nodes {
                 name
@@ -121,23 +41,117 @@ export async function getCulture(slug: string) {
                 altText
               }
             }
-            author {
+            contentType {
               node {
-                avatar {
-                  url
-                }
-                firstName
-                lastName
+                name
               }
             }
-            wordCount
-            readingTime
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+            total
+            hasPreviousPage
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (!data?.culture) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération des cultures",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    if (res?.data?.cultures?.nodes.length === 0) {
+      return {
+        success: false,
+        message: "Aucune culture trouvée",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Cultures récupérées avec succès",
+      data: res?.data?.cultures?.nodes,
+      pageInfo: res?.data?.cultures?.pageInfo,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+
+    console.log(err?.message || "Erreur lors de la récupération des cultures");
+
+    return {
+      success: false,
+      message: "Erreur lors de la récupération des cultures",
+      data: [],
+      pageInfo: null,
+    };
+  }
+}
+
+export async function getCulture(slug: string) {
+  try {
+    const query = `
+      query {
+        culture(id: "${slug}", idType: SLUG) {
+          id
+          title
+          excerpt
+          slug
+          date
+          content
+          typesDeCulture {
+            nodes {
+              name
+              slug
+            }
+          }
+          tags {
+            nodes {
+              name
+              slug
+            }
+          }
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          author {
+            node {
+              avatar {
+                url
+              }
+              firstName
+              lastName
+            }
+          }
+          wordCount
+          readingTime
+        }
+      }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération de la culture",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.culture) {
       return {
         success: false,
         message: "Culture non trouvée",
@@ -148,7 +162,7 @@ export async function getCulture(slug: string) {
     return {
       success: true,
       message: "Culture récupérée avec succès",
-      data: data?.culture,
+      data: res?.data?.culture,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -164,21 +178,29 @@ export async function getCulture(slug: string) {
 
 export async function getTypesDeCulture() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          typesDeCulture {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        typesDeCulture {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.typesDeCulture?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message:
+          res.message || "Erreur lors de la récupération des types de cultures",
+        data: [],
+      };
+    }
+
+    if (res?.data?.typesDeCulture?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucun type de culture trouvé",
@@ -189,7 +211,7 @@ export async function getTypesDeCulture() {
     return {
       success: true,
       message: "Types de cultures récupérés avec succès",
-      data: data?.typesDeCulture?.nodes,
+      data: res?.data?.typesDeCulture?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;

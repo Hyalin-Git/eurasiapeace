@@ -37,7 +37,7 @@ export default async function Cultures({
     },
   };
   const { data: cultures, pageInfo } = await getCultures(
-    12,
+    9,
     filters,
     search,
     page

@@ -36,7 +36,7 @@ export default async function Publications({
       terms: tagFilter || [],
     },
   };
-  const { data: posts, pageInfo } = await getPosts(12, filters, search, page);
+  const { data: posts, pageInfo } = await getPosts(9, filters, search, page);
   const { data: categories } = await getCategories();
   const { data: tags } = await getTags();
 

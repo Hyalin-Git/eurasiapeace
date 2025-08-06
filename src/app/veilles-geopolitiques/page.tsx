@@ -35,7 +35,7 @@ export default async function GeopoliticalWatchesPage({
   };
 
   const { data: geopoliticalWatches, pageInfo } = await getGeopoliticalWatches(
-    12,
+    9,
     filters,
     search,
     page

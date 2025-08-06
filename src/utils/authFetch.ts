@@ -1,6 +1,7 @@
 "use server";
 import { refreshAccessToken } from "@/server/api/auth";
 import { Error } from "@/types";
+import next from "next";
 import { cookies } from "next/headers";
 
 export async function authFetch(url: string, options: RequestInit) {
@@ -51,15 +52,43 @@ export async function fetchGraphQL(
   query: string,
   variables?: Record<string, unknown>
 ) {
-  const res = await fetch(process.env.NEXT_PUBLIC_WPGRAPHQL_API_URL!, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ query, variables }),
-  });
+  if (!query) {
+    return {
+      success: false,
+      status: 400,
+      message: "Query is required",
+      data: null,
+    };
+  }
 
-  const json = await res.json();
+  try {
+    const res = await fetch(`${process.env.APOLLO_URI}/graphql`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query, variables }),
+      next: { revalidate: 300 }, // Revalidate every 5 minutes
+      cache: "force-cache",
+    });
 
-  return json.data;
+    const json = await res.json();
+
+    return {
+      success: res.ok,
+      status: res.status,
+      message: json?.message || "Data fetched successfully",
+      data: json?.data || null,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+    console.error("GraphQL fetch error:", err.message || "Unknown error");
+
+    return {
+      success: false,
+      status: err?.status || 500,
+      message: err?.message || "Erreur lors de la récupération des données",
+      data: null,
+    };
+  }
 }

@@ -1,8 +1,7 @@
 "use server";
-import createApolloClient from "@/lib/apollo-client";
 import { generateQuery } from "@/utils/generateQuery";
-import { gql } from "@apollo/client";
 import { Error, Filters } from "@/types";
+import { fetchGraphQL } from "@/utils/authFetch";
 
 export async function getGeopoliticalWatches(
   limit: number = 20,
@@ -14,53 +13,63 @@ export async function getGeopoliticalWatches(
     const offset = (parseInt(page) - 1) * limit;
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          veillesGeopolitique(${filterQuery}) {
-            nodes {
-              id
-              title
-              slug
-              excerpt
-              date
-              typeDeVeilles {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              tags {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                }
-              }
-              contentType {
-                node {
-                  name
-                }
+    const query = `
+      query {
+        veillesGeopolitique(${filterQuery}) {
+          nodes {
+            id
+            title
+            slug
+            excerpt
+            date
+            typeDeVeilles {
+              nodes {
+                name
+                slug
               }
             }
-            pageInfo {
-              hasNextPage
-              endCursor
-              total
-              hasPreviousPage
+            tags {
+              nodes {
+                name
+                slug
+              }
+            }
+            featuredImage {
+              node {
+                sourceUrl
+                altText
+              }
+            }
+            contentType {
+              node {
+                name
+              }
             }
           }
+          pageInfo {
+            hasNextPage
+            endCursor
+            total
+            hasPreviousPage
+          }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.veillesGeopolitique?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message:
+          res.message ||
+          "Erreur lors de la récupération des veilles géopolitiques",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    if (res?.data?.veillesGeopolitique?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucune veille géopolitique trouvée",
@@ -72,8 +81,8 @@ export async function getGeopoliticalWatches(
     return {
       success: true,
       message: "Veilles géopolitiques récupérées avec succès",
-      data: data?.veillesGeopolitique?.nodes,
-      pageInfo: data?.veillesGeopolitique?.pageInfo,
+      data: res?.data?.veillesGeopolitique?.nodes,
+      pageInfo: res?.data?.veillesGeopolitique?.pageInfo,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -97,102 +106,27 @@ export async function getRelatedGeopoliticalWatches(
   limit: number = 4
 ) {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          veillesGeopolitique(
-            where: {
-              taxQuery: {
-                taxArray: [
-                  {
-                    taxonomy: TYPEDEVEILLE,
-                    field: SLUG,
-                    terms: ["${slug}"],
-                  },
-                ]
-              }
-              notIn: "${notIn}"
+    const query = `
+      query {
+        veillesGeopolitique(
+          where: {
+            taxQuery: {
+              taxArray: [
+                {
+                  taxonomy: TYPEDEVEILLE,
+                  field: SLUG,
+                  terms: ["${slug}"],
+                },
+              ]
             }
-            first: ${limit}
-          ) {
-            nodes {
-              id
-              title
-              slug
-              date
-              tags {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              typeDeVeilles {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                }
-              }
-              contentType {
-                node {
-                  name
-                }
-              }
-            }
+            notIn: "${notIn}"
           }
-        }
-      `,
-    });
-
-    if (data?.veillesGeopolitique?.nodes.length === 0) {
-      return {
-        success: false,
-        message: "Veille géopolitique non trouvée",
-        data: null,
-      };
-    }
-
-    return {
-      success: true,
-      message: "Veille géopolitique récupérée avec succès",
-      data: data?.veillesGeopolitique?.nodes,
-    };
-  } catch (e: unknown) {
-    const err = e as Error;
-
-    console.log(
-      err.message || "Erreur lors de la récupération des veilles géopolitiques"
-    );
-
-    return {
-      success: false,
-      message: "Erreur lors de la récupération des veilles géopolitiques",
-      data: [],
-    };
-  }
-}
-
-export async function getGeopoliticalWatch(slug: string) {
-  try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          veilleGeopolitique(id: "${slug}", idType: SLUG) {
-            contentType {
-              node {
-                name
-              }
-            }
+          first: ${limit}
+        ) {
+          nodes {
             id
             title
-            content
+            slug
             date
             tags {
               nodes {
@@ -212,23 +146,29 @@ export async function getGeopoliticalWatch(slug: string) {
                 altText
               }
             }
-            author {
+            contentType {
               node {
-                avatar {
-                  url
-                }
-                firstName
-                lastName
+                name
               }
             }
-            wordCount
-            readingTime
           }
-        } 
-      `,
-    });
+        }
+      }
+    `;
 
-    if (!data?.veilleGeopolitique) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message:
+          res.message ||
+          "Erreur lors de la récupération des veilles géopolitiques",
+        data: [],
+      };
+    }
+
+    if (res?.data?.veillesGeopolitique?.nodes.length === 0) {
       return {
         success: false,
         message: "Veille géopolitique non trouvée",
@@ -239,7 +179,94 @@ export async function getGeopoliticalWatch(slug: string) {
     return {
       success: true,
       message: "Veille géopolitique récupérée avec succès",
-      data: data?.veilleGeopolitique,
+      data: res?.data?.veillesGeopolitique?.nodes,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+
+    console.log(
+      err.message || "Erreur lors de la récupération des veilles géopolitiques"
+    );
+
+    return {
+      success: false,
+      message: "Erreur lors de la récupération des veilles géopolitiques",
+      data: [],
+    };
+  }
+}
+
+export async function getGeopoliticalWatch(slug: string) {
+  try {
+    const query = `
+      query {
+        veilleGeopolitique(id: "${slug}", idType: SLUG) {
+          contentType {
+            node {
+              name
+            }
+          }
+          id
+          title
+          content
+          date
+          tags {
+            nodes {
+              name
+              slug
+            }
+          }
+          typeDeVeilles {
+            nodes {
+              name
+              slug
+            }
+          }
+          featuredImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+          author {
+            node {
+              avatar {
+                url
+              }
+              firstName
+              lastName
+            }
+          }
+          wordCount
+          readingTime
+        }
+      }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message:
+          res.message ||
+          "Erreur lors de la récupération de la veille géopolitique",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.veilleGeopolitique) {
+      return {
+        success: false,
+        message: "Veille géopolitique non trouvée",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Veille géopolitique récupérée avec succès",
+      data: res?.data?.veilleGeopolitique,
     };
   } catch (error: unknown) {
     const err = error as Error;
@@ -258,22 +285,31 @@ export async function getGeopoliticalWatch(slug: string) {
 
 export async function getGeopoliticalWatchesTypes() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          typeDeVeilles {
-            nodes {
-              id
-              name
-              slug
-            }
+    const query = `
+      query {
+        typeDeVeilles {
+          nodes {
+            id
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.typeDeVeilles?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message:
+          res.message ||
+          "Erreur lors de la récupération des types de veilles géopolitiques",
+        data: [],
+      };
+    }
+
+    if (res?.data?.typeDeVeilles?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucune veille géopolitique trouvée",
@@ -284,7 +320,7 @@ export async function getGeopoliticalWatchesTypes() {
     return {
       success: true,
       message: "Types de veilles géopolitiques récupérées avec succès",
-      data: data?.typeDeVeilles?.nodes,
+      data: res?.data?.typeDeVeilles?.nodes,
     };
   } catch (error: unknown) {
     const err = error as Error;

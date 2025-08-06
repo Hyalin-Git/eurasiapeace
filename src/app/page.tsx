@@ -11,6 +11,7 @@ import { getFormations } from "@/features/formations/server/db/formations";
 
 export default async function Home() {
   const { data: posts } = await getPosts(4);
+  console.log("Posts fetched:", posts.length);
   const { data: geopoliticalWatches } = await getGeopoliticalWatches(4);
   const { data: formations } = await getFormations(2);
 

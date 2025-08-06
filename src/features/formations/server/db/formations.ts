@@ -1,9 +1,8 @@
 "use server";
 
-import createApolloClient from "@/lib/apollo-client";
 import { generateQuery } from "@/utils/generateQuery";
-import { gql } from "@apollo/client";
 import { Error, Filters } from "@/types";
+import { fetchGraphQL } from "@/utils/authFetch";
 
 export async function getFormations(
   limit: number = 10,
@@ -15,108 +14,10 @@ export async function getFormations(
     const offset = (parseInt(page) - 1) * limit;
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          formations(${filterQuery}) {
-            nodes {
-              id
-              title
-              slug
-              excerpt
-              date
-              typesDeFormations {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              niveauxDeFormation {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              rythmesDeFormation {
-                nodes {
-                  name
-                  slug
-                }
-              }
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
-                }
-              }
-              contentType {
-                node {
-                  name
-                }
-              }
-              singleFormations {
-                apercuFormation {
-                  modalite {
-                    dureeFormation
-                    nombreParticipants
-                    rythme
-                  }
-                }
-              }
-            }
-            pageInfo {
-              hasNextPage
-              endCursor
-              total
-              hasPreviousPage
-            }
-          }
-        }
-      `,
-    });
-
-    if (data?.formations?.nodes.length === 0) {
-      throw {
-        success: false,
-        status: 404,
-        message: "Aucune formation trouvée",
-        data: null,
-      };
-    }
-
-    return {
-      success: true,
-      message: null,
-      data: data?.formations?.nodes,
-      pageInfo: data?.formations?.pageInfo,
-    };
-  } catch (e: unknown) {
-    const err = e as Error;
-
-    console.log(
-      err?.message ||
-        "Une erreur est survenue lors de la récupération des formations"
-    );
-
-    return {
-      success: false,
-      status: err?.status || 500,
-      message:
-        err?.message ||
-        "Une erreur est survenue lors de la récupération des formations",
-      data: null,
-    };
-  }
-}
-
-export async function getFormation(slug: string) {
-  try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          formation(id: "${slug}", idType: SLUG) {
+    const query = `
+      query {
+        formations(${filterQuery}) {
+          nodes {
             id
             title
             slug
@@ -140,81 +41,194 @@ export async function getFormation(slug: string) {
                 slug
               }
             }
+            featuredImage {
+              node {
+                sourceUrl
+                altText
+              }
+            }
+            contentType {
+              node {
+                name
+              }
+            }
             singleFormations {
               apercuFormation {
-                texteIntroFormation
-                publicsCibles {
-                  textePublicsCibles
-                }
                 modalite {
                   dureeFormation
                   nombreParticipants
-                  langue
                   rythme
-                  format
-                }
-                prerequis {
-                  textePrerequis
-                }
-                benefices {
-                  texteBenefices
                 }
               }
-              objectifsPedagogiques {
-                texteIntroObjectifs
-                objectifs {
-                  titreObjectif
-                  descriptionObjectif
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+            total
+            hasPreviousPage
+          }
+        }
+      }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        status: 500,
+        message: res.message || "Une erreur est survenue lors de la récupération des formations",
+        data: null,
+      };
+    }
+
+    if (res?.data?.formations?.nodes.length === 0) {
+      throw {
+        success: false,
+        status: 404,
+        message: "Aucune formation trouvée",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: null,
+      data: res?.data?.formations?.nodes,
+      pageInfo: res?.data?.formations?.pageInfo,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+
+    console.log(
+      err?.message ||
+        "Une erreur est survenue lors de la récupération des formations"
+    );
+
+    return {
+      success: false,
+      status: err?.status || 500,
+      message:
+        err?.message ||
+        "Une erreur est survenue lors de la récupération des formations",
+      data: null,
+    };
+  }
+}
+
+export async function getFormation(slug: string) {
+  try {
+    const query = `
+      query {
+        formation(id: "${slug}", idType: SLUG) {
+          id
+          title
+          slug
+          excerpt
+          date
+          typesDeFormations {
+            nodes {
+              name
+              slug
+            }
+          }
+          niveauxDeFormation {
+            nodes {
+              name
+              slug
+            }
+          }
+          rythmesDeFormation {
+            nodes {
+              name
+              slug
+            }
+          }
+          singleFormations {
+            apercuFormation {
+              texteIntroFormation
+              publicsCibles {
+                textePublicsCibles
+              }
+              modalite {
+                dureeFormation
+                nombreParticipants
+                langue
+                rythme
+                format
+              }
+              prerequis {
+                textePrerequis
+              }
+              benefices {
+                texteBenefices
+              }
+            }
+            objectifsPedagogiques {
+              texteIntroObjectifs
+              objectifs {
+                titreObjectif
+                descriptionObjectif
+              }
+            }
+            programmeFormation {
+              texteIntroProgramme
+              seances {
+                titreSeance
+                descriptionSeance
+              }
+              programmePdf {
+                node {
+                  link
                 }
               }
-              programmeFormation {
-                texteIntroProgramme
-                seances {
-                  titreSeance
-                  descriptionSeance
-                }
-                programmePdf {
-                  node {
-                    link
-                  }
-                }
+            }
+            evaluation {
+              evaluationRapport
+            }
+            modalites {
+              boiteModalites {
+                titreBoite
+                descriptionModalite
               }
-              evaluation {
-                evaluationRapport
+              tarifs {
+                particulierProgressif
+                particulierIntensif
+                entrepriseProgressif
+                entrepriseIntensif
               }
-              modalites {
-                boiteModalites {
-                  titreBoite
-                  descriptionModalite
-                }
-                tarifs {
-                  particulierProgressif
-                  particulierIntensif
-                  entrepriseProgressif
-                  entrepriseIntensif
-                }
+            }
+            recapitulatif {
+              dates {
+                dateFormation
               }
-              recapitulatif {
-                dates {
-                  dateFormation
-                }
-              }
-              formateur {
-                nodes {
-                  lastName
-                  firstName
-                  avatar {
-                    url
-                  }
+            }
+            formateur {
+              nodes {
+                lastName
+                firstName
+                avatar {
+                  url
                 }
               }
             }
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (!data?.formation) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Une erreur est survenue lors de la récupération de la formation",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.formation) {
       return {
         success: false,
         message: "Aucune formation trouvée",
@@ -225,7 +239,7 @@ export async function getFormation(slug: string) {
     return {
       success: true,
       message: null,
-      data: data?.formation,
+      data: res?.data?.formation,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -247,21 +261,28 @@ export async function getFormation(slug: string) {
 
 export async function getTypesDeFormations() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          typesDeFormations {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        typesDeFormations {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.typesDeFormations?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Une erreur est survenue lors de la récupération des types de formations",
+        data: null,
+      };
+    }
+
+    if (res?.data?.typesDeFormations?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucun type de formation trouvé",
@@ -271,7 +292,7 @@ export async function getTypesDeFormations() {
     return {
       success: true,
       message: null,
-      data: data?.typesDeFormations?.nodes,
+      data: res?.data?.typesDeFormations?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -293,21 +314,28 @@ export async function getTypesDeFormations() {
 
 export async function getNiveauxDeFormation() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          niveauxDeFormation {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        niveauxDeFormation {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.niveauxDeFormation?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Une erreur est survenue lors de la récupération des niveaux de formation",
+        data: null,
+      };
+    }
+
+    if (res?.data?.niveauxDeFormation?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucun niveau de formation trouvé",
@@ -318,7 +346,7 @@ export async function getNiveauxDeFormation() {
     return {
       success: true,
       message: null,
-      data: data?.niveauxDeFormation?.nodes,
+      data: res?.data?.niveauxDeFormation?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -340,21 +368,28 @@ export async function getNiveauxDeFormation() {
 
 export async function getRythmesDeFormation() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          rythmesDeFormation {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        rythmesDeFormation {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.rythmesDeFormation?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Une erreur est survenue lors de la récupération des rythmes de formation",
+        data: null,
+      };
+    }
+
+    if (res?.data?.rythmesDeFormation?.nodes.length === 0) {
       return {
         success: false,
         message: "Aucun rythme de formation trouvé",
@@ -365,7 +400,7 @@ export async function getRythmesDeFormation() {
     return {
       success: true,
       message: null,
-      data: data?.rythmesDeFormation?.nodes,
+      data: res?.data?.rythmesDeFormation?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
