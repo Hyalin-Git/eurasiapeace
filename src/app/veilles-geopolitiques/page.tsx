@@ -7,6 +7,7 @@ import Pagination from "@/components/pagination/Pagination";
 import { getTags } from "@/features/posts/server/db/posts";
 import Banner from "@/components/Banner";
 import FiltersItems from "@/components/filters/FiltersItems";
+import { Suspense } from "react";
 
 export default async function GeopoliticalWatchesPage({
   searchParams,
@@ -34,15 +35,15 @@ export default async function GeopoliticalWatchesPage({
     },
   };
 
-  const { data: geopoliticalWatches, pageInfo } = await getGeopoliticalWatches(
-    9,
-    filters,
-    search,
-    page
-  );
+  const [geoWatchesRes, geoTypesRes, tagsRes] = await Promise.all([
+    getGeopoliticalWatches(9, filters, search, page),
+    getGeopoliticalWatchesTypes(),
+    getTags(),
+  ]);
 
-  const { data: geopoliticalWatchTypes } = await getGeopoliticalWatchesTypes();
-  const { data: tags } = await getTags();
+  const { data: geopoliticalWatches, pageInfo } = geoWatchesRes;
+  const { data: geopoliticalWatchTypes } = geoTypesRes;
+  const { data: tags } = tagsRes;
 
   const bannerProps = {
     title: "Veilles géopolitiques",
@@ -67,7 +68,9 @@ export default async function GeopoliticalWatchesPage({
             <FiltersItems items={tags} query="tag" />
           </div>
         </Filters>
+
         <Cards elements={geopoliticalWatches} className={"lg:grid-cols-3"} />
+
         <div className="mt-8">
           {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}
         </div>

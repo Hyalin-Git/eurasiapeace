@@ -1,4 +1,5 @@
 "use server";
+
 import { Error } from "@/types";
 
 export async function verifyRecaptcha(token: string) {

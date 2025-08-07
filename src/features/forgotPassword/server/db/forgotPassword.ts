@@ -1,9 +1,11 @@
 "use server";
 
-import createApolloClient from "@/lib/apollo-client";
 import { Error } from "@/types";
-import { gql } from "@apollo/client";
 import moment from "moment";
+import {
+  fetchGraphQLWithAuth,
+  fetchGraphQLWithoutCache,
+} from "@/utils/authFetch";
 
 export async function savePasswordResetCode(email: string, code: string) {
   try {
@@ -16,35 +18,42 @@ export async function savePasswordResetCode(email: string, code: string) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.mutate({
-      mutation: gql`
-        mutation CreateUserPasswordReset(
-          $email: String!
-          $code: String!
-          $expiresAt: String!
+    const query = `
+      mutation CreateUserPasswordReset(
+        $email: String!
+        $code: String!
+        $expiresAt: String!
+      ) {
+        createUserPasswordReset(
+          input: { userEmail: $email, code: $code, expiresAt: $expiresAt }
         ) {
-          createUserPasswordReset(
-            input: { userEmail: $email, code: $code, expiresAt: $expiresAt }
-          ) {
-            userPasswordReset {
-              id
-              userEmail
-              code
-              createdAt
-              expiresAt
-            }
+          userPasswordReset {
+            id
+            userEmail
+            code
+            createdAt
+            expiresAt
           }
         }
-      `,
-      variables: {
-        email: email,
-        code: code,
-        expiresAt: moment().add(30, "minutes").toISOString(), // Set expiration to 30 minutes from now
-      },
+      }
+    `;
+
+    const res = await fetchGraphQLWithoutCache(query, {
+      email: email,
+      code: code,
+      expiresAt: moment().add(30, "minutes").toISOString(), // Set expiration to 30 minutes from now
     });
 
-    if (!data.createUserPasswordReset) {
+    if (!res.success) {
+      return {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Failed to save password reset code",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.createUserPasswordReset) {
       return {
         success: false,
         status: 500,
@@ -57,7 +66,7 @@ export async function savePasswordResetCode(email: string, code: string) {
       success: true,
       status: 200,
       message: "Password reset code saved successfully",
-      data: data.createUserPasswordReset,
+      data: res?.data?.createUserPasswordReset,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -87,23 +96,31 @@ export async function getPasswordResetCode(code: string) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query GetUserPasswordReset($code: String!) {
-          userPasswordReset(code: $code) {
-            id
-            userEmail
-            code
-            createdAt
-            expiresAt
-          }
+    const query = `
+      query GetUserPasswordReset($code: String!) {
+        userPasswordReset(code: $code) {
+          id
+          userEmail
+          code
+          createdAt
+          expiresAt
         }
-      `,
-      variables: { code },
-    });
+      }
+    `;
 
-    if (!data.userPasswordReset) {
+    const res = await fetchGraphQLWithoutCache(query, { code });
+
+    if (!res.success) {
+      return {
+        success: false,
+        status: res.status || 500,
+        message:
+          res.message || "Error occurred while getting password reset code",
+        data: null,
+      };
+    }
+
+    if (!res.data.userPasswordReset) {
       return {
         success: false,
         status: 404,
@@ -116,7 +133,7 @@ export async function getPasswordResetCode(code: string) {
       success: true,
       status: 200,
       message: "Password reset code retrieved successfully",
-      data: data.userPasswordReset,
+      data: res.data.userPasswordReset,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -147,28 +164,35 @@ export async function updateUserPassword(uid: string, newPassword: string) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.mutate({
-      mutation: gql`
-        mutation UpdateUserPassword($uid: ID!, $password: String!) {
-          updateUser(
-            input: {
-              id: $uid
-              password: $password
-              clientMutationId: "updatePassword"
-            }
-          ) {
-            clientMutationId
+    const query = `
+      mutation UpdateUserPassword($uid: ID!, $password: String!) {
+        updateUser(
+          input: {
+            id: $uid
+            password: $password
+            clientMutationId: "updatePassword"
           }
+        ) {
+          clientMutationId
         }
-      `,
-      variables: {
-        uid: uid,
-        password: newPassword,
-      },
+      }
+    `;
+
+    const res = await fetchGraphQLWithAuth(query, {
+      uid: uid,
+      password: newPassword,
     });
 
-    if (!data.updateUser) {
+    if (!res.success) {
+      return {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Failed to update user password",
+        data: null,
+      };
+    }
+
+    if (!res.data.updateUser) {
       return {
         success: false,
         status: 500,
@@ -181,7 +205,7 @@ export async function updateUserPassword(uid: string, newPassword: string) {
       success: true,
       status: 200,
       message: "Password updated successfully",
-      data: data.updateUser,
+      data: res.data.updateUser,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -210,19 +234,26 @@ export async function deletePasswordResetCode(userEmail: string) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.mutate({
-      mutation: gql`
-        mutation DeleteUserPasswordReset($userEmail: String!) {
-          deleteUserPasswordReset(input: { userEmail: $userEmail }) {
-            deleted
-          }
+    const query = `
+      mutation DeleteUserPasswordReset($userEmail: String!) {
+        deleteUserPasswordReset(input: { userEmail: $userEmail }) {
+          deleted
         }
-      `,
-      variables: { userEmail },
-    });
+      }
+    `;
 
-    if (!data.deleteUserPasswordReset?.deleted) {
+    const res = await fetchGraphQLWithoutCache(query, { userEmail });
+
+    if (!res.success) {
+      return {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Failed to delete password reset code",
+        data: null,
+      };
+    }
+
+    if (!res.data.deleteUserPasswordReset?.deleted) {
       return {
         success: false,
         status: 500,
@@ -235,7 +266,7 @@ export async function deletePasswordResetCode(userEmail: string) {
       success: true,
       status: 200,
       message: "Password reset code deleted successfully",
-      data: data.deleteUserPasswordReset,
+      data: res.data.deleteUserPasswordReset,
     };
   } catch (e: unknown) {
     const err = e as Error;

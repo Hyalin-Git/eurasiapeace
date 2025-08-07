@@ -1,4 +1,5 @@
 "use server";
+
 import { generateQuery } from "@/utils/generateQuery";
 import { Error, Filters } from "@/types";
 import { fetchGraphQL } from "@/utils/authFetch";

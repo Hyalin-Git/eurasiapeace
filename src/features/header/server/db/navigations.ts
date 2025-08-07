@@ -1,25 +1,33 @@
 "use server";
-import createApolloClient from "@/lib/apollo-client";
-import { gql } from "@apollo/client";
 import { Error } from "@/types";
+import { fetchGraphQL } from "@/utils/authFetch";
 
 export async function getCultureLinks() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          typesDeCulture {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        typesDeCulture {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.typesDeCulture?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message:
+          res.message || "Erreur lors de la récupération des liens de cultures",
+        data: [],
+      };
+    }
+
+    if (res?.data?.typesDeCulture?.nodes.length === 0) {
       throw {
         success: false,
         status: 404,
@@ -32,7 +40,7 @@ export async function getCultureLinks() {
       success: true,
       status: 200,
       message: "Lien de cultures récupérés avec succès",
-      data: data?.typesDeCulture?.nodes,
+      data: res?.data?.typesDeCulture?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -52,21 +60,31 @@ export async function getCultureLinks() {
 
 export async function getGeopoliticalWatchLinks() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          typeDeVeilles {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        typeDeVeilles {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.typeDeVeilles?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message:
+          res.message ||
+          "Erreur lors de la récupération des veilles géopolitiques",
+        data: [],
+      };
+    }
+
+    if (res?.data?.typeDeVeilles?.nodes.length === 0) {
       throw {
         success: false,
         status: 404,
@@ -79,7 +97,7 @@ export async function getGeopoliticalWatchLinks() {
       success: true,
       status: 200,
       message: "Types de veilles géopolitiques récupérées avec succès",
-      data: data?.typeDeVeilles?.nodes,
+      data: res?.data?.typeDeVeilles?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
@@ -100,21 +118,31 @@ export async function getGeopoliticalWatchLinks() {
 
 export async function getFormationLinks() {
   try {
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          typesDeFormations {
-            nodes {
-              name
-              slug
-            }
+    const query = `
+      query {
+        typesDeFormations {
+          nodes {
+            name
+            slug
           }
         }
-      `,
-    });
+      }
+    `;
 
-    if (data?.typesDeFormations?.nodes.length === 0) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message:
+          res.message ||
+          "Une erreur est survenue lors de la récupération des types de formations",
+        data: [],
+      };
+    }
+
+    if (res?.data?.typesDeFormations?.nodes.length === 0) {
       throw {
         success: false,
         status: 404,
@@ -127,7 +155,7 @@ export async function getFormationLinks() {
       success: true,
       status: 200,
       message: null,
-      data: data?.typesDeFormations?.nodes,
+      data: res?.data?.typesDeFormations?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;

@@ -1,3 +1,5 @@
+"use client";
+
 import LinkButton from "@/ui/LinkButton";
 import { AlertCircle, Check } from "lucide-react";
 

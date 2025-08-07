@@ -36,14 +36,16 @@ export default async function Cultures({
       terms: tagFilter || [],
     },
   };
-  const { data: cultures, pageInfo } = await getCultures(
-    9,
-    filters,
-    search,
-    page
-  );
-  const { data: typesDeCulture } = await getTypesDeCulture();
-  const { data: tags } = await getTags();
+
+  const [culturesRes, typesDeCultureRes, tagsRes] = await Promise.all([
+    getCultures(9, filters, search, page),
+    getTypesDeCulture(),
+    getTags(),
+  ]);
+
+  const { data: cultures, pageInfo } = culturesRes;
+  const { data: typesDeCulture } = typesDeCultureRes;
+  const { data: tags } = tagsRes;
 
   const bannerProps = {
     title: "Cultures",

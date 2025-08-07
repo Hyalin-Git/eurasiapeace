@@ -1,4 +1,5 @@
 "use server";
+
 import { generateQuery } from "@/utils/generateQuery";
 import { Error, Filters } from "@/types";
 import { fetchGraphQL } from "@/utils/authFetch";
@@ -39,15 +40,6 @@ export async function getPosts(
                 node {
                   sourceUrl
                   altText
-                }
-              }
-              author {
-                node {
-                  avatar {
-                    url
-                  }
-                  firstName
-                  lastName
                 }
               }
               contentType {

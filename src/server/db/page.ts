@@ -1,20 +1,13 @@
 "use server";
 // This file is used to fetch the page content from the CMS
 
-import createApolloClient from "@/lib/apollo-client";
-import { gql } from "@apollo/client";
-
-interface ErrorResponse {
-  success: boolean;
-  status?: number;
-  message: string;
-  data?: null;
-}
+import { fetchGraphQL } from "@/utils/authFetch";
+import { Error } from "@/types";
 
 export async function getPageContent(slug: string) {
   try {
     if (!slug) {
-      throw {
+      return {
         success: false,
         status: 400,
         message: "Paramètres manquants",
@@ -22,19 +15,27 @@ export async function getPageContent(slug: string) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          page(id: "${process.env.APOLLO_URI}/${slug}", idType: URI) {
-            title
-            content
+    const query = `
+      query {
+        page(id: "${process.env.APOLLO_URI}/${slug}", idType: URI) {
+          title
+          content
         }
       }
-      `,
-    });
+    `;
 
-    if (!data?.page) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Erreur lors de la récupération de la page",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.page) {
       return {
         success: false,
         status: 404,
@@ -47,20 +48,22 @@ export async function getPageContent(slug: string) {
       success: true,
       status: 200,
       message: "Page récupérée avec succès",
-      data: data?.page,
+      data: res?.data?.page,
     };
   } catch (e: unknown) {
-    const err = e as ErrorResponse;
+    const err = e as Error;
 
     console.log(
       err?.message ||
-        "Une erreur est survenue lors de la récupération de la page des mentions légaless"
+        "Une erreur est survenue lors de la récupération de la page"
     );
 
     return {
       success: false,
+      status: err?.status || 500,
       message:
-        "Une erreur est survenue lors de la récupération de la page des mentions légaless",
+        err?.message ||
+        "Une erreur est survenue lors de la récupération de la page",
       data: null,
     };
   }

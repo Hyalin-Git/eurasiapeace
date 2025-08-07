@@ -1,8 +1,8 @@
 "use server";
-import createApolloClient from "@/lib/apollo-client";
+
 import { Error } from "@/types";
-import { gql } from "@apollo/client";
 import { cookies } from "next/headers";
+import { fetchGraphQLWithoutCache } from "@/utils/authFetch";
 
 export async function verifyToken() {
   try {
@@ -88,22 +88,31 @@ export async function refreshAccessToken() {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.mutate({
-      mutation: gql`    
-        mutation RefreshAuthToken {
+    const query = `
+      mutation RefreshAuthToken {
         refreshJwtAuthToken(
-            input: {
+          input: {
             clientMutationId: "uniqueId"
             jwtRefreshToken: "${token}"
-        }) {
-            authToken
+          }
+        ) {
+          authToken
         }
       }
-      `,
-    });
+    `;
 
-    if (!data?.refreshJwtAuthToken?.authToken) {
+    const res = await fetchGraphQLWithoutCache(query);
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 401,
+        message: res.message || "Erreur lors du rafraîchissement du token",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.refreshJwtAuthToken?.authToken) {
       throw {
         success: false,
         status: 401,
@@ -112,7 +121,7 @@ export async function refreshAccessToken() {
       };
     }
 
-    cookieStore.set("authToken", data?.refreshJwtAuthToken?.authToken, {
+    cookieStore.set("authToken", res?.data?.refreshJwtAuthToken?.authToken, {
       httpOnly: true,
       secure: false,
       maxAge: 300, // 300 seconds
@@ -123,7 +132,7 @@ export async function refreshAccessToken() {
       success: true,
       status: 200,
       message: "Token rafraîchi avec succès",
-      data: data?.refreshJwtAuthToken?.authToken,
+      data: res?.data?.refreshJwtAuthToken?.authToken,
     };
   } catch (e: unknown) {
     const err = e as Error;

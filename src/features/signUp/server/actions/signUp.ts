@@ -5,9 +5,8 @@ import DOMPurify from "isomorphic-dompurify";
 import { Error } from "@/types";
 import { InitialState } from "../../types";
 import { sendEmail } from "@/lib/nodemailer";
-import createApolloClient from "@/lib/apollo-client";
-import { gql } from "@apollo/client";
 import { createEmailVerification } from "@/server/db/verifications";
+import { fetchGraphQLWithoutCache } from "@/utils/authFetch";
 
 export async function signUp(prevState: InitialState, formData: FormData) {
   try {
@@ -44,46 +43,52 @@ export async function signUp(prevState: InitialState, formData: FormData) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.mutate({
-      mutation: gql`
-        mutation RegisterUser(
-          $email: String!
-          $password: String!
-          $username: String!
-          $firstName: String!
-          $lastName: String!
+    const query = `
+      mutation RegisterUser(
+        $email: String!
+        $password: String!
+        $username: String!
+        $firstName: String!
+        $lastName: String!
+      ) {
+        registerUser(
+          input: {
+            clientMutationId: "registerUser"
+            username: $username
+            password: $password
+            email: $email
+            firstName: $firstName
+            lastName: $lastName
+          }
         ) {
-          registerUser(
-            input: {
-              clientMutationId: "registerUser"
-              username: $username
-              password: $password
-              email: $email
-              firstName: $firstName
-              lastName: $lastName
-            }
-          ) {
-            clientMutationId
-            user {
-              userId
-              firstName
-              lastName
-              email
-            }
+          clientMutationId
+          user {
+            userId
+            firstName
+            lastName
+            email
           }
         }
-      `,
-      variables: {
-        email: sanitizedEmail,
-        password: sanitizedPassword,
-        username: sanitizedEmail.split("@")[0],
-        firstName: sanitizedFirstName,
-        lastName: sanitizedLastName,
-      },
+      }
+    `;
+
+    const res = await fetchGraphQLWithoutCache(query, {
+      email: sanitizedEmail,
+      password: sanitizedPassword,
+      username: sanitizedEmail.split("@")[0],
+      firstName: sanitizedFirstName,
+      lastName: sanitizedLastName,
     });
 
-    if (!data?.registerUser?.user) {
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Erreur lors de l'inscription",
+      };
+    }
+
+    if (!res?.data?.registerUser?.user) {
       throw {
         success: false,
         status: 500,
@@ -91,7 +96,7 @@ export async function signUp(prevState: InitialState, formData: FormData) {
       };
     }
 
-    const user = data?.registerUser?.user;
+    const user = res?.data?.registerUser?.user;
 
     if (!user) {
       throw {

@@ -1,9 +1,8 @@
 "use server";
 
-import createApolloClient from "@/lib/apollo-client";
 import { Error } from "@/types";
-import { gql } from "@apollo/client";
 import moment from "moment";
+import { fetchGraphQL } from "@/utils/authFetch";
 
 export async function verifyUserEmail(code: string) {
   try {
@@ -15,22 +14,29 @@ export async function verifyUserEmail(code: string) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query {
-          userVerification(code: "${code}") {
-            id
-            code
-            userEmail
-            createdAt
-            expiresAt
-          }
+    const query = `
+      query {
+        userVerification(code: "${code}") {
+          id
+          code
+          userEmail
+          createdAt
+          expiresAt
         }
-      `,
-    });
+      }
+    `;
 
-    if (!data || !data?.userVerification) {
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Error occurred during email verification",
+      };
+    }
+
+    if (!res.data || !res.data?.userVerification) {
       throw {
         success: false,
         status: 404,
@@ -38,7 +44,7 @@ export async function verifyUserEmail(code: string) {
       };
     }
 
-    const userVerification = data?.userVerification;
+    const userVerification = res.data?.userVerification;
 
     const actualTime = moment().subtract(2, "hours");
 
@@ -54,30 +60,47 @@ export async function verifyUserEmail(code: string) {
     await updateUserEmailVerified(userVerification.userEmail);
 
     // ! Get all verifications from the users email and delete them
-    const { data: verifications } = await client.query({
-      query: gql`
-        query {
-          userVerifications(userEmail: "${userVerification.userEmail}") {
-            id
-          }
+    const verificationsQuery = `
+      query {
+        userVerifications(userEmail: "${userVerification.userEmail}") {
+          id
         }
-      `,
-    });
+      }
+    `;
 
-    const allVerifications = verifications?.userVerifications || [];
+    const verificationsRes = await fetchGraphQL(verificationsQuery);
+
+    if (!verificationsRes.success) {
+      throw {
+        success: false,
+        status: verificationsRes.status || 500,
+        message:
+          verificationsRes.message ||
+          "Error occurred while retrieving verifications",
+      };
+    }
+
+    const allVerifications = verificationsRes.data?.userVerifications || [];
 
     // ! Delete all of the verifications code of the user from the database
     for (const verification of allVerifications) {
-      await client.mutate({
-        mutation: gql`
-          mutation {
-            deleteUserVerification(input: { id: ${verification.id} }) {
-              deleted
-              id
-            }
+      const deleteQuery = `
+        mutation {
+          deleteUserVerification(input: { id: ${verification.id} }) {
+            deleted
+            id
           }
-        `,
-      });
+        }
+      `;
+
+      const deleteRes = await fetchGraphQL(deleteQuery);
+
+      if (!deleteRes.success) {
+        console.log(
+          `Failed to delete verification ${verification.id}:`,
+          deleteRes.message
+        );
+      }
     }
 
     return {

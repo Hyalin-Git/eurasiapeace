@@ -1,13 +1,12 @@
 "use server";
 
-import createApolloClient from "@/lib/apollo-client";
 import { signInSchema } from "@/lib/zod";
-import { gql } from "@apollo/client";
 import DOMPurify from "isomorphic-dompurify";
 import { cookies } from "next/headers";
 import { Error } from "@/types";
 import { InitialState } from "../../types";
 import { checkUserEmailVerified } from "../api/signIn";
+import { fetchGraphQLWithoutCache } from "@/utils/authFetch";
 
 export async function signIn(prevState: InitialState, formData: FormData) {
   try {
@@ -33,34 +32,42 @@ export async function signIn(prevState: InitialState, formData: FormData) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.mutate({
-      mutation: gql`
-        mutation LoginUser($username: String!, $password: String!) {
-          login(
-            input: {
-              clientMutationId: "uniqueId"
-              username: $username
-              password: $password
-            }
-          ) {
-            authToken
-            refreshToken
-            clientMutationId
-            user {
-              id
-              email
-              lastName
-              firstName
-            }
+    const query = `
+      mutation LoginUser($username: String!, $password: String!) {
+        login(
+          input: {
+            clientMutationId: "uniqueId"
+            username: $username
+            password: $password
+          }
+        ) {
+          authToken
+          refreshToken
+          clientMutationId
+          user {
+            id
+            email
+            lastName
+            firstName
           }
         }
-      `,
-      variables: {
-        username: sanitizedEmail,
-        password: sanitizedPassword,
-      },
+      }
+    `;
+
+    const res = await fetchGraphQLWithoutCache(query, {
+      username: sanitizedEmail,
+      password: sanitizedPassword,
     });
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Erreur lors de la connexion",
+        formData: formData,
+        errors: null,
+      };
+    }
 
     // ! Check if the user has a verified email before logging in
     const emailVerification = await checkUserEmailVerified(sanitizedEmail);
@@ -90,14 +97,14 @@ export async function signIn(prevState: InitialState, formData: FormData) {
 
     const cookieStore = await cookies();
 
-    cookieStore.set("authToken", data.login.authToken, {
+    cookieStore.set("authToken", res.data.login.authToken, {
       httpOnly: true,
       secure: false,
       maxAge: 300, // 300 seconds
       path: "/",
     });
 
-    cookieStore.set("rtk", data.login.refreshToken, {
+    cookieStore.set("rtk", res.data.login.refreshToken, {
       httpOnly: true,
       secure: false,
       maxAge: 60 * 60 * 24 * 365, // 1 year

@@ -1,8 +1,7 @@
 "use server";
 
-import createApolloClient from "@/lib/apollo-client";
 import { Error } from "@/types";
-import { gql } from "@apollo/client";
+import { fetchGraphQLWithAuth } from "@/utils/authFetch";
 
 export async function findUserIdByCustomerId(customerId: string) {
   try {
@@ -72,21 +71,28 @@ export async function findUserByEmail(email: string) {
       };
     }
 
-    const client = createApolloClient();
-    const { data } = await client.query({
-      query: gql`
-        query GetUserByEmail($email: ID!) {
-          user(id: $email, idType: EMAIL) {
-            databaseId
-          }
+    const query = `
+      query GetUserByEmail($email: ID!) {
+        user(id: $email, idType: EMAIL) {
+          databaseId
         }
-      `,
-      variables: {
-        email: email,
-      },
+      }
+    `;
+
+    const res = await fetchGraphQLWithAuth(query, {
+      email: email,
     });
 
-    if (!data.user) {
+    if (!res.success) {
+      return {
+        success: false,
+        status: res.status || 500,
+        message: res.message || "Error occurred while finding user by email",
+        data: null,
+      };
+    }
+
+    if (!res?.data?.user) {
       return {
         success: false,
         status: 404,
@@ -99,7 +105,7 @@ export async function findUserByEmail(email: string) {
       success: true,
       status: 200,
       message: "User found",
-      data: data.user,
+      data: res?.data?.user,
     };
   } catch (e: unknown) {
     const err = e as Error;

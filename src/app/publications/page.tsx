@@ -36,9 +36,16 @@ export default async function Publications({
       terms: tagFilter || [],
     },
   };
-  const { data: posts, pageInfo } = await getPosts(9, filters, search, page);
-  const { data: categories } = await getCategories();
-  const { data: tags } = await getTags();
+
+  const [postsRes, categoriesRes, tagsRes] = await Promise.all([
+    getPosts(9, filters, search, page),
+    getCategories(),
+    getTags(),
+  ]);
+
+  const { data: posts, pageInfo } = postsRes;
+  const { data: categories } = categoriesRes;
+  const { data: tags } = tagsRes;
 
   const bannerProps = {
     title: "Publications",

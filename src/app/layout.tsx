@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { inter, playfairDisplay } from "@/utils/font";
 import Footer from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
-import { AppApolloProvider } from "@/context/AppApolloProvider";
 import Navigations from "@/features/header/components/Navigations";
 import { AuthProvider } from "@/context/AuthProvider";
 
@@ -44,15 +43,13 @@ export default function RootLayout({
         className={`${inter.className} ${inter.variable} ${playfairDisplay.variable} font-sans min-h-screen`}
       >
         <AuthProvider>
-          <AppApolloProvider>
-            <div className="flex flex-col min-h-screen">
-              <Header>
-                <Navigations />
-              </Header>
-              <main>{children}</main>
-              <Footer />
-            </div>
-          </AppApolloProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header>
+              <Navigations />
+            </Header>
+            <main>{children}</main>
+            <Footer />
+          </div>
         </AuthProvider>
       </body>
     </html>

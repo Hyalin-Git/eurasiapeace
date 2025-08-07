@@ -1,9 +1,8 @@
 "use server";
 
-import createApolloClient from "@/lib/apollo-client";
-import { gql } from "@apollo/client";
 import { randomBytes } from "crypto";
 import moment from "moment";
+import { fetchGraphQLWithoutCache } from "@/utils/authFetch";
 
 export async function createEmailVerification(userEmail: string) {
   if (!userEmail) {
@@ -16,34 +15,41 @@ export async function createEmailVerification(userEmail: string) {
 
   const generateCode = randomBytes(3).toString("hex").toUpperCase();
 
-  const client = createApolloClient();
-  const { data } = await client.mutate({
-    mutation: gql`
-      mutation createUserVerification(
-        $userEmail: String!
-        $code: String!
-        $expiresAt: String!
+  const query = `
+    mutation createUserVerification(
+      $userEmail: String!
+      $code: String!
+      $expiresAt: String!
+    ) {
+      createUserVerification(
+        input: { userEmail: $userEmail, code: $code, expiresAt: $expiresAt }
       ) {
-        createUserVerification(
-          input: { userEmail: $userEmail, code: $code, expiresAt: $expiresAt }
-        ) {
-          clientMutationId
-          userVerification {
-            id
-            userEmail
-            code
-            expiresAt
-            createdAt
-          }
+        clientMutationId
+        userVerification {
+          id
+          userEmail
+          code
+          expiresAt
+          createdAt
         }
       }
-    `,
-    variables: {
-      userEmail: userEmail,
-      code: generateCode,
-      expiresAt: moment().add(30, "minutes").toISOString(),
-    },
+    }
+  `;
+
+  const res = await fetchGraphQLWithoutCache(query, {
+    userEmail: userEmail,
+    code: generateCode,
+    expiresAt: moment().add(30, "minutes").toISOString(),
   });
 
-  return data;
+  if (!res.success) {
+    throw {
+      success: false,
+      status: res.status || 500,
+      message:
+        res.message || "Erreur lors de la création de la vérification email",
+    };
+  }
+
+  return res.data;
 }

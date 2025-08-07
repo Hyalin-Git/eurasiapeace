@@ -79,5 +79,6 @@ export const config = {
     "/inscription",
     "/api/stripe/create-checkout-session",
     "/api/stripe/create-portal-session",
+    "/api/stripe/cancel-subscription",
   ],
 };

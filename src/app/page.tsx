@@ -10,10 +10,15 @@ import CarouselWatches from "@/features/home/components/CarouselWatches";
 import { getFormations } from "@/features/formations/server/db/formations";
 
 export default async function Home() {
-  const { data: posts } = await getPosts(4);
-  console.log("Posts fetched:", posts.length);
-  const { data: geopoliticalWatches } = await getGeopoliticalWatches(4);
-  const { data: formations } = await getFormations(2);
+  const [postsRes, geopoliticalWatchesRes, formationsRes] = await Promise.all([
+    getPosts(4),
+    getGeopoliticalWatches(4),
+    getFormations(2),
+  ]);
+
+  const { data: posts } = postsRes;
+  const { data: geopoliticalWatches } = geopoliticalWatchesRes;
+  const { data: formations } = formationsRes;
 
   const firstPost = posts[0];
   const latestPosts = posts.slice(1);

@@ -1,15 +1,17 @@
+"use client";
+
 import Form from "@/components/form/Form";
 import FormFields from "@/components/form/FormFields";
 import { useActionState, useEffect } from "react";
 import { sendPasswordResetCode } from "../server/actions/forgotPassword";
-import { InitialState } from "../types";
 import Button from "@/ui/Button";
 import { Send } from "lucide-react";
 import ErrorMessage from "@/ui/ErrorMessage";
+import { InitialState } from "../types";
 
 const initialState: InitialState = {
   success: false,
-  status: null,
+  status: 0,
   message: "",
   formData: null,
   errors: null,

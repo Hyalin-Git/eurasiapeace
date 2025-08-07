@@ -43,15 +43,23 @@ export default async function Formations({
       terms: rythmeFilter || [],
     },
   };
-  const { data: formations, pageInfo } = await getFormations(
-    9,
-    filters,
-    search,
-    page
-  );
-  const { data: niveauxDeFormation } = await getNiveauxDeFormation();
-  const { data: typesDeFormation } = await getTypesDeFormations();
-  const { data: rythmesDeFormation } = await getRythmesDeFormation();
+
+  const [
+    formationsRes,
+    niveauxDeFormationRes,
+    typesDeFormationRes,
+    rythmesDeFormationRes,
+  ] = await Promise.all([
+    getFormations(9, filters, search, page),
+    getNiveauxDeFormation(),
+    getTypesDeFormations(),
+    getRythmesDeFormation(),
+  ]);
+
+  const { data: formations, pageInfo } = formationsRes;
+  const { data: niveauxDeFormation } = niveauxDeFormationRes;
+  const { data: typesDeFormation } = typesDeFormationRes;
+  const { data: rythmesDeFormation } = rythmesDeFormationRes;
 
   const bannerProps = {
     title: "Nos formations",
