@@ -5,6 +5,7 @@ import Footer from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
 import Navigations from "@/features/header/components/Navigations";
 import { AuthProvider } from "@/context/AuthProvider";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title:
@@ -42,6 +43,12 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${inter.variable} ${playfairDisplay.variable} font-sans min-h-screen`}
       >
+        <NextTopLoader
+          color="#084854"
+          height={4}
+          easing="ease"
+          showSpinner={false}
+        />
         <AuthProvider>
           <div className="flex flex-col min-h-screen">
             <Header>

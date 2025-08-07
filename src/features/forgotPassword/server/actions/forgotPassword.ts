@@ -229,7 +229,7 @@ export async function resetPassword(
 
     // ! GraphQL mutation to reset the password in the database
     const updatedUserPassword = await updateUserPassword(
-      user.data.databaseId,
+      user?.data?.databaseId,
       sanitizedPassword
     );
 

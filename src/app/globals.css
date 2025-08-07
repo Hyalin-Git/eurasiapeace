@@ -49,6 +49,21 @@
 
 
 @layer components {
+  /* nprogress override with Tailwind-compatible style */
+
+  #nprogress {
+    pointer-events: none;
+  }
+
+  #nprogress .bar {
+    @apply bg-blue-600 fixed top-0 left-0 w-full h-1 z-[9999];
+  }
+
+  /* Optionnel: supprimer l'effet "peg" (lueur) */
+  #nprogress .peg {
+    display: none;
+  }
+
   .bg-headband {
     background: linear-gradient(to right, #528cc7, #32649e);
   }
