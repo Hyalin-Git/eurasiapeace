@@ -21,8 +21,6 @@ export default async function Publications({
     page: string;
   }>;
 }) {
-  // Fake data timeout to simulate loading
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   const { category, tag, search, page } = await searchParams;
   const categoryFilter = category ? category.split(",") : [];
   const tagFilter = tag ? tag.split(",") : [];

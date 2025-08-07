@@ -36,7 +36,7 @@ export default function Navigation({ elt }: { elt: NavigationItems }) {
           href={elt?.href || ""}
           key={elt?.label}
           ref={refs.setReference}
-          prefetch={false}
+          prefetch={true}
           className={`flex items-center gap-1 px-3 py-2 rounded-md group-hover:bg-btn-purple/10 group-hover:text-btn-force-blue transition-all duration-300 ease-in-out cursor-pointer ${
             isActive ? "text-btn-force-blue" : ""
           }`}

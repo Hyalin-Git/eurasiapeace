@@ -10,8 +10,6 @@ import CarouselWatches from "@/features/home/components/CarouselWatches";
 import { getFormations } from "@/features/formations/server/db/formations";
 
 export default async function Home() {
-  // Fake data timeout to simulate loading
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   const [postsRes, geopoliticalWatchesRes, formationsRes] = await Promise.all([
     getPosts(4),
     getGeopoliticalWatches(4),

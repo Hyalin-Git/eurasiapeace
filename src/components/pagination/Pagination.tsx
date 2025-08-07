@@ -2,6 +2,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTopLoader } from "nextjs-toploader";
 
 export default function Pagination({
   pageInfo,
@@ -20,6 +21,7 @@ export default function Pagination({
   const [currentPage, setCurrentPage] = useState(
     parseInt(searchParams.get("page") || "1")
   );
+  const loader = useTopLoader();
 
   const { total } = pageInfo;
   const totalPages = Math.ceil(total / 12);
@@ -33,11 +35,14 @@ export default function Pagination({
 
   function handlePage(page: number) {
     params.set("page", page.toString());
+    loader.start();
     router.push(`${pathname}?${params.toString()}`);
   }
 
   function handlePrevious() {
     if (!hasPreviousPage) return;
+
+    loader.start();
 
     params.set("page", (currentPage - 1).toString());
     router.push(`${pathname}?${params.toString()}`);
@@ -45,6 +50,8 @@ export default function Pagination({
 
   function handleNext() {
     if (!hasNextPage) return;
+
+    loader.start();
 
     params.set("page", (currentPage + 1).toString());
     router.push(`${pathname}?${params.toString()}`);
@@ -60,10 +67,11 @@ export default function Pagination({
   return (
     <div className="flex items-center justify-center gap-2 text-center">
       <div
-        className={`text-btn-force-blue flex items-center gap-2 p-2 cursor-pointer ${!hasPreviousPage
-          ? "opacity-50 cursor-not-allowed"
-          : "hover:bg-btn-force-blue/10 transition-all duration-200 ease-in-out"
-          }`}
+        className={`text-btn-force-blue flex items-center gap-2 p-2 cursor-pointer ${
+          !hasPreviousPage
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-btn-force-blue/10 transition-all duration-200 ease-in-out"
+        }`}
         onClick={handlePrevious}
       >
         <ChevronLeft size={20} />
@@ -72,20 +80,22 @@ export default function Pagination({
       {displayPages.map((page) => (
         <div
           key={page}
-          className={`py-2 px-4 rounded-sm cursor-pointer ${currentPage === page
-            ? "bg-btn-force-blue text-white"
-            : "bg-btn-force-blue/10"
-            }`}
+          className={`py-2 px-4 rounded-sm cursor-pointer ${
+            currentPage === page
+              ? "bg-btn-force-blue text-white"
+              : "bg-btn-force-blue/10"
+          }`}
           onClick={() => handlePage(page)}
         >
           {page}
         </div>
       ))}
       <div
-        className={`text-btn-force-blue flex items-center gap-1 p-2 cursor-pointer ${!hasNextPage
-          ? "opacity-50 cursor-not-allowed"
-          : "hover:bg-btn-force-blue/10 transition-all duration-200 ease-in-out"
-          }`}
+        className={`text-btn-force-blue flex items-center gap-1 p-2 cursor-pointer ${
+          !hasNextPage
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-btn-force-blue/10 transition-all duration-200 ease-in-out"
+        }`}
         onClick={handleNext}
       >
         <p className="hidden sm:block">Suivant</p>
