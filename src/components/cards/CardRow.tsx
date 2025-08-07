@@ -11,7 +11,7 @@ export default function CardRow({ element }: { element: ElementProps }) {
   const publishedAt = moment(element?.date).format("DD/MM/YYYY");
 
   return (
-    <Link href={`${slug}`} className="block">
+    <Link href={`${slug}`} className="block" prefetch={true}>
       <div className="flex gap-3 p-2 rounded hover:bg-gray-50 transition-colors">
         {featuredImage ? (
           <div className="relative w-16 h-16">
