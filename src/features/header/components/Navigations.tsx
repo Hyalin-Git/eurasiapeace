@@ -7,10 +7,13 @@ import {
   getGeopoliticalWatchLinks,
 } from "../server/db/navigations";
 
-export default async function Navigations({}) {
-  const { data: geopoliticalWatchLinks } = await getGeopoliticalWatchLinks();
-  const { data: FormationLinks } = await getFormationLinks();
-  const { data: CultureLinks } = await getCultureLinks();
+export default async function Navigations() {
+  const [geopoliticalWatchLinks, FormationLinks, CultureLinks] =
+    await Promise.all([
+      getGeopoliticalWatchLinks(),
+      getFormationLinks(),
+      getCultureLinks(),
+    ]);
 
   const navigationItems: NavigationItems[] = [
     {
@@ -38,7 +41,7 @@ export default async function Navigations({}) {
     {
       label: "Veilles géopolitiques",
       href: "/veilles-geopolitiques",
-      items: geopoliticalWatchLinks?.map((elt: Links) => ({
+      items: geopoliticalWatchLinks?.data?.map((elt: Links) => ({
         name: elt?.name,
         slug: `/veilles-geopolitiques?category=${elt?.slug}`,
       })),
@@ -46,7 +49,7 @@ export default async function Navigations({}) {
     {
       label: "Cultures",
       href: "/cultures",
-      items: CultureLinks?.map((elt: Links) => ({
+      items: CultureLinks?.data?.map((elt: Links) => ({
         name: elt?.name,
         slug: `/cultures?category=${elt?.slug}`,
       })),
@@ -54,7 +57,7 @@ export default async function Navigations({}) {
     {
       label: "Formations",
       href: "/formations",
-      items: FormationLinks?.map((elt: Links) => ({
+      items: FormationLinks?.data?.map((elt: Links) => ({
         name: elt?.name,
         slug: `/formations?category=${elt?.slug}`,
       })),

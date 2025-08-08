@@ -149,7 +149,7 @@ export default function SignUpForm({ redirect }: { redirect?: string }) {
             <label htmlFor="confirm-terms" className="ml-2 block text-xs">
               J&apos;accepte les{" "}
               <Link
-                href="/conditions-utilisation"
+                href="/conditions-generales-de-vente"
                 className="font-medium underline text-midnight-green hover:text-midnight-green/80"
               >
                 conditions d&apos;utilisation

@@ -1,5 +1,4 @@
 "use server";
-
 import { generateQuery } from "@/utils/generateQuery";
 import { Error, Filters } from "@/types";
 import { fetchGraphQL } from "@/utils/authFetch";
@@ -8,10 +7,10 @@ export async function getPosts(
   limit: number = 10,
   filters: Filters | null = null,
   searchTerm: string = "",
-  page: string = "1"
+  offset: number = 0
 ) {
   try {
-    const offset = (parseInt(page) - 1) * limit;
+    // const offset = (parseInt(page) - 1) * limit;
 
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
@@ -48,12 +47,6 @@ export async function getPosts(
                 }
               }
             }
-              pageInfo {
-              hasNextPage
-              endCursor
-              total
-              hasPreviousPage
-            }
           }
         }
     `;
@@ -85,6 +78,58 @@ export async function getPosts(
     };
   } catch (e: unknown) {
     const err = e as Error;
+    console.log(err?.message || "Erreur lors de la récupération des posts");
+
+    return {
+      success: false,
+      message: "Erreur lors de la récupération des posts",
+      data: [],
+      pageInfo: null,
+    };
+  }
+}
+
+// Function to get posts pagination only
+export async function getPostsPagination() {
+  try {
+    const query = `
+      query {
+        posts {
+          pageInfo {
+            total
+          }
+        }
+      }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération des posts",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    if (!res?.data?.posts) {
+      return {
+        success: false,
+        message: "Aucune information de pagination trouvée",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Informations de pagination récupérées avec succès",
+      data: res?.data?.posts?.pageInfo,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+
     console.log(err?.message || "Erreur lors de la récupération des posts");
 
     return {

@@ -150,7 +150,7 @@ export default function SignInForm({ redirect }: { redirect?: string }) {
         <p className="text-xs">
           En vous connectant, vous acceptez nos{" "}
           <Link
-            href="/conditions-utilisation"
+            href="/conditions-generales-de-vente"
             className="font-medium text-midnight-green underline hover:text-midnight-green/80"
           >
             conditions d&apos;utilisation

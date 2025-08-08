@@ -2,14 +2,16 @@
 
 import {
   getCategories,
-  getPosts,
+  getPostsPagination,
   getTags,
 } from "@/features/posts/server/db/posts";
 import Banner from "@/components/Banner";
-import Cards from "@/components/cards/Cards";
 import Filters from "@/components/filters/Filters";
 import Pagination from "@/components/pagination/Pagination";
 import FiltersItems from "@/components/filters/FiltersItems";
+import Posts from "@/features/posts/components/Posts";
+import React, { Suspense } from "react";
+import { PostsSkeletons } from "@/features/posts/components/PostsSkeletons";
 
 export default async function Publications({
   searchParams,
@@ -37,15 +39,16 @@ export default async function Publications({
     },
   };
 
-  const [postsRes, categoriesRes, tagsRes] = await Promise.all([
-    getPosts(9, filters, search, page),
+  // We want the filters to be fetched before rendering the posts
+  const [categoriesRes, tagsRes, pageInfoRes] = await Promise.all([
     getCategories(),
     getTags(),
+    getPostsPagination(),
   ]);
 
-  const { data: posts, pageInfo } = postsRes;
   const { data: categories } = categoriesRes;
   const { data: tags } = tagsRes;
+  const { data: pageInfo } = pageInfoRes;
 
   const bannerProps = {
     title: "Publications",
@@ -58,7 +61,7 @@ export default async function Publications({
   return (
     <div>
       <Banner BannerProps={bannerProps} />
-      <div className="container py-10">
+      <div className="relative container py-10">
         <Filters filters={filters}>
           <div className="flex flex-col gap-4">
             <span className="text-md text-text-primary font-bold">
@@ -71,10 +74,24 @@ export default async function Publications({
             <FiltersItems items={tags} query="tag" />
           </div>
         </Filters>
-        <Cards elements={posts} className={"lg:grid-cols-3"} />
-        <div className="mt-8">
-          {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}
-        </div>
+
+        <Suspense
+          key={page + search + category + tag}
+          fallback={<PostsSkeletons count={9} />}
+        >
+          <Posts
+            numberOfPosts={9}
+            search={search}
+            filters={filters}
+            offset={page ? (parseInt(page) - 1) * 9 : 0}
+          />
+        </Suspense>
+
+        {pageInfo && (
+          <div className="mt-8">
+            {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}
+          </div>
+        )}
       </div>
     </div>
   );

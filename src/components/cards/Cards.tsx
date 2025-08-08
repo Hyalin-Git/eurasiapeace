@@ -2,7 +2,6 @@
 import Card from "./Card";
 import { isEmpty } from "@/utils/isEmpty";
 import { ElementProps } from "@/components/cards/types";
-import { Suspense } from "react";
 
 export default async function Cards({
   elements,

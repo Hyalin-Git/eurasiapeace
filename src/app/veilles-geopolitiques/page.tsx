@@ -1,5 +1,8 @@
 "use server";
-import { getGeopoliticalWatches } from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
+import {
+  getGeoPagination,
+  getGeopoliticalWatches,
+} from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
 import Cards from "@/components/cards/Cards";
 import Filters from "@/components/filters/Filters";
 import { getGeopoliticalWatchesTypes } from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
@@ -8,6 +11,8 @@ import { getTags } from "@/features/posts/server/db/posts";
 import Banner from "@/components/Banner";
 import FiltersItems from "@/components/filters/FiltersItems";
 import { Suspense } from "react";
+import GeoWatches from "@/features/geopoliticalWatches/components/GeoWatches";
+import { GeoWatchesSkeletons } from "@/features/geopoliticalWatches/components/GeoWatchesSkeletons";
 
 export default async function GeopoliticalWatchesPage({
   searchParams,
@@ -35,15 +40,15 @@ export default async function GeopoliticalWatchesPage({
     },
   };
 
-  const [geoWatchesRes, geoTypesRes, tagsRes] = await Promise.all([
-    getGeopoliticalWatches(9, filters, search, page),
+  const [geoTypesRes, tagsRes, pageInfoRes] = await Promise.all([
     getGeopoliticalWatchesTypes(),
     getTags(),
+    getGeoPagination(),
   ]);
 
-  const { data: geopoliticalWatches, pageInfo } = geoWatchesRes;
   const { data: geopoliticalWatchTypes } = geoTypesRes;
   const { data: tags } = tagsRes;
+  const { data: pageInfo } = pageInfoRes;
 
   const bannerProps = {
     title: "Veilles géopolitiques",
@@ -69,7 +74,17 @@ export default async function GeopoliticalWatchesPage({
           </div>
         </Filters>
 
-        <Cards elements={geopoliticalWatches} className={"lg:grid-cols-3"} />
+        <Suspense
+          key={page + search + category + tag}
+          fallback={<GeoWatchesSkeletons count={9} />}
+        >
+          <GeoWatches
+            numberOfWatches={9}
+            search={search}
+            filters={filters}
+            offset={page ? (parseInt(page) - 1) * 9 : 0}
+          />
+        </Suspense>
 
         <div className="mt-8">
           {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}

@@ -8,10 +8,9 @@ export async function getGeopoliticalWatches(
   limit: number = 20,
   filters: Filters | null = null,
   searchTerm: string = "",
-  page: string = "1"
+  offset: number = 0
 ) {
   try {
-    const offset = (parseInt(page) - 1) * limit;
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
     const query = `
@@ -47,12 +46,6 @@ export async function getGeopoliticalWatches(
               }
             }
           }
-          pageInfo {
-            hasNextPage
-            endCursor
-            total
-            hasPreviousPage
-          }
         }
       }
     `;
@@ -84,6 +77,62 @@ export async function getGeopoliticalWatches(
       message: "Veilles géopolitiques récupérées avec succès",
       data: res?.data?.veillesGeopolitique?.nodes,
       pageInfo: res?.data?.veillesGeopolitique?.pageInfo,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+
+    console.log(
+      err?.message || "Erreur lors de la récupération des veilles géopolitiques"
+    );
+
+    return {
+      success: false,
+      message: "Erreur lors de la récupération des veilles géopolitiques",
+      data: [],
+      pageInfo: null,
+    };
+  }
+}
+
+// Function to get posts pagination only
+export async function getGeoPagination() {
+  try {
+    const query = `
+      query {
+        veillesGeopolitique {
+          pageInfo {
+            total
+          }
+        }
+      }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message:
+          res.message ||
+          "Erreur lors de la récupération des veilles géopolitiques",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    if (!res?.data?.veillesGeopolitique) {
+      return {
+        success: false,
+        message: "Aucune information de pagination trouvée",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Informations de pagination récupérées avec succès",
+      data: res?.data?.veillesGeopolitique?.pageInfo,
     };
   } catch (e: unknown) {
     const err = e as Error;
