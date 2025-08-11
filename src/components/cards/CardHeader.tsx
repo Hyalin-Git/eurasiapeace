@@ -92,7 +92,9 @@ export default function CardHeader({
     <div>
       <div className="absolute z-1 w-full">
         <div className="flex items-start justify-between w-full p-3">
-          <Category category={category} />
+          <div>
+            <Category category={category} />
+          </div>
 
           {/* Formation meta */}
           {variant === "formation" && niveauformation && (

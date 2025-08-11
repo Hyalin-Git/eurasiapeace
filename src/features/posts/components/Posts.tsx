@@ -34,8 +34,8 @@ export default async function Posts({
     offset
   );
 
-  if (!success) {
-    return <NoPostsFound />;
+  if (!success || !posts || posts.length === 0) {
+    return <NoPostsFound hasFilters={!!filters} />;
   }
 
   return <Cards elements={posts} className="lg:grid-cols-3" />;

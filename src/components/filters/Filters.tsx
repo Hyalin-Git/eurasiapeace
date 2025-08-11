@@ -94,14 +94,14 @@ export default function Filters({
 
       {/* Dropdown */}
       <div
-        className={`w-full transition-all duration-300 ease-out border border-gray-200 rounded-lg absolute mt-4 z-60 bg-white shadow-lg ${
+        className={`p-6 w-full transition-all duration-300 ease-out border border-gray-200 rounded-lg absolute mt-4 z-60 bg-white shadow-lg ${
           isOpen
             ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
             : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
         }`}
       >
         <div
-          className={`p-4 overflow-auto max-h-80 transition-all duration-200 ${
+          className={`overflow-auto max-h-80 transition-all duration-200 ${
             isOpen
               ? "delay-75 opacity-100 translate-y-0"
               : "opacity-0 translate-y-2"
@@ -109,7 +109,7 @@ export default function Filters({
         >
           {children}
         </div>
-        <div
+        {/* <div
           className={`py-4 mx-4 border-t border-gray-200 flex flex-col sm:flex-row justify-between gap-4 transition-all duration-200 ${
             isOpen
               ? "delay-100 opacity-100 translate-y-0"
@@ -129,7 +129,7 @@ export default function Filters({
           >
             Appliquer les filtres
           </Button>
-        </div>
+        </div> */}
       </div>
       {/* Transparent background when dropdown is open */}
       {isOpen &&

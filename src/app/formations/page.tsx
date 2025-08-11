@@ -1,17 +1,20 @@
 "use server";
+
 import {
-  getFormations,
   getNiveauxDeFormation,
   getRythmesDeFormation,
   getTypesDeFormations,
 } from "@/features/formations/server/db/formations";
 import Banner from "@/components/Banner";
-import Cards from "@/components/cards/Cards";
 import Filters from "@/components/filters/Filters";
-import Pagination from "@/components/pagination/Pagination";
 import FiltersItems from "@/components/filters/FiltersItems";
+import { Formations } from "@/features/formations/components/Formations";
+import { Suspense } from "react";
+import { FormationsSkeletons } from "@/features/formations/components/FormationSkeletons";
+import Paginations from "@/components/pagination/Paginations";
+import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 
-export default async function Formations({
+export default async function FormationsPage({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -23,40 +26,36 @@ export default async function Formations({
   }>;
 }) {
   const { category, niveau, rythme, search, page } = await searchParams;
-  const categoryFilter = category ? category.split(",") : [];
-  const niveauFilter = niveau ? niveau.split(",") : [];
-  const rythmeFilter = rythme ? rythme.split(",") : [];
+
+  const categoryTerms = category ? category.split(",") : [];
+  const niveauTerms = niveau ? niveau.split(",") : [];
+  const rythmeTerms = rythme ? rythme.split(",") : [];
+
   const filters = {
     category: {
       taxonomy: "TYPEDEFORMATION",
       field: "SLUG",
-      terms: categoryFilter || [],
+      terms: categoryTerms || [],
     },
     niveau: {
       taxonomy: "NIVEAUDEFORMATION",
       field: "SLUG",
-      terms: niveauFilter || [],
+      terms: niveauTerms || [],
     },
     rythme: {
       taxonomy: "RYTHMEDEFORMATION",
       field: "SLUG",
-      terms: rythmeFilter || [],
+      terms: rythmeTerms || [],
     },
   };
 
-  const [
-    formationsRes,
-    niveauxDeFormationRes,
-    typesDeFormationRes,
-    rythmesDeFormationRes,
-  ] = await Promise.all([
-    getFormations(9, filters, search, page),
-    getNiveauxDeFormation(),
-    getTypesDeFormations(),
-    getRythmesDeFormation(),
-  ]);
+  const [niveauxDeFormationRes, typesDeFormationRes, rythmesDeFormationRes] =
+    await Promise.all([
+      getNiveauxDeFormation(),
+      getTypesDeFormations(),
+      getRythmesDeFormation(),
+    ]);
 
-  const { data: formations, pageInfo } = formationsRes;
   const { data: niveauxDeFormation } = niveauxDeFormationRes;
   const { data: typesDeFormation } = typesDeFormationRes;
   const { data: rythmesDeFormation } = rythmesDeFormationRes;
@@ -68,6 +67,8 @@ export default async function Formations({
     image:
       "bg-[url('/banner/formation-banner.webp')] bg-cover bg-center bg-no-repeat",
   };
+
+  const offset = page ? (parseInt(page) - 1) * 9 : 0;
 
   return (
     <main>
@@ -85,14 +86,28 @@ export default async function Formations({
             <FiltersItems items={rythmesDeFormation} query="rythme" />
           </div>
         </Filters>
-        <Cards
-          elements={formations}
-          className={"lg:grid-cols-3"}
-          variant="formation"
-        />
-        <div className="mt-8">
-          {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}
-        </div>
+
+        <Suspense fallback={<FormationsSkeletons count={9} />}>
+          <Formations
+            count={9}
+            search={search}
+            filters={filters}
+            offset={offset}
+          />
+        </Suspense>
+
+        <Suspense
+          key={search + category + niveau + rythme + "formations"}
+          fallback={<PaginationSkeleton />}
+        >
+          <Paginations
+            type="formations"
+            limit={9}
+            filters={filters}
+            search={search}
+            offset={offset}
+          />
+        </Suspense>
       </div>
     </main>
   );

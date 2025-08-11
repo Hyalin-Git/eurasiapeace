@@ -1,4 +1,5 @@
 "use server";
+
 import { getGeopoliticalWatches } from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
 import CarouselWatchesItem from "@/features/home/components/CarouselWatchesItem";
 

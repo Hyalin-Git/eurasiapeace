@@ -1,9 +1,9 @@
 "use server";
 
 import LinkButton from "@/ui/LinkButton";
-import { FileText, Globe, Search } from "lucide-react";
+import { GraduationCap, Search } from "lucide-react";
 
-export default async function NoPostsFound({
+export default async function NoFormationsFound({
   hasFilters = false,
 }: {
   hasFilters?: boolean;
@@ -11,7 +11,7 @@ export default async function NoPostsFound({
   return (
     <div className="flex flex-col items-center text-center py-16 px-4">
       <div className="mb-6">
-        <FileText
+        <GraduationCap
           size={64}
           className="text-gray-400 mx-auto mb-4"
           strokeWidth={1.5}
@@ -20,14 +20,14 @@ export default async function NoPostsFound({
 
       <h2 className="text-2xl font-semibold text-gray-800 mb-3">
         {hasFilters
-          ? "Aucunes publications trouvées"
-          : "Aucune publication disponible"}
+          ? "Aucune formation trouvée"
+          : "Aucune formation disponible"}
       </h2>
 
       <p className="text-gray-600 mb-8 max-w-md">
         {hasFilters
-          ? "Nous n'avons pas trouvé de publications correspondant à vos critères de recherche. Essayez d'ajuster vos filtres."
-          : "Il n'y a actuellement aucun post disponible. Revenez bientôt pour découvrir de nouveaux contenus."}
+          ? "Nous n'avons pas trouvé de formations correspondant à vos critères de recherche. Essayez d'ajuster vos filtres."
+          : "Il n'y a actuellement aucune formation disponible. Revenez bientôt pour découvrir nos nouveaux programmes de formation."}
       </p>
 
       <div className="flex flex-col sm:flex-row gap-4">
@@ -35,15 +35,15 @@ export default async function NoPostsFound({
           <LinkButton
             icon={<Search size={18} />}
             label="Réinitialiser les filtres"
-            href="/cultures"
+            href="/formations"
             className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
           />
         )}
 
         <LinkButton
-          icon={<Globe size={18} />}
-          label="Explorer toutes les publications"
-          href="/cultures"
+          icon={<GraduationCap size={18} />}
+          label="Explorer toutes les formations"
+          href="/formations"
           className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
         />
       </div>

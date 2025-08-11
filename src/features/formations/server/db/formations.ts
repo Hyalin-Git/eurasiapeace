@@ -8,10 +8,9 @@ export async function getFormations(
   limit: number = 10,
   filters: Filters | null = null,
   searchTerm: string = "",
-  page: string = "1"
+  offset: number = 0
 ) {
   try {
-    const offset = (parseInt(page) - 1) * limit;
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
     const query = `
@@ -78,7 +77,9 @@ export async function getFormations(
       return {
         success: false,
         status: 500,
-        message: res.message || "Une erreur est survenue lors de la récupération des formations",
+        message:
+          res.message ||
+          "Une erreur est survenue lors de la récupération des formations",
         data: null,
       };
     }
@@ -223,7 +224,9 @@ export async function getFormation(slug: string) {
     if (!res.success) {
       return {
         success: false,
-        message: res.message || "Une erreur est survenue lors de la récupération de la formation",
+        message:
+          res.message ||
+          "Une erreur est survenue lors de la récupération de la formation",
         data: null,
       };
     }
@@ -277,7 +280,9 @@ export async function getTypesDeFormations() {
     if (!res.success) {
       return {
         success: false,
-        message: res.message || "Une erreur est survenue lors de la récupération des types de formations",
+        message:
+          res.message ||
+          "Une erreur est survenue lors de la récupération des types de formations",
         data: null,
       };
     }
@@ -330,7 +335,9 @@ export async function getNiveauxDeFormation() {
     if (!res.success) {
       return {
         success: false,
-        message: res.message || "Une erreur est survenue lors de la récupération des niveaux de formation",
+        message:
+          res.message ||
+          "Une erreur est survenue lors de la récupération des niveaux de formation",
         data: null,
       };
     }
@@ -384,7 +391,9 @@ export async function getRythmesDeFormation() {
     if (!res.success) {
       return {
         success: false,
-        message: res.message || "Une erreur est survenue lors de la récupération des rythmes de formation",
+        message:
+          res.message ||
+          "Une erreur est survenue lors de la récupération des rythmes de formation",
         data: null,
       };
     }

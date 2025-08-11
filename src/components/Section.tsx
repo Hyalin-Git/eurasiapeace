@@ -16,10 +16,12 @@ export default function Section({
       <div>
         <div className="flex items-start gap-4">
           {icon && <span className="hidden sm:block">{icon}</span>}
-          <h2 className="text-4xl font-bold">{title}</h2>
+          <h2 className="lg:text-4xl md:text-3xl text-2xl font-bold">
+            {title}
+          </h2>
         </div>
         <p
-          className={`text-black/50 mt-2 mb-10 text-lg max-w-2xl flex-1 ${
+          className={`text-black/50 mt-2 mb-10 md:text-lg text-md max-w-2xl flex-1 ${
             description ? "" : "hidden"
           }`}
         >

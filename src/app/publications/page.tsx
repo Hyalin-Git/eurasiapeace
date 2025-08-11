@@ -1,17 +1,14 @@
 "use server";
 
-import {
-  getCategories,
-  getPostsPagination,
-  getTags,
-} from "@/features/posts/server/db/posts";
+import { getCategories, getTags } from "@/features/posts/server/db/posts";
 import Banner from "@/components/Banner";
 import Filters from "@/components/filters/Filters";
-import Pagination from "@/components/pagination/Pagination";
 import FiltersItems from "@/components/filters/FiltersItems";
 import Posts from "@/features/posts/components/Posts";
 import React, { Suspense } from "react";
 import { PostsSkeletons } from "@/features/posts/components/PostsSkeletons";
+import Paginations from "@/components/pagination/Paginations";
+import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 
 export default async function Publications({
   searchParams,
@@ -26,6 +23,7 @@ export default async function Publications({
   const { category, tag, search, page } = await searchParams;
   const categoryFilter = category ? category.split(",") : [];
   const tagFilter = tag ? tag.split(",") : [];
+
   const filters = {
     category: {
       taxonomy: "CATEGORY",
@@ -40,15 +38,13 @@ export default async function Publications({
   };
 
   // We want the filters to be fetched before rendering the posts
-  const [categoriesRes, tagsRes, pageInfoRes] = await Promise.all([
+  const [categoriesRes, tagsRes] = await Promise.all([
     getCategories(),
     getTags(),
-    getPostsPagination(),
   ]);
 
   const { data: categories } = categoriesRes;
   const { data: tags } = tagsRes;
-  const { data: pageInfo } = pageInfoRes;
 
   const bannerProps = {
     title: "Publications",
@@ -57,6 +53,8 @@ export default async function Publications({
     image:
       "bg-[url('/publication-banner.webp')] bg-cover bg-center bg-no-repeat",
   };
+
+  const offset = page ? (parseInt(page) - 1) * 9 : 0;
 
   return (
     <div>
@@ -83,15 +81,22 @@ export default async function Publications({
             numberOfPosts={9}
             search={search}
             filters={filters}
-            offset={page ? (parseInt(page) - 1) * 9 : 0}
+            offset={offset}
           />
         </Suspense>
 
-        {pageInfo && (
-          <div className="mt-8">
-            {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}
-          </div>
-        )}
+        <Suspense
+          key={search + category + tag + "posts"}
+          fallback={<PaginationSkeleton />}
+        >
+          <Paginations
+            type="posts"
+            limit={9}
+            filters={filters}
+            search={search}
+            offset={offset}
+          />
+        </Suspense>
       </div>
     </div>
   );

@@ -10,12 +10,13 @@ import GeoWatches from "@/features/geopoliticalWatches/components/GeoWatches";
 import { Formations } from "@/features/formations/components/Formations";
 import HeroPost from "@/features/posts/components/HeroPost";
 import ServicesCards from "@/components/cards/ServicesCards";
-import { BookOpen, Gem, GraduationCap } from "lucide-react";
+import { BookOpen, Divide, Gem, GraduationCap } from "lucide-react";
 import {
   PostSkeleton,
   PostsSkeletons,
 } from "@/features/posts/components/PostsSkeletons";
 import { GeoWatchesSkeletons } from "@/features/geopoliticalWatches/components/GeoWatchesSkeletons";
+import { FormationsSkeletons } from "@/features/formations/components/FormationSkeletons";
 
 const servicesData = [
   {
@@ -88,7 +89,9 @@ const servicesData = [
 export default async function Home() {
   return (
     <div>
-      <CarouselWatches />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CarouselWatches />
+      </Suspense>
 
       <div className="container">
         {/* Hero Section */}
@@ -139,7 +142,7 @@ export default async function Home() {
           title="Nos formations"
           description="Formations expertes pour approfondir vos connaissances géopolitiques et stratégiques"
         >
-          <Suspense fallback={<CardsSkeletons numberOfCards={2} />}>
+          <Suspense fallback={<FormationsSkeletons count={2} />}>
             <Formations />
           </Suspense>
           <LinkButton

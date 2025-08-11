@@ -3,15 +3,15 @@
 import Filters from "@/components/filters/Filters";
 import FiltersItems from "@/components/filters/FiltersItems";
 import { getTags } from "@/features/posts/server/db/posts";
-import {
-  getCultures,
-  getTypesDeCulture,
-} from "@/features/cultures/server/db/cultures";
-import Cards from "@/components/cards/Cards";
-import Pagination from "@/components/pagination/Pagination";
+import { getTypesDeCulture } from "@/features/cultures/server/db/cultures";
 import Banner from "@/components/Banner";
+import Cultures from "@/features/cultures/components/Cultures";
+import { Suspense } from "react";
+import { CulturesSkeletons } from "@/features/cultures/components/CultureSkeletons";
+import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
+import Paginations from "@/components/pagination/Paginations";
 
-export default async function Cultures({
+export default async function CulturesPage({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -22,28 +22,27 @@ export default async function Cultures({
   }>;
 }) {
   const { category, tag, search, page } = await searchParams;
-  const categoryFilter = category ? category.split(",") : [];
-  const tagFilter = tag ? tag.split(",") : [];
+  const categoryTerms = category ? category.split(",") : [];
+  const tagTerms = tag ? tag.split(",") : [];
+
   const filters = {
     typeDeCultures: {
       taxonomy: "TYPEDECULTURE",
       field: "SLUG",
-      terms: categoryFilter || [],
+      terms: categoryTerms || [],
     },
     tag: {
       taxonomy: "TAG",
       field: "SLUG",
-      terms: tagFilter || [],
+      terms: tagTerms || [],
     },
   };
 
-  const [culturesRes, typesDeCultureRes, tagsRes] = await Promise.all([
-    getCultures(9, filters, search, page),
+  const [typesDeCultureRes, tagsRes] = await Promise.all([
     getTypesDeCulture(),
     getTags(),
   ]);
 
-  const { data: cultures, pageInfo } = culturesRes;
   const { data: typesDeCulture } = typesDeCultureRes;
   const { data: tags } = tagsRes;
 
@@ -54,6 +53,8 @@ export default async function Cultures({
     image:
       "bg-[url('/publication-banner.webp')] bg-cover bg-center bg-no-repeat",
   };
+
+  const offset = page ? (parseInt(page) - 1) * 9 : 0;
 
   return (
     <main>
@@ -71,14 +72,31 @@ export default async function Cultures({
             <FiltersItems items={tags} query="tag" />
           </div>
         </Filters>
-        <Cards
-          elements={cultures}
-          className={"lg:grid-cols-3"}
-          variant="publication"
-        />
-        <div className="mt-8">
-          {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}
-        </div>
+
+        <Suspense
+          key={page + search + category + tag}
+          fallback={<CulturesSkeletons count={9} />}
+        >
+          <Cultures
+            count={9}
+            filters={filters}
+            search={search}
+            offset={offset}
+          />
+        </Suspense>
+
+        <Suspense
+          key={search + category + tag + "cultures"}
+          fallback={<PaginationSkeleton />}
+        >
+          <Paginations
+            type="cultures"
+            limit={9}
+            filters={filters}
+            search={search}
+            offset={offset}
+          />
+        </Suspense>
       </div>
     </main>
   );

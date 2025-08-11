@@ -2,6 +2,7 @@
 
 import Cards from "@/components/cards/Cards";
 import { getGeopoliticalWatches } from "../server/db/geopoliticalWatches";
+import NoGeoWatchesFound from "./NoGeoWatchesFound";
 
 export default async function GeoWatches({
   numberOfWatches = 3,
@@ -32,8 +33,8 @@ export default async function GeoWatches({
     offset
   );
 
-  if (!success) {
-    return <div>Aucune veille géopolitique trouvée.</div>;
+  if (!success || !geoWatches || geoWatches.length === 0) {
+    return <NoGeoWatchesFound hasFilters={!!filters} />;
   }
 
   function injectClassName() {

@@ -1,18 +1,15 @@
 "use server";
-import {
-  getGeoPagination,
-  getGeopoliticalWatches,
-} from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
-import Cards from "@/components/cards/Cards";
+
 import Filters from "@/components/filters/Filters";
 import { getGeopoliticalWatchesTypes } from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
-import Pagination from "@/components/pagination/Pagination";
 import { getTags } from "@/features/posts/server/db/posts";
 import Banner from "@/components/Banner";
 import FiltersItems from "@/components/filters/FiltersItems";
 import { Suspense } from "react";
 import GeoWatches from "@/features/geopoliticalWatches/components/GeoWatches";
 import { GeoWatchesSkeletons } from "@/features/geopoliticalWatches/components/GeoWatchesSkeletons";
+import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
+import Paginations from "@/components/pagination/Paginations";
 
 export default async function GeopoliticalWatchesPage({
   searchParams,
@@ -25,30 +22,29 @@ export default async function GeopoliticalWatchesPage({
   }>;
 }) {
   const { category, tag, search, page } = await searchParams;
-  const categoryFilter = category ? category.split(",") : [];
-  const tagFilter = tag ? tag.split(",") : [];
+  const categoryTerms = category ? category.split(",") : [];
+  const tagTerms = tag ? tag.split(",") : [];
+
   const filters = {
     category: {
       taxonomy: "TYPEDEVEILLE",
       field: "SLUG",
-      terms: categoryFilter || [],
+      terms: categoryTerms || [],
     },
     tag: {
       taxonomy: "TAG",
       field: "SLUG",
-      terms: tagFilter || [],
+      terms: tagTerms || [],
     },
   };
 
-  const [geoTypesRes, tagsRes, pageInfoRes] = await Promise.all([
+  const [geoTypesRes, tagsRes] = await Promise.all([
     getGeopoliticalWatchesTypes(),
     getTags(),
-    getGeoPagination(),
   ]);
 
   const { data: geopoliticalWatchTypes } = geoTypesRes;
   const { data: tags } = tagsRes;
-  const { data: pageInfo } = pageInfoRes;
 
   const bannerProps = {
     title: "Veilles géopolitiques",
@@ -56,6 +52,8 @@ export default async function GeopoliticalWatchesPage({
       "La veille géopolitique est un outil essentiel pour comprendre les enjeux et les dynamiques de la sécurité internationale. Elle permet de suivre les événements, les tendances et les interactions entre les différents acteurs de la scène géopolitique.",
     image: "bg-[url('/world-map-banner.webp')] bg-cover bg-center bg-no-repeat",
   };
+
+  const offset = page ? (parseInt(page) - 1) * 9 : 0;
 
   return (
     <div>
@@ -82,13 +80,22 @@ export default async function GeopoliticalWatchesPage({
             numberOfWatches={9}
             search={search}
             filters={filters}
-            offset={page ? (parseInt(page) - 1) * 9 : 0}
+            offset={offset}
           />
         </Suspense>
 
-        <div className="mt-8">
-          {pageInfo?.total > 12 && <Pagination pageInfo={pageInfo} />}
-        </div>
+        <Suspense
+          key={search + category + tag + "geo"}
+          fallback={<PaginationSkeleton />}
+        >
+          <Paginations
+            type="veillesGeopolitique"
+            limit={9}
+            filters={filters}
+            search={search}
+            offset={offset}
+          />
+        </Suspense>
       </div>
     </div>
   );

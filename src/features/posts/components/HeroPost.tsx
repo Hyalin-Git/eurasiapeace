@@ -1,6 +1,8 @@
 "use server";
+
 import Card from "@/components/cards/Card";
 import { getPosts } from "../server/db/posts";
+import NoHeroPostFound from "./NoHeroPostFound";
 
 export default async function HeroPost() {
   const cardStyles = {
@@ -10,10 +12,10 @@ export default async function HeroPost() {
     footer: "justify-end",
   };
 
-  const { data: post, success } = await getPosts(1, null, "", 0);
+  const { data: post, success } = await getPosts(1);
 
-  if (!success) {
-    return <div>Aucun post trouvé.</div>;
+  if (!success || !post || post.length === 0) {
+    return <NoHeroPostFound />;
   }
 
   return <Card elt={post[0]} cardStyles={cardStyles} displayAuthor={true} />;

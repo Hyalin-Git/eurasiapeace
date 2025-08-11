@@ -6,12 +6,11 @@ import { fetchGraphQL } from "@/utils/authFetch";
 
 export async function getCultures(
   limit: number = 10,
-  filters: Filters,
+  filters: Filters | null = null,
   searchTerm: string = "",
-  page: string = "1"
+  offset: number = 0
 ) {
   try {
-    const offset = (parseInt(page) - 1) * limit;
     const filterQuery = generateQuery(filters, searchTerm, limit, offset);
 
     const query = `

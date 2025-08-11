@@ -94,62 +94,6 @@ export async function getGeopoliticalWatches(
   }
 }
 
-// Function to get posts pagination only
-export async function getGeoPagination() {
-  try {
-    const query = `
-      query {
-        veillesGeopolitique {
-          pageInfo {
-            total
-          }
-        }
-      }
-    `;
-
-    const res = await fetchGraphQL(query);
-
-    if (!res.success) {
-      return {
-        success: false,
-        message:
-          res.message ||
-          "Erreur lors de la récupération des veilles géopolitiques",
-        data: [],
-        pageInfo: null,
-      };
-    }
-
-    if (!res?.data?.veillesGeopolitique) {
-      return {
-        success: false,
-        message: "Aucune information de pagination trouvée",
-        data: [],
-        pageInfo: null,
-      };
-    }
-
-    return {
-      success: true,
-      message: "Informations de pagination récupérées avec succès",
-      data: res?.data?.veillesGeopolitique?.pageInfo,
-    };
-  } catch (e: unknown) {
-    const err = e as Error;
-
-    console.log(
-      err?.message || "Erreur lors de la récupération des veilles géopolitiques"
-    );
-
-    return {
-      success: false,
-      message: "Erreur lors de la récupération des veilles géopolitiques",
-      data: [],
-      pageInfo: null,
-    };
-  }
-}
-
 export async function getRelatedGeopoliticalWatches(
   slug: string,
   notIn: string,
