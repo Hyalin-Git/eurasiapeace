@@ -18,5 +18,5 @@ export default async function HeroPost() {
     return <NoHeroPostFound />;
   }
 
-  return <Card elt={post[0]} cardStyles={cardStyles} displayAuthor={true} />;
+  return <Card elt={post[0]} cardStyles={cardStyles} />;
 }

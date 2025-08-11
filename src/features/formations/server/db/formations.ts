@@ -61,12 +61,6 @@ export async function getFormations(
               }
             }
           }
-          pageInfo {
-            hasNextPage
-            endCursor
-            total
-            hasPreviousPage
-          }
         }
       }
     `;

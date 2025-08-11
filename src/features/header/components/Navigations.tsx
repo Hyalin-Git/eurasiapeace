@@ -21,6 +21,10 @@ export default async function Navigations() {
       href: "/publications",
       items: [
         {
+          name: "Nos publications",
+          slug: "/publications",
+        },
+        {
           name: "Notes d'analyse",
           slug: "/publications?category=notes-analyse",
         },
@@ -41,30 +45,48 @@ export default async function Navigations() {
     {
       label: "Veilles géopolitiques",
       href: "/veilles-geopolitiques",
-      items: geopoliticalWatchLinks?.data?.map((elt: Links) => ({
-        name: elt?.name,
-        slug: `/veilles-geopolitiques?category=${elt?.slug}`,
-      })),
+      items: [
+        {
+          name: "Nos veilles géopolitiques",
+          slug: "/veilles-geopolitiques",
+        },
+        ...geopoliticalWatchLinks?.data?.map((elt: Links) => ({
+          name: elt?.name,
+          slug: `/veilles-geopolitiques?category=${elt?.slug}`,
+        })),
+      ],
     },
     {
       label: "Cultures",
       href: "/cultures",
-      items: CultureLinks?.data?.map((elt: Links) => ({
-        name: elt?.name,
-        slug: `/cultures?category=${elt?.slug}`,
-      })),
+      items: [
+        {
+          name: "Nos cultures",
+          slug: "/cultures",
+        },
+        ...CultureLinks?.data?.map((elt: Links) => ({
+          name: elt?.name,
+          slug: `/cultures?category=${elt?.slug}`,
+        })),
+      ],
     },
     {
       label: "Formations",
       href: "/formations",
-      items: FormationLinks?.data?.map((elt: Links) => ({
-        name: elt?.name,
-        slug: `/formations?category=${elt?.slug}`,
-      })),
+      items: [
+        {
+          name: "Nos formations",
+          slug: "/formations",
+        },
+        ...FormationLinks?.data?.map((elt: Links) => ({
+          name: elt?.name,
+          slug: `/formations?category=${elt?.slug}`,
+        })),
+      ],
     },
     {
       label: "En savoir plus",
-      href: "",
+      href: "/qui-sommes-nous",
       items: [
         {
           name: "Conseils",

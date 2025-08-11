@@ -5,11 +5,11 @@ import { ElementProps } from "@/components/cards/types";
 
 export default async function Cards({
   elements,
-  variant = "publication",
+  variant = "article",
   className,
 }: {
   elements: ElementProps[];
-  variant?: "publication" | "formation";
+  variant?: "article" | "formation";
   className?: string;
 }) {
   return (

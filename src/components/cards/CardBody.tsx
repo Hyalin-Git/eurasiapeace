@@ -1,23 +1,20 @@
 import "moment/locale/fr";
 import Link from "next/link";
 import { generateLink } from "@/utils/generateLink";
+import { ElementProps } from "./types";
 
 export default function CardBody({
-  body,
+  element,
   bodyStyles,
 }: {
-  body: {
-    title: string;
-    excerpt: string;
-    contentType: string;
-    slug: string;
-  };
+  element: ElementProps;
   bodyStyles: {
     titleSize: string;
     lineClamp: string;
   };
 }) {
-  const { title, excerpt, contentType, slug } = body;
+  const { title, excerpt, slug } = element;
+  const contentType = element?.contentType?.node?.name || "";
   const { titleSize, lineClamp } = bodyStyles;
 
   return (
@@ -28,7 +25,7 @@ export default function CardBody({
         <Link
           href={generateLink(contentType, slug)}
           prefetch={true}
-          className="before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:bottom-0"
+          className="before:absolute before:content-[''] before:top-0 before:left-0 before:right-0 before:bottom-0"
         >
           {title || "Aucun titre"}
         </Link>

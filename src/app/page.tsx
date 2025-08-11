@@ -2,21 +2,21 @@
 
 import Section from "@/components/Section";
 import LinkButton from "@/ui/LinkButton";
-import CarouselWatches from "@/features/home/components/CarouselWatches";
 import Posts from "@/features/posts/components/Posts";
 import { Suspense } from "react";
-import CardsSkeletons from "@/components/cards/CardsSkeletons";
 import GeoWatches from "@/features/geopoliticalWatches/components/GeoWatches";
 import { Formations } from "@/features/formations/components/Formations";
 import HeroPost from "@/features/posts/components/HeroPost";
 import ServicesCards from "@/components/cards/ServicesCards";
-import { BookOpen, Divide, Gem, GraduationCap } from "lucide-react";
+import { BookOpen, Gem, GraduationCap } from "lucide-react";
 import {
   PostSkeleton,
   PostsSkeletons,
 } from "@/features/posts/components/PostsSkeletons";
 import { GeoWatchesSkeletons } from "@/features/geopoliticalWatches/components/GeoWatchesSkeletons";
 import { FormationsSkeletons } from "@/features/formations/components/FormationSkeletons";
+import GeoWatchesCarousel from "@/features/geopoliticalWatches/components/GeoWatchesCarousel";
+import GeoWatchesCarouselSkeleton from "@/features/geopoliticalWatches/components/GeoWatchesCarouselSkeleton";
 
 const servicesData = [
   {
@@ -84,13 +84,11 @@ const servicesData = [
   },
 ];
 
-// TODO: Suspense Carousel !!
-
 export default async function Home() {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <CarouselWatches />
+      <Suspense fallback={<GeoWatchesCarouselSkeleton />}>
+        <GeoWatchesCarousel />
       </Suspense>
 
       <div className="container">

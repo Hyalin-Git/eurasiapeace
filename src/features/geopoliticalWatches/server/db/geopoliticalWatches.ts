@@ -195,11 +195,6 @@ export async function getGeopoliticalWatch(slug: string) {
     const query = `
       query {
         veilleGeopolitique(id: "${slug}", idType: SLUG) {
-          contentType {
-            node {
-              name
-            }
-          }
           id
           title
           content
@@ -233,6 +228,11 @@ export async function getGeopoliticalWatch(slug: string) {
           }
           wordCount
           readingTime
+          contentType {
+            node {
+              name
+            }
+          }
         }
       }
     `;

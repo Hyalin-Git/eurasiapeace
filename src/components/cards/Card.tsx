@@ -1,16 +1,15 @@
+"use server";
+
 import { ElementProps } from "@/components/cards/types";
 import "moment/locale/fr";
 import CardHeader from "@/components/cards/CardHeader";
-import CardMeta from "@/components/cards/CardMeta";
 import CardBody from "@/components/cards/CardBody";
-import MetaPublication from "@/components/cards/MetaPublication";
-import MetaFormation from "@/components/cards/MetaFormation";
 import CardFooter from "@/components/cards/CardFooter";
+import CardMeta from "./CardMeta";
 
 interface CardProps {
   elt: ElementProps;
-  variant?: "publication" | "formation";
-  displayAuthor?: boolean;
+  variant?: "article" | "formation";
   cardStyles?: {
     banner: string;
     title: string;
@@ -19,83 +18,31 @@ interface CardProps {
   };
 }
 
-export default function Card({
+export default async function Card({
   elt,
-  variant = "publication",
+  variant = "article",
   cardStyles,
-  displayAuthor = false,
 }: CardProps) {
-  const tags = elt?.tags?.nodes || [];
-  const category =
-    elt?.categories?.nodes[0] ||
-    elt?.typeDeVeilles?.nodes[0] ||
-    elt?.typesDeFormations?.nodes[0] ||
-    elt?.typesDeCulture?.nodes[0];
-  const contentType = elt?.contentType?.node?.name || "";
-
-  const banner = {
-    url: elt?.featuredImage?.node?.sourceUrl,
-    alt: elt?.featuredImage?.node?.altText,
-    size: cardStyles?.banner || "h-[200px]",
-  };
-
-  const body = {
-    title: elt?.title,
-    excerpt: elt?.excerpt,
-    contentType: contentType,
-    slug: elt?.slug,
-  };
+  const bannerHeight = cardStyles?.banner || "h-[200px]";
 
   const bodyStyles = {
     titleSize: cardStyles?.title || "text-lg",
     lineClamp: cardStyles?.lineClamp || "line-clamp-3",
   };
 
-  const metaPublication = {
-    tags: tags,
-    date: elt?.date,
-    displayAuthor: displayAuthor,
-    author: elt?.author?.node?.name,
-  };
-
-  const metaFormation = {
-    dureeFormation:
-      elt?.singleFormations?.apercuFormation?.modalite?.dureeFormation ||
-      "Non renseignée",
-    nombreParticipants:
-      elt?.singleFormations?.apercuFormation?.modalite?.nombreParticipants ||
-      "Non renseigné",
-    rythme: elt?.rythmesDeFormation?.nodes || [],
-    niveauformation: elt?.niveauxDeFormation?.nodes[0]?.name || "",
-  };
-
   return (
     <div className="group relative flex flex-col bg-background-light-primary rounded-md border border-gray-200 h-full text-left animate-cardPop shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300">
       {/* Card header */}
-      <CardHeader
-        category={category}
-        banner={banner}
-        variant={variant}
-        metaFormation={metaFormation}
-      />
+      <CardHeader element={elt} variant={variant} height={bannerHeight} />
 
       {/* Card content */}
       <div className="p-4 flex flex-col justify-between flex-1">
         <div>
           {/* Card meta */}
-          {variant === "publication" && (
-            <CardMeta>
-              <MetaPublication metaPublication={metaPublication} />
-            </CardMeta>
-          )}
-          {variant === "formation" && (
-            <CardMeta>
-              <MetaFormation metaFormation={metaFormation} />
-            </CardMeta>
-          )}
+          <CardMeta variant={variant} element={elt} />
 
           {/* Card body */}
-          <CardBody body={body} bodyStyles={bodyStyles} />
+          <CardBody element={elt} bodyStyles={bodyStyles} />
         </div>
 
         {/* Card footer */}

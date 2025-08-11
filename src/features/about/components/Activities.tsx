@@ -1,4 +1,6 @@
-export default function Activities() {
+"use server";
+
+export default async function Activities() {
   const activities = [
     {
       title: "Centre de Formation",
@@ -39,11 +41,11 @@ export default function Activities() {
             className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm"
           >
             <h3 className="text-xl font-playfair font-bold text-text-primary mb-4">
-              {activity.title}
+              {activity?.title}
             </h3>
-            <p className="text-text-secondary mb-4">{activity.description}</p>
+            <p className="text-text-secondary mb-4">{activity?.description}</p>
             <ul className="list-disc list-inside text-text-secondary space-y-1">
-              {activity.list.map((item, index) => (
+              {activity?.list?.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
             </ul>

@@ -47,6 +47,7 @@ export default function Article({ element }: { element: ArticleInterface }) {
         category={category}
         readingTime={readingTime}
         publishedAt={publishedAt}
+        contentType={element?.contentType?.node?.name || ""}
       />
 
       {/* Box de partage */}

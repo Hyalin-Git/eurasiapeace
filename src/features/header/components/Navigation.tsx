@@ -70,11 +70,19 @@ export default function Navigation({ elt }: { elt: NavigationItems }) {
         isOpen={isOpen}
         className="w-70!"
       >
-        <ul className="[&>li]:p-2 [&>li]:text-sm [&>li]:font-medium [&>li]:cursor-pointer [&>li]:hover:bg-btn-force-blue/10 [&>li]:hover:text-btn-force-blue [&>li]:transition-all [&>li]:duration-300 [&>li]:ease-in-out">
+        <ul>
           {elt.items.map((item, idx) => {
             return (
-              <li key={idx}>
-                <Link href={item?.slug} prefetch={true} onClick={handleClick}>
+              <li
+                key={idx}
+                className="text-sm font-medium cursor-pointer hover:bg-btn-force-blue/10 hover:text-btn-force-blue transition-all duration-300 ease-in-out"
+              >
+                <Link
+                  href={item?.slug}
+                  prefetch={true}
+                  className="p-2 block w-full h-full"
+                  onClick={handleClick}
+                >
                   {item?.name}
                 </Link>
               </li>

@@ -13,6 +13,7 @@ interface MetaDataProps {
   };
   readingTime?: number;
   publishedAt?: string;
+  contentType?: string;
 }
 
 export default function MetaData({
@@ -20,6 +21,7 @@ export default function MetaData({
   category,
   readingTime,
   publishedAt,
+  contentType,
 }: MetaDataProps) {
   return (
     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
@@ -27,10 +29,12 @@ export default function MetaData({
         <Calendar size={16} />
         <span>Publié le {publishedAt}</span>
       </div>
+
       <div className="flex items-center gap-2">
         <Clock size={16} />
         <span>{readingTime} min de lecture</span>
       </div>
+
       {author && (
         <div className="flex items-center gap-2">
           <CircleUser size={16} />
@@ -39,7 +43,8 @@ export default function MetaData({
           </span>
         </div>
       )}
-      <Category category={category} />
+
+      <Category category={category} type={contentType} />
     </div>
   );
 }

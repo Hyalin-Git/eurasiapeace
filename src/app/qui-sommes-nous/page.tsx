@@ -1,5 +1,5 @@
 "use server";
-import Section from "@/components/Section";
+
 import Activities from "@/features/about/components/Activities";
 import JoinUs from "@/features/about/components/JoinUs";
 import Image from "next/image";
