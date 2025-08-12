@@ -2,7 +2,7 @@
 import { ChevronRight, Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { use } from "react";
+import React from "react";
 
 export default function BreadCrumb({
   isBgDark = true,

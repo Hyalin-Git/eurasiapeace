@@ -25,7 +25,7 @@ export default function CardBody({
         <Link
           href={generateLink(contentType, slug)}
           prefetch={true}
-          className="before:absolute before:content-[''] before:top-0 before:left-0 before:right-0 before:bottom-0"
+          className="before:absolute before:z-1 before:content-[''] before:top-0 before:left-0 before:right-0 before:bottom-0"
         >
           {title || "Aucun titre"}
         </Link>

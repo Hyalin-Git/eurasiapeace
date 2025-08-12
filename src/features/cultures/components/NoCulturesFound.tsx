@@ -37,13 +37,6 @@ export default async function NoCulturesFound({
             className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
           />
         )}
-
-        <LinkButton
-          icon={<Globe size={18} />}
-          label="Explorer toutes les cultures"
-          href="/cultures"
-          className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
-        />
       </div>
     </div>
   );

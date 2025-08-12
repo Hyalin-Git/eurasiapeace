@@ -29,6 +29,7 @@ export default function SignUpForm({ redirect }: { redirect?: string }) {
 
   const errors = state?.errors;
   const hasServerError = state.status === 500;
+  const hasNewsletterError = errors?.newsletter?.[0];
 
   const firstNameError = errors?.firstName?.[0];
   const lastNameError = errors?.lastName?.[0];
@@ -200,6 +201,9 @@ export default function SignUpForm({ redirect }: { redirect?: string }) {
           </i>
         </div>
       )}
+
+      {/* Newsletter Error */}
+      {hasNewsletterError && <ErrorMessage>{hasNewsletterError}</ErrorMessage>}
 
       {/* Server Error */}
       {hasServerError && (

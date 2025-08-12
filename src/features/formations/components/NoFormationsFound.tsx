@@ -39,13 +39,6 @@ export default async function NoFormationsFound({
             className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
           />
         )}
-
-        <LinkButton
-          icon={<GraduationCap size={18} />}
-          label="Explorer toutes les formations"
-          href="/formations"
-          className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
-        />
       </div>
     </div>
   );

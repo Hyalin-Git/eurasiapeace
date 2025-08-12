@@ -43,7 +43,7 @@ export async function createEmailVerification(userEmail: string) {
   });
 
   if (!res.success) {
-    throw {
+    return {
       success: false,
       status: res.status || 500,
       message:
@@ -51,5 +51,10 @@ export async function createEmailVerification(userEmail: string) {
     };
   }
 
-  return res.data;
+  return {
+    success: true,
+    status: 200,
+    message: "Vérification email créée avec succès",
+    data: res.data,
+  };
 }

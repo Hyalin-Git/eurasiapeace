@@ -7,6 +7,7 @@ import { InitialState } from "../../types";
 import { sendEmail } from "@/lib/nodemailer";
 import { createEmailVerification } from "@/server/db/verifications";
 import { fetchGraphQLWithoutCache } from "@/utils/authFetch";
+import { subscribeToNewsletter } from "@/utils/mailjet";
 
 export async function signUp(prevState: InitialState, formData: FormData) {
   try {
@@ -16,6 +17,7 @@ export async function signUp(prevState: InitialState, formData: FormData) {
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirm-password") as string;
     const confirmTerms = formData.get("confirm-terms") as string;
+    const newsletter = formData.get("newsletter") as string;
 
     // Sanitize the data to prevent XSS attacks
     const sanitizedFirstName = DOMPurify.sanitize(firstName);
@@ -41,6 +43,36 @@ export async function signUp(prevState: InitialState, formData: FormData) {
         formData: formData,
         errors: validation.error.flatten().fieldErrors,
       };
+    }
+
+    // If the user subscribed to the newsletter
+    if (newsletter === "on") {
+      const subscription = await subscribeToNewsletter(sanitizedEmail);
+
+      if (!subscription?.success) {
+        return {
+          success: false,
+          status: subscription?.status || 500,
+          message: "Erreur lors de l'inscription à la newsletter",
+          formData: formData,
+          errors: {
+            newsletter: ["Erreur lors de l'inscription à la newsletter"],
+          },
+        };
+      }
+
+      const subject = "Inscription à la newsletter";
+      const html = `
+      <p>Bonjour ${sanitizedFirstName},</p>
+      <p>Merci de vous être inscrit à notre newsletter.</p>
+    `;
+
+      await sendEmail(
+        "contact@eurasiapeace.org",
+        sanitizedEmail,
+        subject,
+        html
+      );
     }
 
     const query = `
@@ -108,7 +140,18 @@ export async function signUp(prevState: InitialState, formData: FormData) {
 
     const emailVerification = await createEmailVerification(sanitizedEmail);
 
-    const code = emailVerification.createUserVerification.userVerification.code;
+    if (!emailVerification.success) {
+      throw {
+        success: false,
+        status: emailVerification.status || 500,
+        message:
+          emailVerification.message ||
+          "Erreur lors de la création de la vérification email",
+      };
+    }
+
+    const code =
+      emailVerification.data.createUserVerification.userVerification.code;
 
     const subject = "Veuillez confirmer votre adresse e-mail";
     const html = `
@@ -141,6 +184,18 @@ export async function signUp(prevState: InitialState, formData: FormData) {
         formData: formData,
         errors: {
           email: ["Cette adresse email est déjà utilisée"],
+        },
+      };
+    }
+
+    if (err?.message?.includes("Email already exists")) {
+      return {
+        success: false,
+        status: 409,
+        message: "Cette adresse email est déjà inscrite à la newsletter",
+        formData: formData,
+        errors: {
+          newsletter: ["Cette adresse email est déjà inscrite à la newsletter"],
         },
       };
     }

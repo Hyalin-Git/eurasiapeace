@@ -24,7 +24,7 @@ export default async function NoGeoWatchesFound({
           : "Aucune veille géopolitique disponible"}
       </h2>
 
-      <p className="text-gray-600 mb-8 max-w-md">
+      <p className="text-gray-600 mb-8 max-w-md!">
         {hasFilters
           ? "Nous n'avons pas trouvé de veilles géopolitiques correspondant à vos critères de recherche. Essayez d'ajuster vos filtres."
           : "Il n'y a actuellement aucune veille géopolitique disponible. Revenez bientôt pour découvrir de nouvelles analyses géopolitiques."}
@@ -39,13 +39,6 @@ export default async function NoGeoWatchesFound({
             className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
           />
         )}
-
-        <LinkButton
-          icon={<Globe size={18} />}
-          label="Explorer toutes les veilles"
-          href="/veilles-geopolitiques"
-          className="min-w-48 bg-midnight-green hover:bg-midnight-green/90 font-semibold transition-colors duration-300"
-        />
       </div>
     </div>
   );

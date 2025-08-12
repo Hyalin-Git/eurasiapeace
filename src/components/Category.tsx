@@ -20,7 +20,6 @@ export default function Category({
       case "post":
         return `/publications?category=${category?.slug}`;
       case "veille-geopolitique":
-        console.log("played");
         return `/veilles-geopolitiques?category=${category?.slug}`;
       case "culture":
         return `/cultures?category=${category?.slug}`;

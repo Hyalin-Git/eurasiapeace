@@ -1,13 +1,10 @@
 "use server";
+
 import { newsletterSchema } from "@/lib/zod";
 import { Error } from "@/types";
-import Mailjet from "node-mailjet";
+import DOMPurify from "isomorphic-dompurify";
 import { InitialState } from "../../types";
-
-const mailjet = Mailjet.apiConnect(
-  process.env.MAILJET_API_KEY as string,
-  process.env.MAILJET_API_SECRET as string
-);
+import { subscribeToNewsletter as addEmailToMailjet } from "@/utils/mailjet";
 
 export async function subscribeToNewsletter(
   prevState: InitialState,
@@ -16,8 +13,10 @@ export async function subscribeToNewsletter(
   try {
     const email = formData.get("email") as string;
 
+    const sanitizedEmail = DOMPurify.sanitize(email);
+
     const newsletterValidation = newsletterSchema.safeParse({
-      email: email,
+      email: sanitizedEmail,
     });
 
     if (!newsletterValidation.success) {
@@ -29,16 +28,13 @@ export async function subscribeToNewsletter(
       };
     }
 
-    const request = await mailjet.post("contact", { version: "v3" }).request({
-      Email: email,
-      IsExcludedFromCampaigns: false,
-    });
+    const subscription = await addEmailToMailjet(sanitizedEmail);
 
-    if (request?.response?.status !== 201) {
+    if (!subscription?.success) {
       return {
         success: false,
-        status: request?.response?.status || 500,
-        message: "Erreur lors de la création du contact",
+        status: subscription?.status || 500,
+        message: "Erreur lors de l'inscription à la newsletter",
         errors: null,
       };
     }

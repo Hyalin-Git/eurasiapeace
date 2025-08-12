@@ -1,6 +1,7 @@
 "use server";
 
 import Activities from "@/features/about/components/Activities";
+import Committee from "@/features/about/components/Committee";
 import JoinUs from "@/features/about/components/JoinUs";
 import Image from "next/image";
 
@@ -77,6 +78,8 @@ export default async function About() {
             </p>
           </div>
         </section>
+
+        <Committee />
 
         <Activities />
 

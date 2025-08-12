@@ -3,14 +3,5 @@ export interface InitialState {
   status: number | null;
   message: string;
   formData: FormData | null;
-  errors: ZodErrors | null;
-}
-
-interface ZodErrors {
-  firstName?: string[];
-  lastName?: string[];
-  email?: string[];
-  password?: string[];
-  confirmPassword?: string[];
-  confirmTerms?: string[];
+  errors: Record<string, string[]> | null;
 }

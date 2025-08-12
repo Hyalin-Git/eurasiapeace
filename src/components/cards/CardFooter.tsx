@@ -27,7 +27,7 @@ function FormationVariant() {
     <div className="mt-6">
       <Button
         type="button"
-        className="absolute right-0 bottom-0 rounded-bl-none rounded-tr-none shadow-sm group-hover:bg-midnight-green/90 group-hover:shadow-md transition-all duration-300"
+        className="absolute z-0 right-0 bottom-0 rounded-bl-none rounded-tr-none shadow-sm group-hover:bg-midnight-green/90 group-hover:shadow-md transition-all duration-300"
       >
         Découvrir cette formation{" "}
         <ArrowRight
