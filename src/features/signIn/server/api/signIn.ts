@@ -55,16 +55,18 @@ export async function resendVerificationEmail(userEmail: string) {
   try {
     const emailVerification = await createEmailVerification(userEmail);
 
-    if (!emailVerification?.createUserVerification?.userVerification) {
+    if (!emailVerification.success) {
       throw {
         success: false,
-        status: 500,
-        message: "Failed to create email verification",
+        status: emailVerification.status || 500,
+        message:
+          emailVerification.message ||
+          "Erreur lors de la création de la vérification email",
       };
     }
 
     const code =
-      emailVerification?.createUserVerification?.userVerification?.code;
+      emailVerification.data.createUserVerification.userVerification.code;
 
     const subject = "Veuillez confirmer votre adresse e-mail";
     const html = `
