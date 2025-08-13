@@ -4,7 +4,7 @@ import CommitteMembers from "@/features/about/components/CommitteeMembers";
 import { CommitteesMemberSkeletons } from "@/features/about/components/CommitteeMemberSkeleton";
 import { Suspense } from "react";
 
-export default async function ComiteScientifique() {
+export default async function ConseilScientifique() {
   return (
     <div>
       {/* Header Section */}
@@ -24,7 +24,7 @@ export default async function ComiteScientifique() {
       {/* Main Content */}
       <div className="container max-w-6xl px-4 py-12">
         <Suspense fallback={<CommitteesMemberSkeletons count={6} />}>
-          <CommitteMembers committeeType="Comité scientifique" />
+          <CommitteMembers committeeType="Conseil scientifique" />
         </Suspense>
       </div>
     </div>

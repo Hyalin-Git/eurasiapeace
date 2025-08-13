@@ -8,7 +8,7 @@ import NoCommitteeMembersFound from "./NoCommitteeMembersFound";
 export default async function CommitteMembers({
   committeeType,
 }: {
-  committeeType: "Comité d'édition" | "Comité scientifique";
+  committeeType: "Comité d'édition" | "Conseil scientifique";
 }) {
   const { data, success } = await getCommitteesMembers();
 

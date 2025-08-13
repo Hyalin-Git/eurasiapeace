@@ -17,7 +17,7 @@ const comitees = [
     title: "Comité scientifique",
     description:
       "Composé d'experts et de chercheurs, le comité scientifique garantit la solidité méthodologique et la pertinence des données qui soutiennent nos travaux.",
-    link: "/qui-sommes-nous/comite-scientifique",
+    link: "/qui-sommes-nous/conseil-scientifique",
   },
 ];
 
