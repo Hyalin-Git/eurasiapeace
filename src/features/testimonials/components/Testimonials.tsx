@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Testimonials as TestimonialsInterface } from "../types";
-import Testimonial from "./Testimonial";
+import Testimonial from "./testimonial";
 
 export default function Testimonials({
   testimonials,
