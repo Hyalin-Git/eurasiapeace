@@ -108,7 +108,7 @@ export default async function Conseils() {
   ];
 
   return (
-    <main>
+    <div>
       <Banner BannerProps={BannerProps} />
       <div className="flex flex-col gap-40 my-20 sm:my-40">
         <section className="container flex flex-col-reverse xl:flex-row justify-center items-start lg:items-center gap-16">
@@ -284,6 +284,6 @@ export default async function Conseils() {
           </Button>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

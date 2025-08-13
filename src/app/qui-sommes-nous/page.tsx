@@ -1,13 +1,13 @@
 "use server";
 
 import Activities from "@/features/about/components/Activities";
-import Committee from "@/features/about/components/Committee";
+import Committees from "@/features/about/components/Committees";
 import JoinUs from "@/features/about/components/JoinUs";
 import Image from "next/image";
 
 export default async function About() {
   return (
-    <main className="min-h-screen ">
+    <div>
       {/* Header Section */}
       <section className="bg-headband py-12">
         <div className="container px-4">
@@ -79,7 +79,7 @@ export default async function About() {
           </div>
         </section>
 
-        <Committee />
+        <Committees />
 
         <Activities />
 
@@ -163,6 +163,6 @@ export default async function About() {
 
         <JoinUs />
       </div>
-    </main>
+    </div>
   );
 }

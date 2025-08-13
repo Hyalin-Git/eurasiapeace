@@ -51,7 +51,7 @@ export default function FaireUnDon() {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Banner BannerProps={BannerProps} />
       <section className="container py-20 bg-muted/30">
         <div className="container mx-auto px-4">
@@ -253,6 +253,6 @@ export default function FaireUnDon() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

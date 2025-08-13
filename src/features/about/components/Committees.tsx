@@ -21,7 +21,7 @@ const comitees = [
   },
 ];
 
-export default async function Committee() {
+export default async function Committees() {
   return (
     <section className="text-left mb-20 relative">
       <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">

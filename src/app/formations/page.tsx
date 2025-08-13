@@ -71,7 +71,7 @@ export default async function FormationsPage({
   const offset = page ? (parseInt(page) - 1) * 9 : 0;
 
   return (
-    <main>
+    <div>
       <Banner BannerProps={bannerProps} />
       <div className="container py-10">
         <Filters filters={filters}>
@@ -109,6 +109,6 @@ export default async function FormationsPage({
           />
         </Suspense>
       </div>
-    </main>
+    </div>
   );
 }

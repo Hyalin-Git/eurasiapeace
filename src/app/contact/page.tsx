@@ -81,7 +81,7 @@ export default function Contact() {
   };
 
   return (
-    <main>
+    <div>
       <Banner BannerProps={BannerProps} />
       <div className="container flex flex-col lg:flex-row gap-20 lg:gap-2 justify-between py-20">
         <div className="flex flex-col gap-6 max-w-lg">
@@ -208,6 +208,6 @@ export default function Contact() {
           </Form>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

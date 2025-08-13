@@ -39,7 +39,7 @@ export async function Formations({
   );
 
   if (!success || !formations || formations.length === 0) {
-    return <NoFormationsFound />;
+    return <NoFormationsFound hasFilters={!!filters} />;
   }
 
   function injectClassName() {

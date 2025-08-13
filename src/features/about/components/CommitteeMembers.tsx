@@ -1,44 +1,32 @@
 "use server";
 
+import { getCommitteesMembers } from "../server/db/committee";
+import { Member } from "../types";
 import CommiteeMember from "./CommitteeMember";
+import NoCommitteeMembersFound from "./NoCommitteeMembersFound";
 
-export default async function CommitteMembers() {
-  // TODO : GraphQL query to fetch members
+export default async function CommitteMembers({
+  committeeType,
+}: {
+  committeeType: "Comité d'édition" | "Comité scientifique";
+}) {
+  const { data, success } = await getCommitteesMembers();
 
-  const members = [
-    {
-      picture: "/default-avatar.webp",
-      name: "Vladimir Kozlov",
-      title: "Président du comité scientifique",
-      expertise: "Anthropologie politique",
-      bio: "Professeur d'anthropologie politique, spécialisé dans les sociétés post-soviétiques et les dynamiques de paix.",
-    },
-    {
-      picture: "/default-avatar.webp",
-      name: "Fatima Al-Rashid",
-      title: "Membre senior",
-      expertise: "Économie géopolitique",
-      bio: "Économiste spécialisée dans les routes commerciales eurasiennes et les enjeux énergétiques.",
-    },
-    {
-      picture: "/default-avatar.webp",
-      name: "Chen Wei-Ming",
-      title: "Conseiller scientifique",
-      expertise: "Relations sino-européennes",
-      bio: "Expert en relations sino-européennes et en initiatives de coopération intercontinentale.",
-    },
-    {
-      picture: "/default-avatar.webp",
-      name: "Sarah Thompson",
-      title: "Membre associée",
-      expertise: "Résolution de conflits",
-      bio: "Spécialiste en médiation internationale et processus de paix, ancienne conseillère ONU.",
-    },
-  ];
+  if (!success || data?.length <= 0) {
+    return <NoCommitteeMembersFound />;
+  }
+
+  const members = data.filter(
+    (member: Member) => member?.committeeMember === committeeType
+  );
+
+  if (members.length <= 0) {
+    return <NoCommitteeMembersFound />;
+  }
 
   return (
     <div className="flex flex-col gap-8">
-      {members.map((member, idx) => (
+      {members.map((member: Member, idx: number) => (
         <CommiteeMember key={idx} member={member} />
       ))}
     </div>

@@ -1,7 +1,13 @@
 export interface Member {
-  picture: string;
-  name: string;
+  committeeMember: string;
+  fullName: string;
   title: string;
-  expertise: string;
+  expertises: {
+    expertise: string;
+  }[];
   bio: string;
+}
+
+export interface Members {
+  acfFields: Member[];
 }
