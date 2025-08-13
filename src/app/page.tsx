@@ -91,7 +91,7 @@ export default async function Home() {
         <GeoWatchesCarousel />
       </Suspense>
 
-      <div className="container">
+      <div className="container mt-[40px] ">
         {/* Hero Section */}
         <div className="flex gap-10 lg:flex-row flex-col">
           <div className="w-full lg:w-1/2 mx-auto">

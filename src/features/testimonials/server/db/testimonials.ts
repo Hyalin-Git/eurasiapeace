@@ -37,11 +37,20 @@ export async function getTestimonials() {
       };
     }
 
+    if (res?.data?.testimonials?.nodes.length <= 0) {
+      return {
+        success: true,
+        status: 404,
+        message: "No testimonials found",
+        data: [],
+      };
+    }
+
     return {
       success: true,
       status: 200,
       message: "Testimonials fetched successfully",
-      data: res?.data?.testimonials?.nodes[0]?.testimonials || [],
+      data: res?.data?.testimonials?.nodes || [],
     };
   } catch (e: unknown) {
     const err = e as Error;

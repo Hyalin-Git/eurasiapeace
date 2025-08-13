@@ -15,7 +15,7 @@ export default async function GeoWatchesCarousel() {
   ];
 
   return (
-    <div className="bg-headband mb-[40px] py-6 overflow-hidden">
+    <div className="bg-headband py-6 overflow-hidden hidden md:block">
       <div className="w-full overflow-hidden">
         <div className="flex w-fit carousel-tracker">
           {extendedWatches.map((watch, index) => (

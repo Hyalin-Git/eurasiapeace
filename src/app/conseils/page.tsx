@@ -1,42 +1,16 @@
-"use client";
+"use server";
 
 import Section from "@/components/Section";
 import Banner from "@/components/Banner";
 import ServicesCards from "@/components/cards/ServicesCards";
 import Button from "@/ui/Button";
-import {
-  CircleArrowLeft,
-  CircleArrowRight,
-  Eye,
-  Landmark,
-  Quote,
-} from "lucide-react";
+import { Eye, Landmark } from "lucide-react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import type { Swiper as SwiperType } from "swiper";
-import { Autoplay } from "swiper/modules";
-import { useState } from "react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/autoplay";
-import CardOpinion from "@/components/cards/CardOpinion";
+import Testimonials from "@/features/testimonials/components/Testimonials";
+import { getTestimonials } from "@/features/testimonials/server/db/testimonials";
 
-export default function Conseils() {
-  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
-
-  const handlePrevSlide = () => {
-    if (swiperInstance) {
-      swiperInstance.autoplay?.stop();
-      swiperInstance.slidePrev();
-    }
-  };
-
-  const handleNextSlide = () => {
-    if (swiperInstance) {
-      swiperInstance.autoplay?.stop();
-      swiperInstance.slideNext();
-    }
-  };
+export default async function Conseils() {
+  const { data: testimonials, success } = await getTestimonials();
 
   const BannerProps = {
     title: "Conseils & Consultance",
@@ -133,87 +107,6 @@ export default function Conseils() {
     },
   ];
 
-  const testimonials = [
-    {
-      id: 1,
-      stars: 3,
-      content:
-        "«L'équipe d'Eurasia Peace a réalisé un travail de veille stratégique sur la zone du Sahel, en particulier sur le Mali, qui nous a permis de mieux comprendre les enjeux et les dynamiques locales. Leur approche est rigoureuse et adaptée à nos besoins.»",
-      user: {
-        image: "/featured-image.jpg",
-        firstname: "Tim",
-        lastname: "Smith",
-      },
-    },
-    {
-      id: 2,
-      stars: 4,
-      content:
-        "«L'équipe d'Eurasia Peace a réalisé un travail de veille stratégique sur la zone du Sahel, en particulier sur le Mali, qui nous a permis de mieux comprendre les enjeux et les dynamiques locales. Leur approche est rigoureuse et adaptée à nos besoins.»",
-      user: {
-        image: "/image-conseils-1.webp",
-        firstname: "Tim",
-        lastname: "Smith",
-      },
-    },
-    {
-      id: 3,
-      stars: 5,
-      content:
-        "«L'équipe d'Eurasia Peace a réalisé un travail de veille stratégique sur la zone du Sahel, en particulier sur le Mali, qui nous a permis de mieux comprendre les enjeux et les dynamiques locales. Leur approche est rigoureuse et adaptée à nos besoins.»",
-      user: {
-        image: "/image-conseils-1.webp",
-        firstname: "Tim",
-        lastname: "Smith",
-      },
-    },
-    {
-      id: 4,
-      stars: 5,
-      content:
-        "«L'équipe d'Eurasia Peace a réalisé un travail de veille stratégique sur la zone du Sahel, en particulier sur le Mali, qui nous a permis de mieux comprendre les enjeux et les dynamiques locales. Leur approche est rigoureuse et adaptée à nos besoins.»",
-      user: {
-        image: "/image-conseils-1.webp",
-        firstname: "John",
-        lastname: "Doe",
-      },
-    },
-    {
-      id: 5,
-      stars: 5,
-      content:
-        "«L'équipe d'Eurasia Peace a réalisé un travail de veille stratégique sur la zone du Sahel, en particulier sur le Mali, qui nous a permis de mieux comprendre les enjeux et les dynamiques locales. Leur approche est rigoureuse et adaptée à nos besoins.»",
-      user: {
-        image: "/image-conseils-1.webp",
-        firstname: "John",
-        lastname: "Doe",
-      },
-    },
-    {
-      id: 6,
-      stars: 5,
-      content:
-        "«L'équipe d'Eurasia Peace a réalisé un travail de veille stratégique sur la zone du Sahel, en particulier sur le Mali, qui nous a permis de mieux comprendre les enjeux et les dynamiques locales. Leur approche est rigoureuse et adaptée à nos besoins.»",
-      user: {
-        image: "/image-conseils-1.webp",
-        firstname: "John",
-        lastname: "Doe",
-      },
-    },
-    {
-      id: 7,
-      stars: 5,
-      content:
-        "«L'équipe d'Eurasia Peace a réalisé un travail de veille stratégique sur la zone du Sahel, en particulier sur le Mali, qui nous a permis de mieux comprendre les enjeux et les dynamiques locales. Leur approche est rigoureuse et adaptée à nos besoins.»",
-      user: {
-        image: "/image-conseils-1.webp",
-        firstname: "Hey",
-        lastname: "Doe",
-        className: "[&_h1]:text-2xl!",
-      },
-    },
-  ];
-
   return (
     <main>
       <Banner BannerProps={BannerProps} />
@@ -261,6 +154,7 @@ export default function Conseils() {
             </div>
           </div>
         </section>
+
         <section>
           <Section
             title="À qui s'adresse notre expertise ?"
@@ -275,6 +169,7 @@ export default function Conseils() {
             />
           </Section>
         </section>
+
         <section>
           <div className="relative container flex flex-col justify-between lg:flex-row gap-4">
             <Section
@@ -363,79 +258,13 @@ export default function Conseils() {
           </div>
         </section>
       </div>
-      <section className="flex justify-center items-center w-full bg-background-third py-20">
-        <div className="container flex flex-col lg:flex-row gap-8 lg:gap-12">
-          <div className="flex flex-row lg:flex-col justify-between lg:justify-start flex-1 pl-0 lg:pl-8 gap-8 lg:gap-16 w-full lg:w-1/5">
-            <div className="flex flex-col gap-2">
-              <Quote
-                size={40}
-                className="text-midnight-green fill-midnight-green"
-              />
-              <h2 className="text-2xl lg:text-3xl font-medium">
-                <span className="lg:whitespace-nowrap">Avis de nos</span>{" "}
-                partenaires
-              </h2>
-            </div>
-            <div className="flex items-end lg:items-center gap-4">
-              <CircleArrowLeft
-                size={32}
-                className="text-midnight-green cursor-pointer hover:text-midnight-green/80 transition-colors"
-                onClick={handlePrevSlide}
-              />
-              <CircleArrowRight
-                size={32}
-                className="text-midnight-green cursor-pointer hover:text-midnight-green/80 transition-colors"
-                onClick={handleNextSlide}
-              />
-            </div>
-          </div>
 
-          {/* Testimonials */}
-          <div className="Conseils_Testimonials relative w-full lg:w-4/6 xl:w-4/5">
-            <Swiper
-              onSwiper={setSwiperInstance}
-              modules={[Autoplay]}
-              spaceBetween={15}
-              slidesPerView={1}
-              loop={true}
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction: true,
-                pauseOnMouseEnter: true,
-              }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 1,
-                  spaceBetween: 15,
-                },
-                768: {
-                  slidesPerView: 2,
-                  spaceBetween: 30,
-                },
-                1024: {
-                  slidesPerView: 2,
-                  spaceBetween: 30,
-                },
-                1420: {
-                  slidesPerView: 3,
-                  spaceBetween: 20,
-                },
-              }}
-              className="w-full h-auto"
-            >
-              {testimonials.map((testimonial) => (
-                <SwiperSlide key={testimonial.id} className="md:flex-1 h-auto">
-                  <CardOpinion
-                    stars={testimonial.stars}
-                    content={testimonial.content}
-                    user={testimonial.user}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-      </section>
+      {success && (
+        <section className="flex justify-center items-center w-full bg-background-third py-20">
+          <Testimonials testimonials={testimonials} />
+        </section>
+      )}
+
       <section className="container flex items-center justify-center flex-col gap-4 my-40 mx-100%">
         <div className="flex items-center justify-center flex-col gap-4 bg-midnight-green max-w-175 p-8 rounded-lg w-full">
           <h2 className="text-white text-3xl sm:text-4xl text-center">
