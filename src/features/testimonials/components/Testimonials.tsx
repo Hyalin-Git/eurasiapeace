@@ -8,8 +8,8 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
+import Testimonial from "./Testimonial";
 import { Testimonials as TestimonialsInterface } from "../types";
-import Testimonial from "@/features/testimonials/components/Testimonial";
 
 export default function Testimonials({
   testimonials,
