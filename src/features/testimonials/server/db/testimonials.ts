@@ -6,23 +6,23 @@ import { fetchGraphQL } from "@/utils/authFetch";
 export async function getTestimonials() {
   try {
     const query = `
-  query {
-  testimonials {
-    nodes {
+      query {
       testimonials {
-        stars
-        avis
-        fullName
-        profilPicture {
-          node {
-            sourceUrl
-            altText
+        nodes {
+          testimonials {
+            stars
+            avis
+            fullName
+            profilPicture {
+              node {
+                sourceUrl
+                altText
+              }
+            }
           }
         }
       }
     }
-  }
-}
     `;
 
     const res = await fetchGraphQL(query);
