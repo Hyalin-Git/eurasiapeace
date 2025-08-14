@@ -38,12 +38,12 @@ export default async function CommiteeMember({ member }: { member: Member }) {
         </div>
 
         {/* Expertises */}
-        <div className="mb-8">
-          <span className="block mb-2 text-lg text-text-secondary font-medium">
-            Expertises
-          </span>
+        {!isEmpty(member?.expertises) && (
+          <div className="mb-8">
+            <span className="block mb-2 text-lg text-text-secondary font-medium">
+              Expertises
+            </span>
 
-          {!isEmpty(member?.expertises) ? (
             <div className="flex flex-wrap gap-4 sm:max-w-[85%]">
               {expertises.map((expertise, idx) => (
                 <span
@@ -55,12 +55,8 @@ export default async function CommiteeMember({ member }: { member: Member }) {
                 </span>
               ))}
             </div>
-          ) : (
-            <p className="text-sm text-text-primary">
-              Aucune expertise renseignée.
-            </p>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Biography */}
         <div>
