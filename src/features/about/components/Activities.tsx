@@ -45,18 +45,18 @@ export default async function Activities() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-8">
+      <div className="flex gap-8">
         {activities.map((activity, index) => (
           <div
             key={index}
-            className="bg-white border border-gray-100 p-8 rounded-2xl shadow-md"
+            className="bg-white border border-gray-100 p-8 rounded-2xl shadow-md h-fit"
           >
             <h3 className="text-2xl font-playfair font-bold text-text-primary mb-4">
               {activity?.title}
             </h3>
 
             <p className="text-text-secondary mb-4">{activity?.description}</p>
-            <ul className="flex items-center flex-wrap gap-4 text-text-secondary space-y-1">
+            <ul className="flex items-center flex-wrap gap-2 text-text-secondary space-y-1">
               {activity?.list?.map((item, index) => (
                 <li
                   key={index}
@@ -67,7 +67,7 @@ export default async function Activities() {
               ))}
             </ul>
             {activity.title === "Centre de Formation" && (
-              <div className="relative w-full max-w-100 h-50 mt-4">
+              <div className="relative w-full max-w-100 h-50 mt-2">
                 <Image
                   src={"/qualiopi-gqc.webp"}
                   alt="Logo Qualiopi"

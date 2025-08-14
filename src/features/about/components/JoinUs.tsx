@@ -12,7 +12,7 @@ export default async function JoinUs() {
         </h2>
         <p className="text-text-secondary mb-6">
           Abonnez-vous à notre newsletter, participez à nos formations, soutenez
-          notre mission de paix en Eurasie.
+          notre action en faveur de la paix en Eurasie
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link

@@ -12,7 +12,7 @@ export default function Evaluation({ formation }: { formation: Formation }) {
       <Section
         icon={<FileChartColumn size={44} className="text-text-primary" />}
         title="Évaluation"
-        className="py-8!"
+        className="[&_h2]:mb-6 py-8!"
       >
         <InfoBoxColumn
           title="Évaluation du rapport de renseignement final"

@@ -3,6 +3,7 @@ import { Settings2 } from "lucide-react";
 import { isEmpty } from "@/utils/isEmpty";
 import InfoBoxColumn from "@/features/formations/components/InfoBoxColumn";
 import { Formation } from "@/types";
+import Link from "next/link";
 
 export default function Modalities({ formation }: { formation: Formation }) {
   const modalites = formation.singleFormations.modalites;
@@ -12,59 +13,70 @@ export default function Modalities({ formation }: { formation: Formation }) {
   const particulierIntensif = tarifs?.particulierIntensif;
   const entrepriseProgressif = tarifs?.entrepriseProgressif;
   const entrepriseIntensif = tarifs?.entrepriseIntensif;
+  const payPerSession = tarifs?.payPerSession;
 
-  const tarifsContent = `
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
-        <thead>
-          <tr>
-            <th style="padding: 12px; text-align: left; font-weight: 600;"></th>
-            <th style="padding: 12px; text-align: center; font-weight: 600;">Progressif</th>
-            <th style="padding: 12px; text-align: center; font-weight: 600;">Intensif</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="padding: 12px; font-weight: 500;">Particulier</td>
-            <td style="padding: 12px; text-align: center;">
-              <span style="background-color: #e9ecef; padding: 4px; border-radius: 4px; font-weight: 500;">${
-                particulierProgressif + " €" || "420 €"
-              }</span>
-            </td>
-            <td style="padding: 12px; text-align: center;">
-              <span style="background-color: #e9ecef; padding: 4px; border-radius: 4px; font-weight: 500;">${
-                particulierIntensif + " €" || "600 €"
-              }</span>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 12px; font-weight: 500;">Entreprise</td>
-            <td style="padding: 12px; text-align: center;">
-              <span style="background-color: #e9ecef; padding: 4px; border-radius: 4px; font-weight: 500;">${
-                entrepriseProgressif + " €" || "800 €"
-              }</span>
-            </td>
-            <td style="padding: 12px; text-align: center;">
-              <span style="background-color: #e9ecef; padding: 4px; border-radius: 4px; font-weight: 500;">${
-                entrepriseIntensif + " €" || "1200 €"
-              }</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-         <p>
+  function renderTarifsContent() {
+    return (
+      <div className="overflow-hidden">
+        <table className="w-full border-collapse mb-4">
+          <thead>
+            <tr>
+              <th className="p-3 text-left font-semibold"></th>
+              <th className="p-3 text-center font-semibold">Progressif</th>
+              <th className="p-3 text-center font-semibold">Intensif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="p-3 font-medium">Particulier</td>
+              <td className="p-3 text-center">
+                <span className="bg-gray-200 px-1 py-1 rounded font-medium">
+                  {particulierProgressif + " €" || "420 €"}
+                </span>
+              </td>
+              <td className="p-3 text-center">
+                <span className="bg-gray-200 px-1 py-1 rounded font-medium">
+                  {particulierIntensif + " €" || "600 €"}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td className="p-3 font-medium">Entreprise</td>
+              <td className="p-3 text-center">
+                <span className="bg-gray-200 px-1 py-1 rounded font-medium">
+                  {entrepriseProgressif + " €" || "800 €"}
+                </span>
+              </td>
+              <td className="p-3 text-center">
+                <span className="bg-gray-200 px-1 py-1 rounded font-medium">
+                  {entrepriseIntensif + " €" || "1200 €"}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {payPerSession && (
+          <i className="block mb-2">
+            Paiement à la séance disponible pour cette formation *
+          </i>
+        )}
+        <i>
           Une réduction de 15% est appliquée aux particuliers abonnés à
-          EurasiaPeace - Abonnez-vous pour 12€ par an !
-        </p>
-    </div>
-  `;
+          EurasiaPeace -{" "}
+          <Link href={"/abonnements"} className="underline">
+            Abonnez-vous pour 12€ par an
+          </Link>
+        </i>
+      </div>
+    );
+  }
 
   return (
     <div id="modalities">
       <Section
         icon={<Settings2 size={44} className="text-text-primary" />}
         title="Modalités"
-        className="pb-0! pt-8!"
+        className="[&_h2]:mb-6 pb-0! pt-8!"
       >
         <div className="flex flex-col gap-6">
           {!isEmpty(boiteModalites) &&
@@ -75,7 +87,7 @@ export default function Modalities({ formation }: { formation: Formation }) {
                 content={boite.descriptionModalite}
               />
             ))}
-          <InfoBoxColumn title="Tarifs" content={tarifsContent} />
+          <InfoBoxColumn title="Tarifs" content={renderTarifsContent()} />
         </div>
       </Section>
     </div>

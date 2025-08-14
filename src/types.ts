@@ -127,6 +127,7 @@ export interface Formation {
         particulierIntensif: string;
         entrepriseProgressif: string;
         entrepriseIntensif: string;
+        payPerSession: boolean;
       };
     };
     recapitulatif: {

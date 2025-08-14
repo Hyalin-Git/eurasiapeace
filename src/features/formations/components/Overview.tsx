@@ -30,7 +30,7 @@ export default function Overview({ formation }: { formation: Formation }) {
       title: "Modalités",
       content: `<ul>    
         <li><strong>Durée</strong> : ${modalites?.dureeFormation}h de formation</li>
-        <li><strong>Nombre de participants</strong> : ${modalites?.nombreParticipants} personnes maximum</li>
+        <li><strong>Nombre de participants</strong> : ${modalites?.nombreParticipants} personnes</li>
         <li><strong>Format</strong> : ${modalites?.format}</li>
         <li><strong>Rythme</strong> : ${rythme}</li>
         <li><strong>Langue</strong> : ${modalites?.langue}</li>
@@ -45,7 +45,7 @@ export default function Overview({ formation }: { formation: Formation }) {
     {
       id: 4,
       icon: <Sparkles size={24} className="text-btn-gold" />,
-      title: "Bénéfices",
+      title: "Plus value",
       content: benefices,
     },
   ];
