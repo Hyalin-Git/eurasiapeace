@@ -63,7 +63,7 @@ export default function Modalities({ formation }: { formation: Formation }) {
         <i>
           Une réduction de 15% est appliquée aux particuliers abonnés à
           EurasiaPeace -{" "}
-          <Link href={"/abonnements"} className="underline">
+          <Link href={"/abonnements"} className="underline text-btn-gold">
             Abonnez-vous pour 12€ par an
           </Link>
         </i>
