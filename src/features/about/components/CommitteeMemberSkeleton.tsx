@@ -6,10 +6,12 @@ export default function CommitteesMemberSkeleton() {
 
       <div className="p-6">
         {/* Heading skeleton */}
-        <div className="mb-4">
-          <div className="h-8 w-40 bg-gray-300 rounded animate-pulse"></div>
-
-          <div className="mt-2 h-6 w-48 bg-gray-200 rounded animate-pulse"></div>
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-25 h-25 bg-gray-300 rounded-lg animate-pulse"></div>
+          <div>
+            <div className="h-8 w-40 bg-gray-300 rounded animate-pulse"></div>
+            <div className="mt-2 h-6 w-48 bg-gray-200 rounded animate-pulse"></div>
+          </div>
         </div>
 
         {/* Expertises skeleton */}

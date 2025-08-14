@@ -1,5 +1,7 @@
 "use server";
 
+import Image from "next/image";
+
 export default async function Activities() {
   const activities = [
     {
@@ -10,7 +12,7 @@ export default async function Activities() {
         "Géopolitique",
         "Cartographie",
         "Management interculturel",
-        "Intelligence économique",
+        "Gestion des riques",
         "OSINT",
       ],
     },
@@ -20,46 +22,63 @@ export default async function Activities() {
         "EurasiaPeace propose un espace de publication et de diffusion d'analyses sous forme de :",
       list: [
         "Veilles géopolitiques",
-        "Articles et entretiens",
-        "Rapports et dossiers thématiques",
-        "Promotion de compétences",
-        "Développement de réseau international",
+        "Notes d'analyse",
+        "Dossiers thématiques",
+        "Rapports et fiches de renseignement",
+        "Arts et culture",
       ],
     },
   ];
 
   return (
     <section className="mb-16">
-      <h2 className="text-2xl md:text-3xl font-playfair font-bold text-text-primary mb-8 text-center">
+      <h2 className="text-3xl md:text-4xl font-playfair font-bold text-text-primary mb-8 text-center">
         Nos Activités
       </h2>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        {activities.map((activity, index) => (
-          <div
-            key={index}
-            className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm"
-          >
-            <h3 className="text-xl font-playfair font-bold text-text-primary mb-4">
-              {activity?.title}
-            </h3>
-            <p className="text-text-secondary mb-4">{activity?.description}</p>
-            <ul className="list-disc list-inside text-text-secondary space-y-1">
-              {activity?.list?.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-6 text-center">
+      <div className="mb-6 text-center">
         <p className="text-text-secondary max-w-3xl mx-auto">
           Ce site se conçoit également comme une plate-forme internationale de
           promotion de compétences et de développement de réseau pour un nombre
           croissant d&apos;étudiants, de jeunes chercheurs ou professionnels,
           français ou étrangers.
         </p>
+      </div>
+
+      <div className="flex flex-col gap-8">
+        {activities.map((activity, index) => (
+          <div
+            key={index}
+            className="bg-white border border-gray-100 p-8 rounded-2xl shadow-md"
+          >
+            <h3 className="text-2xl font-playfair font-bold text-text-primary mb-4">
+              {activity?.title}
+            </h3>
+
+            <p className="text-text-secondary mb-4">{activity?.description}</p>
+            <ul className="flex items-center flex-wrap gap-4 text-text-secondary space-y-1">
+              {activity?.list?.map((item, index) => (
+                <li
+                  key={index}
+                  className="py-2 px-4 bg-gray-200 rounded-4xl font-medium text-sm"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+            {activity.title === "Centre de Formation" && (
+              <div className="relative w-full max-w-100 h-50 mt-4">
+                <Image
+                  src={"/qualiopi-gqc.webp"}
+                  alt="Logo Qualiopi"
+                  fill
+                  quality={100}
+                  className="object-contain"
+                />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );
