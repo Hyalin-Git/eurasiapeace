@@ -52,14 +52,11 @@ export default function Modalities({ formation }: { formation: Formation }) {
           </tr>
         </tbody>
       </table>
+         <p>
+          Une réduction de 15% est appliquée aux particuliers abonnés à
+          EurasiaPeace - Abonnez-vous pour 12€ par an !
+        </p>
     </div>
-    <p style="margin-top: 16px; line-height: 1.5;">
-      Une réduction de 15% est appliquée aux particuliers abonnés à EurasiaPeace - 
-      <a href="/abonnements" style="text-decoration: underline; ">Abonnez-vous pour 12€ par an !</a>  
-      <br />
-      Et demandez votre code promo à l'adresse suivante: 
-      <a href="mailto:formations@eurasiapeace.org" style="text-decoration: underline;">formations@eurasiapeace.org</a>
-    </p>
   `;
 
   return (

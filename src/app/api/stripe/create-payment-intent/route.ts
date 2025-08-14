@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
-
-interface ErrorResponse {
-  success: boolean;
-  message: string;
-  data: null;
-}
+import { Error } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,7 +26,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (e: unknown) {
-    const err = e as ErrorResponse;
+    const err = e as Error;
 
     console.log(err?.message || "Erreur lors de la création du paiement");
 

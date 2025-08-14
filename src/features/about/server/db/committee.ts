@@ -13,6 +13,12 @@ export async function getCommitteesMembers() {
             nodes {
                 acfFields {
                     committeeMember
+                    picture {
+                      node {
+                        sourceUrl
+                        altText
+                      }
+                    }
                     title
                     fullName
                     expertises {

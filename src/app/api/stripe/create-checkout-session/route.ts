@@ -1,11 +1,6 @@
 import { getStripe } from "@/lib/stripe";
+import { Error } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
-
-interface ErrorResponse {
-  success: boolean;
-  message: string;
-  data: null;
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -78,7 +73,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (e: unknown) {
-    const err = e as ErrorResponse;
+    const err = e as Error;
 
     console.log(
       err?.message ||

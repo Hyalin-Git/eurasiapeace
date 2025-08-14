@@ -1,15 +1,27 @@
 "use client";
+
 import { Copy } from "lucide-react";
 import React from "react";
 
 export default function SocialShare() {
-  const handleShare = (platform: string) => {
+  function copyLink() {
+    const copiedLink = navigator.clipboard.writeText(window.location.href);
+
+    copiedLink.then(() => {
+      console.log("Link copié avec succès !");
+    });
+  }
+
+  function handleShare(platform: string) {
     console.log(platform);
-  };
+  }
 
   return (
     <div className="flex items-center gap-2 mb-4">
-      <button className="bg-gray-200 text-gray-500 cursor-pointer p-1.5 rounded hover:bg-gray-300 transition-colors">
+      <button
+        onClick={copyLink}
+        className="bg-gray-200 text-gray-500 cursor-pointer p-1.5 rounded hover:bg-gray-300 transition-colors"
+      >
         <Copy size={20} />
       </button>
       <div className="grid grid-cols-5 gap-2">
