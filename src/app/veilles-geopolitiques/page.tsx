@@ -50,7 +50,7 @@ export default async function GeopoliticalWatchesPage({
     title: "Veilles géopolitiques",
     content:
       "La veille géopolitique est un outil essentiel pour comprendre les enjeux et les dynamiques de la sécurité internationale. Elle permet de suivre les événements, les tendances et les interactions entre les différents acteurs de la scène géopolitique.",
-    image: "bg-[url('/world-map-banner.webp')] bg-cover bg-center bg-no-repeat",
+    src: "/world-map-banner.webp",
   };
 
   const offset = page ? (parseInt(page) - 1) * 9 : 0;

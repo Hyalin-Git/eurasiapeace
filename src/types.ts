@@ -76,6 +76,13 @@ export interface Formation {
     }[];
   };
   singleFormations: {
+    banner: {
+      node: {
+        sourceUrl: string;
+        altText: string;
+        srcSet: string;
+      };
+    };
     apercuFormation: {
       texteIntroFormation: string;
       publicsCibles: {
@@ -114,8 +121,11 @@ export interface Formation {
         };
       };
     };
-    evaluation: {
-      evaluationRapport: string;
+    evaluations: {
+      evaluationsBoxes: {
+        evaluationTitle: string;
+        evaluationDescription: string;
+      }[];
     };
     modalites: {
       boiteModalites: {
@@ -132,8 +142,14 @@ export interface Formation {
     };
     recapitulatif: {
       dates: {
-        dateFormation: string;
+        startingDate: string;
+        endingDate: string;
       }[];
+    };
+    testimonials: {
+      fullName: string;
+      note: string[];
+      review: string;
     };
     formateur: {
       nodes: {

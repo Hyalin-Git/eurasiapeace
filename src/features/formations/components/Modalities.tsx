@@ -6,7 +6,7 @@ import { Formation } from "@/types";
 import Link from "next/link";
 
 export default function Modalities({ formation }: { formation: Formation }) {
-  const modalites = formation.singleFormations.modalites;
+  const modalites = formation?.singleFormations?.modalites;
   const boiteModalites = modalites?.boiteModalites;
   const tarifs = modalites?.tarifs;
   const particulierProgressif = tarifs?.particulierProgressif;

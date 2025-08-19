@@ -34,10 +34,7 @@ export default function FaireUnDon() {
     title: "Faire un don",
     content:
       "Soutenez notre mission de recherche et de promotion de la paix en Eurasie",
-    image:
-      "bg-[url('/banner/contact-banner.webp')] bg-cover bg-center bg-no-repeat",
-    className:
-      "before:bg-[linear-gradient(to_right,_var(--color-midnight-green)_20%,_#355b7c0d)]",
+    src: "/banner/contact-banner.webp",
   };
 
   async function handleDonation() {

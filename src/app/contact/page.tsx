@@ -77,7 +77,7 @@ export default function Contact() {
 
   const BannerProps = {
     title: "Contact",
-    image: "bg-[url('/headband-contact.png')]",
+    src: "/headband-contact.png",
   };
 
   return (

@@ -141,6 +141,13 @@ export async function getFormation(slug: string) {
             }
           }
           singleFormations {
+            banner {
+              node {
+                sourceUrl
+                altText
+                srcSet
+              }
+            }
             apercuFormation {
               texteIntroFormation
               publicsCibles {
@@ -179,8 +186,11 @@ export async function getFormation(slug: string) {
                 }
               }
             }
-            evaluation {
-              evaluationRapport
+            evaluations {
+              evaluationsBoxes {
+                evaluationTitle
+                evaluationDescription
+              }
             }
             modalites {
               boiteModalites {
@@ -196,8 +206,14 @@ export async function getFormation(slug: string) {
             }
             recapitulatif {
               dates {
-                dateFormation
+                startingDate
+                endingDate
               }
+            }
+            testimonials {
+              fullName
+              note
+              review
             }
             formateur {
               nodes {

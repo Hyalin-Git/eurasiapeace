@@ -50,8 +50,7 @@ export default async function CulturesPage({
     title: "Cultures",
     content:
       "Découvrez notre riche catalogue de publications. Explorez nos notes d'analyses approfondies, nos dossiers thématiques détaillés ainsi que nos fiches et rapports de renseignement pour une compréhension stratégique des enjeux contemporains.",
-    image:
-      "bg-[url('/publication-banner.webp')] bg-cover bg-center bg-no-repeat",
+    src: "/publication-banner.webp",
   };
 
   const offset = page ? (parseInt(page) - 1) * 9 : 0;

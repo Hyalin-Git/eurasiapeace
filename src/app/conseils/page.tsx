@@ -16,9 +16,7 @@ export default async function Conseils() {
     title: "Conseils & Consultance",
     content:
       "Comprendre et décider face aux enjeux internationaux d'aujourd'hui et de demain",
-    image: "bg-[url('/banner/conseils-banner.webp')]",
-    className:
-      "before:bg-[linear-gradient(to_right,_#031e42_14%,_#355b7c0d_85%)]",
+    src: "/banner/conseils-banner.webp",
   };
 
   const servicesData = [

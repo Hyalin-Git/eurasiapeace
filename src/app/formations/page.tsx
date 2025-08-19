@@ -64,8 +64,7 @@ export default async function FormationsPage({
     title: "Nos formations",
     content:
       "Le Centre de formation interdisciplinaire d'EurasiaPeace à dominante géopolitique  regroupe des chercheurs et professionnels  pour proposer un catalogue de formation diversifié en cours d'élaboration et qui s'oriente autour de plusieurs axes distincts, complémentaires et cohérents avec l'activité de recherche de notre think-tank.",
-    image:
-      "bg-[url('/banner/formation-banner.webp')] bg-cover bg-center bg-no-repeat",
+    src: "/banner/formation-banner.webp",
   };
 
   const offset = page ? (parseInt(page) - 1) * 9 : 0;

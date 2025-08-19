@@ -37,7 +37,7 @@ export default function FormationAside({
   const tagContent = niveauformation ? niveauformation : "Aucun niveau requis";
 
   return (
-    <div className="sticky top-35 bg-white p-6 rounded-lg border border-gray-100 shadow-xs">
+    <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-xs">
       {/* Header */}
       <div>
         <h3 className="text-xl font-bold line-clamp-1 mb-2">
@@ -64,24 +64,40 @@ export default function FormationAside({
             </li>
             <li>
               <Users size={16} />
-              {modalites?.nombreParticipants} personnes maximum
+              {modalites?.nombreParticipants} personnes
             </li>
             <li>
               <FastForward size={16} />
               {rythme}
             </li>
           </ul>
+
           <span className="text-md font-bold">Particuliers</span>
-          <ul className="flex flex-col gap-1 [&_li]:text-text-secondary [&_li]:text-sm [&_li]:flex [&_li]:items-center [&_li]:gap-2 mt-2 mb-2">
-            {!isEmpty(recapitulatif) &&
-              recapitulatif.map((date, idx) => (
+          {!isEmpty(recapitulatif) ? (
+            <ul className="flex flex-col gap-1 [&_li]:text-text-secondary [&_li]:text-sm [&_li]:flex [&_li]:items-center [&_li]:gap-2 mt-2 mb-2">
+              {recapitulatif.map((date, idx) => (
                 <li key={idx}>
                   <Calendar size={16} />
-                  {moment(date.dateFormation).format("dddd D MMMM à HH:mm") +
-                    "h"}
+                  du{" "}
+                  {moment(date?.startingDate).utc().format("ddd D MMM à HH:mm")}
+                  {date?.endingDate && (
+                    <>
+                      {" au " +
+                        moment(date.endingDate)
+                          .utc()
+                          .format("ddd D MMM à HH:mm")}
+                    </>
+                  )}
                 </li>
               ))}
-          </ul>
+            </ul>
+          ) : (
+            <span className="flex gap-2 mt-2 mb-2 text-sm text-text-secondary">
+              <Calendar size={16} />
+              Aucune dates disponibles
+            </span>
+          )}
+
           <span className="text-md font-bold">Entreprises</span>
           <ul className="[&_li]:text-text-secondary [&_li]:text-sm [&_li]:flex [&_li]:items-center [&_li]:gap-2 mt-2">
             <li>
@@ -90,6 +106,7 @@ export default function FormationAside({
             </li>
           </ul>
         </div>
+
         {formateur && (
           <div className="bg-background-secondary p-4 border border-gray-200 rounded-lg">
             <span className="text-md font-bold">Formateur</span>
