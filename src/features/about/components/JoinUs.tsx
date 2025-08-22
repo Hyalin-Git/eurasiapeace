@@ -7,7 +7,7 @@ export default async function JoinUs() {
   return (
     <section className="text-center">
       <div className="bg-background-light-secondary p-8 rounded-lg">
-        <h2 className="text-2xl font-playfair font-bold text-text-primary mb-6">
+        <h2 className="font-playfair font-bold text-text-primary mb-6">
           Rejoindre EurasiaPeace
         </h2>
         <p className="text-text-secondary mb-6">

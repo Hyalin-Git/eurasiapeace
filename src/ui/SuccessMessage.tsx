@@ -7,7 +7,9 @@ export default function SuccessMessage({
 }) {
   return (
     <div className="bg-green-100 p-2 rounded-lg my-4">
-      <i className="block text-green-800 text-xs text-center">{children}</i>
+      <p className="block text-green-800 text-xs text-center italic">
+        {children}
+      </p>
     </div>
   );
 }

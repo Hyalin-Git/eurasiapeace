@@ -36,7 +36,7 @@ export default async function Checkout({
       {success && (
         <div className="flex flex-col justify-center items-center gap-2 h-full">
           <CircleCheck size={220} className="text-midnight-green" />
-          <h1 className="text-2xl font-bold">
+          <h1 className="font-bold">
             Votre abonnement a été activé avec succès
           </h1>
 
@@ -65,7 +65,7 @@ export default async function Checkout({
       {canceled && (
         <div className="flex flex-col justify-center items-center gap-2 h-full">
           <CircleX size={220} className="text-red-500" />
-          <h1 className="text-2xl font-bold">Paiement annulé</h1>
+          <h1 className="font-bold">Paiement annulé</h1>
 
           <p className="text-center max-w-md text-gray-500">
             Vous pouvez retourner à la page d&apos;accueil ou revenir à la page

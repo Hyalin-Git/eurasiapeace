@@ -120,9 +120,7 @@ export default async function Conseils() {
           <div className="[&_h2]:text-2xl [&_h2]:font-medium !py-0 [&>div>div]:lg:items-center">
             <div className="flex items-start gap-4">
               <Eye size={24} className="text-midnight-green  sm:block" />
-              <h2 className="text-4xl font-bold">
-                Géopolitique appliquée à vos enjeux
-              </h2>
+              <h2 className="font-bold">Géopolitique appliquée à vos enjeux</h2>
             </div>
             <p
               className={`text-black/50 mt-2 mb-10 text-lg max-w-4xl hidden`}
@@ -265,7 +263,7 @@ export default async function Conseils() {
 
       <section className="container flex items-center justify-center flex-col gap-4 my-40 mx-100%">
         <div className="flex items-center justify-center flex-col gap-4 bg-midnight-green max-w-175 p-8 rounded-lg w-full">
-          <h2 className="text-white text-3xl sm:text-4xl text-center">
+          <h2 className="text-white text-center">
             Discutons de vos enjeux, en{" "}
             <span className="text-btn-gold whitespace-nowrap">
               toute confidentialité

@@ -3,12 +3,15 @@ import { Error } from "@/types";
 
 //  MailPit config
 const transporter = nodemailer.createTransport({
-  host: "in-v3.mailjet.com",
-  port: 587,
-  auth: {
-    user: `${process.env.MAILJET_API_KEY}`,
-    pass: `${process.env.MAILJET_API_SECRET}`,
-  },
+  host: "localhost",
+  port: 1025,
+  secure: false,
+  // host: "in-v3.mailjet.com",
+  // port: 587,
+  // auth: {
+  //   user: `${process.env.MAILJET_API_KEY}`,
+  //   pass: `${process.env.MAILJET_API_SECRET}`,
+  // },
 } as nodemailer.TransportOptions);
 
 const colors = {

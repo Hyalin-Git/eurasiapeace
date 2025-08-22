@@ -34,9 +34,7 @@ export default function Banner({
 
       <div className="container flex flex-col gap-4">
         <BreadCrumb />
-        <h1 className="text-white text-4xl sm:text-4xl font-medium max-w-3xl">
-          {title}
-        </h1>
+        <h1 className="text-white font-medium max-w-3xl">{title}</h1>
         {content && (
           <p className="text-white/80 text-lg max-w-[800px] hidden sm:block ">
             {content}

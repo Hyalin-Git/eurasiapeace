@@ -11,17 +11,19 @@ export default function ServicesCard({
   classNameToChild: string;
 }) {
   return (
-    <Link
-      key={service?.id}
-      href={service?.href}
-      className={`group border border-gray-200 rounded-xl  hover:shadow-sm transition-all duration-180 flex flex-col justify-between ${classNameToChild} ${service?.className?.background} ${service?.className?.backgroundHover}`}
+    <div
+      className={`relative group border border-gray-200 rounded-xl  hover:shadow-sm transition-all duration-180 flex flex-col justify-between ${classNameToChild} ${service?.className?.background} ${service?.className?.backgroundHover}`}
     >
       <div className="p-6">
         <div className="flex items-center gap-4">
           {service?.icon}
-          <h2 className="text-2xl font-bold text-text-primary">
+          <Link
+            key={service?.id}
+            href={service?.href}
+            className="font-bold text-text-primary text-2xl before:content-[''] before:absolute before:inset-0 before:z-1 before:left-0 before:bottom-0 before:w-full before:h-full"
+          >
             {service?.title}
-          </h2>
+          </Link>
         </div>
         <p className="mt-2 text-text-primary">{service?.description}</p>
       </div>
@@ -37,6 +39,6 @@ export default function ServicesCard({
           />
         </Button>
       </div>
-    </Link>
+    </div>
   );
 }

@@ -14,7 +14,7 @@ export default async function NoCommitteeMembersFound() {
         />
       </div>
 
-      <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+      <h2 className="font-semibold text-gray-800 mb-3">
         Aucun membre du comité disponible
       </h2>
 

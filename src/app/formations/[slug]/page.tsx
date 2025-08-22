@@ -10,10 +10,10 @@ import Overview from "@/features/formations/components/Overview";
 import Objectives from "@/features/formations/components/Objectives";
 import Programme from "@/features/formations/components/Programme";
 import Modalities from "@/features/formations/components/Modalities";
-import FormationAside from "@/features/formations/components/FormationAside";
 import FormationReviews from "@/features/formations/components/FormationReviews";
 import { isEmpty } from "@/utils/isEmpty";
 import Evaluations from "@/features/formations/components/Evaluations";
+import FormationRecap from "@/features/formations/components/FormationRecap";
 
 export default async function FormationPage({
   params,
@@ -39,6 +39,8 @@ export default async function FormationPage({
 
   const evaluations =
     formation?.singleFormations?.evaluations?.evaluationsBoxes || [];
+  const baremePdf =
+    formation?.singleFormations?.evaluations?.baremePdf?.node?.filePath;
 
   return (
     <div>
@@ -64,7 +66,7 @@ export default async function FormationPage({
           <Programme formation={formation} />
 
           {/* Évaluation */}
-          <Evaluations evaluations={evaluations} />
+          <Evaluations evaluations={evaluations} baremePdf={baremePdf} />
 
           {/* Modalités */}
           <Modalities formation={formation} />
@@ -73,7 +75,7 @@ export default async function FormationPage({
         {/* Aside */}
         <aside className="w-full lg:w-1/3 ">
           <div className="flex flex-col gap-8 sticky top-30">
-            <FormationAside formation={formation} />
+            <FormationRecap formation={formation} />
 
             {!isEmpty(formation?.singleFormations?.testimonials || []) && (
               <FormationReviews

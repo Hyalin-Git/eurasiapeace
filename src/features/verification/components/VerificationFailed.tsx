@@ -7,7 +7,7 @@ export default function VerificationFailed() {
       <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
         <X className="w-8 h-8 text-red-600" />
       </div>
-      <h1 className="text-2xl font-bold text-text-primary mb-2">
+      <h1 className="font-bold text-text-primary mb-2">
         Lien de vérification introuvable
       </h1>
       <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">

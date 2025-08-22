@@ -24,9 +24,7 @@ const comitees = [
 export default async function Committees() {
   return (
     <section className="text-left mb-20 relative">
-      <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
-        Nos comités
-      </h2>
+      <h2 className="font-bold text-text-primary mb-4">Nos comités</h2>
       <div className="w-[30%] min-w-55 h-0.5 bg-gradient-to-r from-midnight-green to-btn-force-blue my-6"></div>
       <p className="text-text-secondary max-w-2xl text-lg">
         Découvrez les équipes d&apos;experts qui garantissent l&apos;excellence

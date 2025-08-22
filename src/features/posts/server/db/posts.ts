@@ -206,6 +206,13 @@ export async function getPost(slug: string) {
               lastName
             }
           } 
+          acfFields {
+            pdf {
+              node {
+                filePath
+              }
+            }
+          }
           wordCount
           readingTime
           contenuPublic {

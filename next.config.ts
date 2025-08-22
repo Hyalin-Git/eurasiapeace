@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/media/:path*",
+        destination: "https://api-eura.akdigital.fr/wp-content/uploads/:path*",
+      },
+    ];
+  },
 
   images: {
     remotePatterns: [

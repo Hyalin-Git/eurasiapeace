@@ -18,7 +18,7 @@ export default async function NoPostsFound({
         />
       </div>
 
-      <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+      <h2 className="font-semibold text-gray-800 mb-3">
         {hasFilters
           ? "Aucunes publications trouvées"
           : "Aucune publication disponible"}

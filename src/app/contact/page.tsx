@@ -85,7 +85,7 @@ export default function Contact() {
       <Banner BannerProps={BannerProps} />
       <div className="container flex flex-col lg:flex-row gap-20 lg:gap-2 justify-between py-20">
         <div className="flex flex-col gap-6 max-w-lg">
-          <h2 className="text-3xl font-semibold">Contactez-nous</h2>
+          <h2 className="font-semibold">Contactez-nous</h2>
           <p>
             Chez EurasiaPeace, nous croyons au dialogue, à la coopération et à
             l&apos;échange. Que vous soyez un lecteur, un partenaire potentiel,

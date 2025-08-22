@@ -32,7 +32,7 @@ export default async function Activities() {
 
   return (
     <section className="mb-16">
-      <h2 className="text-3xl md:text-4xl font-playfair font-bold text-text-primary mb-8 text-center">
+      <h2 className="font-playfair font-bold text-text-primary mb-8 text-center">
         Nos Activités
       </h2>
 

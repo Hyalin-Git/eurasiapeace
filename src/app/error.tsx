@@ -19,8 +19,8 @@ export default function Error({
   return (
     <div className="min-h-screen bg-background-light-primary flex items-center justify-center px-4">
       <div className="flex flex-col items-center text-center">
-        <h1 className="text-6xl font-bold text-primary mb-4">500</h1>
-        <h2 className="text-3xl font-semibold text-gray-800 mb-4">
+        <h1 className="font-bold text-primary mb-4">500</h1>
+        <h2 className="font-semibold text-gray-800 mb-4">
           Une erreur est survenue
         </h2>
         <p className="text-gray-600 mb-8">Veuillez réessayer plus tard.</p>

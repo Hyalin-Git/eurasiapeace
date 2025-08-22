@@ -40,7 +40,7 @@ export default function Testimonials({
             size={40}
             className="text-midnight-green fill-midnight-green"
           />
-          <h2 className="text-2xl lg:text-3xl font-medium">
+          <h2 className="font-medium">
             <span className="lg:whitespace-nowrap">Avis de nos</span>{" "}
             partenaires
           </h2>

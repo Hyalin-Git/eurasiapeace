@@ -11,9 +11,7 @@ export default async function ConseilScientifique() {
       <section className="bg-headband py-12">
         <div className="container px-4">
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl text-white font-bold mb-4">
-              Conseil Scientifique
-            </h1>
+            <h1 className="text-white font-bold mb-4">Conseil Scientifique</h1>
             <p className="text-lg md:text-xl text-white">
               Les garants de la rigueur académique d&apos;EurasiaPeace
             </p>

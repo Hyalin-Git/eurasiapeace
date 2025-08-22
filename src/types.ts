@@ -33,6 +33,13 @@ export interface Article {
       altText: string;
     };
   };
+  acfFields?: {
+    pdf: {
+      node: {
+        filePath: string;
+      };
+    };
+  };
   author: {
     node: {
       avatar: {
@@ -117,7 +124,7 @@ export interface Formation {
       }[];
       programmePdf: {
         node: {
-          link: string;
+          filePath: string;
         };
       };
     };
@@ -126,6 +133,11 @@ export interface Formation {
         evaluationTitle: string;
         evaluationDescription: string;
       }[];
+      baremePdf: {
+        node: {
+          filePath: string;
+        };
+      };
     };
     modalites: {
       boiteModalites: {

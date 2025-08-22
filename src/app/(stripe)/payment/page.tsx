@@ -48,7 +48,7 @@ export default async function SuccessPage({
           {STATUS_CONTENT_MAP[status as keyof typeof STATUS_CONTENT_MAP].icon}
         </div>
         <div className="text-center">
-          <h2 id="status-text" className="text-2xl font-bold">
+          <h2 id="status-text" className="font-bold">
             {STATUS_CONTENT_MAP[status as keyof typeof STATUS_CONTENT_MAP].text}
           </h2>
           <p className="text-lg mb-4">Nous avons bien reçu votre donation.</p>

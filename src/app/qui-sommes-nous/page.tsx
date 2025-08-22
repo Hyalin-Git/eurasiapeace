@@ -12,7 +12,7 @@ export default async function About() {
       <section className="bg-headband py-12">
         <div className="container px-4">
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl text-white font-playfair font-bold mb-4">
+            <h1 className="text-white font-playfair font-bold mb-4">
               À propos d&apos;EurasiaPeace
             </h1>
             <p className="text-lg md:text-xl text-white">
@@ -26,7 +26,7 @@ export default async function About() {
       <div className="container max-w-6xl px-4 py-12">
         {/* Que fait EurasiaPeace Section */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-playfair font-bold text-text-primary mb-8 text-center">
+          <h2 className="font-playfair font-bold text-text-primary mb-8 text-center">
             Que fait EurasiaPeace ?
           </h2>
 
@@ -85,7 +85,7 @@ export default async function About() {
 
         {/* Le Fondateur Section */}
         <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-playfair font-bold text-text-primary mb-8 text-center">
+          <h2 className="font-playfair font-bold text-text-primary mb-8 text-center">
             Le Fondateur
           </h2>
 

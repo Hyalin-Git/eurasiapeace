@@ -134,3 +134,33 @@ export const passwordSchema = z
       });
     }
   });
+
+export const formationSchema = z.object({
+  firstName: z
+    .string()
+    .min(2, "Le prénom saisi est invalide")
+    .max(50, "Le prénom saisi est invalide"),
+  lastName: z
+    .string()
+    .min(2, "Le nom saisi est invalide")
+    .max(50, "Le nom saisi est invalide"),
+  email: z
+    .string()
+    .min(1, "L'adresse email est requise")
+    .email("Adresse email invalide")
+    .max(100, "L'adresse email est trop longue"),
+  phone: z
+    .string()
+    .regex(/^0[1-9] \d{2} \d{2} \d{2} \d{2}$/, "Numéro de téléphone invalide")
+    .length(14, "Le numéro doit contenir exactement 14 caractères"),
+  message: z
+    .string()
+    .min(20, "Le message saisi est trop court (20 caractères min)")
+    .max(3000, "Le message saisi est trop long (3000 caractères max)"),
+  rgpd: z
+    .string()
+    .nullable()
+    .refine((val) => val === "on", {
+      message: "Vous devez accepter la politique de confidentialité",
+    }),
+});

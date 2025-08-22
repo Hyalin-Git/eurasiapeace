@@ -14,9 +14,7 @@ export default async function SignUp({
   return (
     <div className="container h-full flex flex-col justify-center items-center py-15">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold">
-          Créer votre compte
-        </h2>
+        <h2 className="mt-6 text-center font-extrabold">Créer votre compte</h2>
         <p className="mt-2 text-center text-sm">
           Rejoignez la communauté EurasiaPeace
         </p>

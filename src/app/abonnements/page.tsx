@@ -5,9 +5,7 @@ export default function Abonnements() {
     <div className="container bg-gray-50 py-12">
       <div className="max-w-10xl px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">
-            S&apos;abonner à EurasiaPeace
-          </h1>
+          <h1 className="font-bold mb-4">S&apos;abonner à EurasiaPeace</h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Bienvenue sur la page d&apos;abonnement à EurasiaPeace. En
             souscrivant à ces abonnements, vous vous engagez à accepter et à
@@ -16,7 +14,7 @@ export default function Abonnements() {
         </div>
 
         <div className="mb-16">
-          <h2 className="text-2xl font-bold text-center mb-16">
+          <h2 className="font-bold text-center mb-16">
             Nos offres d&apos;abonnement
           </h2>
 

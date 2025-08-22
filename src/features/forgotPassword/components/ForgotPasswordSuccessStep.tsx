@@ -14,7 +14,7 @@ export default function ForgotPasswordSuccessStep() {
       </div>
 
       {/* Titre principal */}
-      <h2 className="text-2xl font-bold text-text-primary text-center mb-4">
+      <h2 className="font-bold text-text-primary text-center mb-4">
         Mot de passe réinitialisé !
       </h2>
 

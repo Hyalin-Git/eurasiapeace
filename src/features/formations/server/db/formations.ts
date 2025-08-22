@@ -182,7 +182,7 @@ export async function getFormation(slug: string) {
               }
               programmePdf {
                 node {
-                  link
+                 filePath
                 }
               }
             }
@@ -190,6 +190,11 @@ export async function getFormation(slug: string) {
               evaluationsBoxes {
                 evaluationTitle
                 evaluationDescription
+              }
+              baremePdf {
+                node {
+                  filePath
+                }
               }
             }
             modalites {

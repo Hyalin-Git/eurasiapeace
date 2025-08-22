@@ -37,7 +37,7 @@ export default function Article({ element }: { element: ArticleInterface }) {
       <Tags tags={tags} className="mb-6" />
 
       {/* Titre */}
-      <h1 className="text-4xl font-bold text-gray-900 mb-6 font-playfair leading-tight">
+      <h1 className="font-bold text-gray-900 mb-6 font-playfair leading-tight">
         {title}
       </h1>
 

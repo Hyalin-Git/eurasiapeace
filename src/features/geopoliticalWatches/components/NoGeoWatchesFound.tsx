@@ -18,7 +18,7 @@ export default async function NoGeoWatchesFound({
         />
       </div>
 
-      <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+      <h2 className="font-semibold text-gray-800 mb-3">
         {hasFilters
           ? "Aucune veille géopolitique trouvée"
           : "Aucune veille géopolitique disponible"}

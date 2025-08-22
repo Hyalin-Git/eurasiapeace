@@ -11,7 +11,7 @@ export default async function ComiteEdition() {
       <section className="bg-headband py-12">
         <div className="container px-4">
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl text-white font-playfair font-bold mb-4">
+            <h1 className="text-white font-playfair font-bold mb-4">
               Comité d&apos;Édition
             </h1>
             <p className="text-lg md:text-xl text-white">

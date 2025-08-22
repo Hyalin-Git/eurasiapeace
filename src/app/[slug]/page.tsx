@@ -19,7 +19,7 @@ export default async function WordpressPage({
   return (
     <div className="container py-10">
       <div className="prose-lg prose-slate max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-gray-900 text-center">
+        <h1 className="font-bold mb-8 text-gray-900 text-center">
           {data?.title}
         </h1>
         <div

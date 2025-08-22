@@ -16,12 +16,13 @@ import Link from "next/link";
 import moment from "moment";
 import "moment/locale/fr";
 import { useState } from "react";
-import { createPortal } from "react-dom";
-import RegisterModal from "./RegisterModal";
 import Tag from "@/components/tags/Tag";
 import { Formation } from "@/types";
+import Modal from "@/components/Modal";
+import Portal from "@/components/Portal";
+import FormationForm from "./FormationForm";
 
-export default function FormationAside({
+export default function FormationRecap({
   formation,
 }: {
   formation: Formation;
@@ -33,6 +34,7 @@ export default function FormationAside({
   const niveauformation = formation?.niveauxDeFormation?.nodes[0]?.name;
   const formateur = formation?.singleFormations?.formateur?.nodes[0];
   const recapitulatif = formation?.singleFormations?.recapitulatif?.dates;
+  const programme = formation?.singleFormations?.programmeFormation;
 
   const tagContent = niveauformation ? niveauformation : "Aucun niveau requis";
 
@@ -135,13 +137,17 @@ export default function FormationAside({
           </Link>
         </div>
         <div className="flex flex-col justify-center sm:flex-row lg:flex-col gap-2">
-          <Button
-            type="button"
-            className="w-full sm:w-fit lg:w-full bg-transparent! border border-btn-gold text-btn-gold! hover:bg-btn-gold! hover:text-white! transition-all duration-300"
+          <a
+            href={`/media${
+              programme?.programmePdf?.node?.filePath.split("uploads")[1]
+            }`}
+            target="_blank"
+            download
+            className="flex justify-center items-center gap-2 w-full sm:w-fit lg:w-full px-4 py-2 rounded-md border border-btn-gold text-btn-gold! hover:bg-btn-gold! hover:text-white! transition-all duration-300"
           >
-            <FileText size={18} />
+            <FileText size={16} />
             Télécharger le programme
-          </Button>
+          </a>
 
           <Button
             type="button"
@@ -153,14 +159,16 @@ export default function FormationAside({
           </Button>
         </div>
       </div>
-      {isOpen &&
-        createPortal(
-          <RegisterModal
+      {isOpen && (
+        <Portal>
+          <Modal
             title={`Je m'inscris à ${formation?.title.toLowerCase()}`}
             setIsOpen={setIsOpen}
-          />,
-          document.body
-        )}
+          >
+            <FormationForm title={formation?.title} />
+          </Modal>
+        </Portal>
+      )}
     </div>
   );
 }

@@ -7,7 +7,7 @@ export default function VerificationExpired() {
       <div className="mx-auto w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
         <Clock className="w-8 h-8 text-orange-600" />
       </div>
-      <h1 className="text-2xl font-bold text-text-primary mb-2">
+      <h1 className="font-bold text-text-primary mb-2">
         Lien de vérification expiré
       </h1>
       <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
