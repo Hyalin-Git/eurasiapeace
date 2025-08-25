@@ -33,7 +33,6 @@ export async function generateMetadata({
     `Découvrez notre analyse approfondie sur ${post.title}. Publication géopolitique spécialisée sur les enjeux eurasiatiques.`;
   const imageUrl = post.featuredImage?.node?.sourceUrl || "/featured-image.jpg";
   const publishedDate = post.date;
-  const modifiedDate = post.modified;
 
   // Extraire les catégories et tags pour les mots-clés
   const categories =
@@ -63,7 +62,6 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime: publishedDate,
-      modifiedTime: modifiedDate,
       authors: ["EurasiaPeace"],
       section: categories[0] || "Publications",
       tags: tags,

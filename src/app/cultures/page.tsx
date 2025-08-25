@@ -10,6 +10,75 @@ import { Suspense } from "react";
 import { CulturesSkeletons } from "@/features/cultures/components/CultureSkeletons";
 import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 import Paginations from "@/components/pagination/Paginations";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  // Récupérer les types de contenus et tags pour les mots-clés
+  const { data: typesDeCulture } = await getTypesDeCulture();
+  const { data: tags } = await getTags();
+
+  // Extraire les noms des types de contenus et tags
+  const contentTypeNames =
+    typesDeCulture?.map((type: { name: string; slug: string }) => type.name) ||
+    [];
+  const tagNames =
+    tags?.map((tag: { name: string; slug: string }) => tag.name) || [];
+
+  const keywords = [
+    "podcasts",
+    "webinaires",
+    "la voix des pros",
+    "experts géopolitiques",
+    "contenus audio",
+    "analyses d'experts",
+    "Eurasie",
+    "géopolitique",
+    "conférences",
+    "interviews d'experts",
+    "éducation géopolitique",
+    ...contentTypeNames,
+    ...tagNames.slice(0, 10), // Limiter le nombre de tags
+  ];
+
+  return {
+    title: "Cultures - EurasiaPeace",
+    description:
+      "Découvrez nos podcasts, webinaires et interviews d'experts géopolitiques. Écoutez la voix des professionnels et participez à nos formations en ligne sur les enjeux eurasiatiques.",
+    keywords,
+    openGraph: {
+      title: "Cultures - EurasiaPeace",
+      description:
+        "Accédez à nos contenus audio exclusifs : podcasts géopolitiques, webinaires éducatifs et interviews d'experts sur l'Eurasie.",
+      type: "website",
+      images: [
+        {
+          url: "/publication-banner.webp",
+          width: 1200,
+          height: 630,
+          alt: "Podcasts, Webinaires & La Voix des Pros - EurasiaPeace",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Cultures - EurasiaPeace",
+      description:
+        "Découvrez nos podcasts géopolitiques, webinaires et interviews d'experts sur l'Eurasie.",
+      images: ["/publication-banner.webp"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
+}
 
 export default async function CulturesPage({
   searchParams,

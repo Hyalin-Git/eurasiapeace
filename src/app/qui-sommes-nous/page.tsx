@@ -1,11 +1,71 @@
-"use server";
-
 import Activities from "@/features/about/components/Activities";
 import Committees from "@/features/about/components/Committees";
 import JoinUs from "@/features/about/components/JoinUs";
 import Image from "next/image";
+import { Metadata } from "next";
 
-export default async function About() {
+export const metadata: Metadata = {
+  title: "Qui Sommes-Nous - EurasiaPeace",
+  description:
+    "Découvrez EurasiaPeace, Centre de Réflexion et de Prospective sur la Paix en Eurasie. Think-tank interdisciplinaire menant des activités de recherche, formation, conseils et publication sur la résolution de conflits internationaux.",
+  keywords: [
+    "EurasiaPeace",
+    "qui sommes nous",
+    "à propos",
+    "think-tank",
+    "centre de réflexion",
+    "prospective",
+    "paix en Eurasie",
+    "recherche géopolitique",
+    "résolution de conflits",
+    "construction de la paix",
+    "relations internationales",
+    "anthropologie",
+    "géopolitique",
+    "sciences politiques",
+    "études des frontières",
+    "formation géopolitique",
+    "conseils stratégiques",
+    "publications",
+    "interdisciplinaire",
+    "fondateur",
+    "expertise Eurasie",
+  ],
+  openGraph: {
+    title: "Qui Sommes-Nous - EurasiaPeace",
+    description:
+      "Think-tank innovant spécialisé dans la paix en Eurasie. Recherche interdisciplinaire, formation et conseils sur la résolution de conflits internationaux.",
+    type: "website",
+    images: [
+      {
+        url: "/morgan.jpg",
+        width: 1200,
+        height: 630,
+        alt: "EurasiaPeace - Centre de Réflexion sur la Paix en Eurasie",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Qui Sommes-Nous - EurasiaPeace",
+    description:
+      "Think-tank interdisciplinaire dédié à la paix en Eurasie. Recherche, formation et expertise géopolitique.",
+    images: ["/morgan.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+export default function About() {
   return (
     <div>
       {/* Header Section */}

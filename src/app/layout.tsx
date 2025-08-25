@@ -8,28 +8,83 @@ import { AuthProvider } from "@/context/AuthProvider";
 import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
-  title:
-    "EurasiaPeace - Comprendre et construire des ponts entre l'Europe et l'Asie",
+  title: {
+    default: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
+    template: "%s - EurasiaPeace",
+  },
   description:
-    "Organisation dédiée à la recherche, l'analyse et le dialogue pour promouvoir la paix et la compréhension entre l'Europe et l'Asie",
+    "Think-tank spécialisé dans l'analyse géopolitique de l'Eurasie. Centre de réflexion et de prospective sur la paix, proposant recherches, formations, conseils et publications sur les enjeux eurasiatiques.",
   keywords: [
     "EurasiaPeace",
-    "Think Tank",
-    "Géopolitique",
-    "Recherche",
-    "Analyse",
+    "think-tank",
+    "géopolitique",
+    "Eurasie",
+    "recherche",
+    "analyse géopolitique",
+    "centre de réflexion",
+    "prospective",
+    "paix",
+    "formations géopolitiques",
+    "conseils stratégiques",
+    "publications",
+    "Europe",
+    "Asie",
+    "relations internationales",
+    "sécurité internationale",
+    "veilles géopolitiques",
+    "cultures",
+    "dialogue interculturel",
+    "expertise géopolitique",
   ],
+  authors: [{ name: "EurasiaPeace" }],
+  creator: "EurasiaPeace",
+  publisher: "EurasiaPeace",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://www.eurasiapeace.org"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title:
-      "EurasiaPeace - Comprendre et construire des ponts entre l'Europe et l'Asie",
+    title: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
     description:
-      "Organisation dédiée à la recherche, l'analyse et le dialogue pour promouvoir la paix et la compréhension entre l'Europe et l'Asie",
+      "Centre de réflexion spécialisé dans l'analyse géopolitique de l'Eurasie. Recherches, formations et conseils sur les enjeux de paix et sécurité internationale.",
     url: "https://www.eurasiapeace.org",
     siteName: "EurasiaPeace",
+    type: "website",
+    locale: "fr_FR",
+    images: [
+      {
+        url: "/eurasia-full-logo.webp",
+        width: 1200,
+        height: 630,
+        alt: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
+    description:
+      "Centre de réflexion spécialisé dans l'analyse géopolitique de l'Eurasie.",
+    images: ["/eurasia-full-logo.webp"],
+    creator: "@EurasiaPeace",
+    site: "@EurasiaPeace",
   },
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

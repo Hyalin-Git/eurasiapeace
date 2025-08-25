@@ -1,10 +1,58 @@
-"use server";
-
 import CommitteMembers from "@/features/about/components/CommitteeMembers";
 import { CommitteesMemberSkeletons } from "@/features/about/components/CommitteeMemberSkeleton";
 import { Suspense } from "react";
+import { Metadata } from "next";
 
-export default async function ConseilScientifique() {
+export const metadata: Metadata = {
+  title: "Conseil Scientifique - EurasiaPeace",
+  description:
+    "Découvrez le Conseil Scientifique d'EurasiaPeace, garants de la rigueur académique. Chercheurs et experts qui supervisent la qualité scientifique de nos recherches géopolitiques sur l'Eurasie.",
+  keywords: [
+    "conseil scientifique",
+    "rigueur académique",
+    "EurasiaPeace",
+    "chercheurs",
+    "experts scientifiques",
+    "spécialistes Eurasie",
+    "supervision scientifique",
+    "recherche géopolitique",
+    "qualité scientifique",
+    "think-tank",
+    "recherche académique",
+    "expertise scientifique",
+    "géopolitique eurasiatique",
+    "comité scientifique",
+    "académiques",
+    "validation scientifique",
+    "méthodologie de recherche",
+  ],
+  openGraph: {
+    title: "Conseil Scientifique - EurasiaPeace",
+    description:
+      "Rencontrez les chercheurs et experts du Conseil Scientifique d'EurasiaPeace qui garantissent la rigueur de nos recherches géopolitiques.",
+    type: "website",
+    locale: "fr_FR",
+  },
+  twitter: {
+    card: "summary",
+    title: "Conseil Scientifique - EurasiaPeace",
+    description:
+      "Chercheurs et experts du Conseil Scientifique garantissant la rigueur académique de nos recherches géopolitiques.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+export default function ConseilScientifique() {
   return (
     <div>
       {/* Header Section */}

@@ -10,6 +10,75 @@ import GeoWatches from "@/features/geopoliticalWatches/components/GeoWatches";
 import { GeoWatchesSkeletons } from "@/features/geopoliticalWatches/components/GeoWatchesSkeletons";
 import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 import Paginations from "@/components/pagination/Paginations";
+import { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  // Récupérer les types de veilles géopolitiques pour les mots-clés
+  const { data: geopoliticalWatchTypes } = await getGeopoliticalWatchesTypes();
+  const { data: tags } = await getTags();
+
+  // Extraire les noms des catégories et tags
+  const categoryNames =
+    geopoliticalWatchTypes?.map(
+      (type: { name: string; slug: string }) => type.name
+    ) || [];
+  const tagNames =
+    tags?.map((tag: { name: string; slug: string }) => tag.name) || [];
+
+  const keywords = [
+    "veilles géopolitiques",
+    "actualité géopolitique",
+    "Eurasie",
+    "sécurité internationale",
+    "analyses stratégiques",
+    "intelligence géopolitique",
+    "surveillance géopolitique",
+    "événements internationaux",
+    "tendances géopolitiques",
+    "monitoring stratégique",
+    ...categoryNames,
+    ...tagNames.slice(0, 10), // Limiter le nombre de tags pour éviter la surcharge
+  ];
+
+  return {
+    title: "Veilles Géopolitiques - EurasiaPeace",
+    description:
+      "Suivez l'actualité géopolitique eurasiatique grâce à nos veilles stratégiques. Analyses des événements, tendances et dynamiques de sécurité internationale en temps réel.",
+    keywords,
+    openGraph: {
+      title: "Veilles Géopolitiques - EurasiaPeace",
+      description:
+        "Restez informé des derniers développements géopolitiques en Eurasie avec nos veilles stratégiques et analyses en temps réel.",
+      type: "website",
+      images: [
+        {
+          url: "/world-map-banner.webp",
+          width: 1200,
+          height: 630,
+          alt: "Veilles Géopolitiques EurasiaPeace - Surveillance stratégique",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Veilles Géopolitiques - EurasiaPeace",
+      description:
+        "Suivez l'actualité géopolitique eurasiatique avec nos analyses stratégiques en temps réel.",
+      images: ["/world-map-banner.webp"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
+}
 
 export default async function GeopoliticalWatchesPage({
   searchParams,

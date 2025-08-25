@@ -8,6 +8,66 @@ import Image from "next/image";
 import Testimonials from "@/features/testimonials/components/Testimonials";
 import { getTestimonials } from "@/features/testimonials/server/db/testimonials";
 import LinkButton from "@/ui/LinkButton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Conseils & Consultance Géopolitique - EurasiaPeace",
+  description:
+    "Expertise géopolitique pour institutions publiques, entreprises et ONG. Analyse stratégique, veille sur-mesure, cartographie des risques et soutien à la décision dans un contexte international complexe.",
+  keywords: [
+    "conseils géopolitiques",
+    "consultance géopolitique",
+    "analyse stratégique",
+    "veille géopolitique",
+    "cartographie des risques",
+    "soutien à la décision",
+    "expertise internationale",
+    "géopolitique appliquée",
+    "consulting géopolitique",
+    "analyse pays",
+    "risques géopolitiques",
+    "institutions publiques",
+    "entreprises",
+    "ONG",
+    "organisations internationales",
+    "OSINT",
+    "HUMINT",
+    "renseignement",
+    "Eurasie",
+  ],
+  openGraph: {
+    title: "Conseils & Consultance Géopolitique - EurasiaPeace",
+    description:
+      "Accompagnement géopolitique personnalisé pour institutions, entreprises et organisations. Analyses stratégiques, veille sur-mesure et recommandations expertes.",
+    type: "website",
+    images: [
+      {
+        url: "/banner/conseils-banner.webp",
+        width: 1200,
+        height: 630,
+        alt: "Conseils & Consultance Géopolitique EurasiaPeace",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Conseils & Consultance Géopolitique - EurasiaPeace",
+    description:
+      "Expertise géopolitique pour décider face aux enjeux internationaux. Analyses, veille et recommandations stratégiques.",
+    images: ["/banner/conseils-banner.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 
 export default async function Conseils() {
   const { data: testimonials, success } = await getTestimonials();

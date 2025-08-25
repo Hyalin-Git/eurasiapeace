@@ -1,4 +1,61 @@
 import SubscriptionCards from "@/features/subscriptions/components/SubscriptionCards";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Abonnements - EurasiaPeace",
+  description:
+    "Découvrez nos offres d'abonnement EurasiaPeace. Accédez à divers contenus sur l'Eurasie. Abonnement Contributeur, Premium et Contributeur Spécial disponibles.",
+  keywords: [
+    "abonnements",
+    "abonnement EurasiaPeace",
+    "analyses géopolitiques premium",
+    "contenu exclusif",
+    "géopolitique Eurasie",
+    "formations géopolitiques",
+    "contributeur spécial",
+    "abonnement premium",
+    "analyses stratégiques",
+    "veilles géopolitiques",
+    "accès privilégié",
+    "expertise géopolitique",
+    "publications exclusives",
+    "dossiers thématiques",
+    "podcasts",
+    "webinaires",
+  ],
+  openGraph: {
+    title: "Abonnements - EurasiaPeace",
+    description:
+      "Rejoignez la communauté EurasiaPeace avec nos abonnements premium. Accès exclusif à divers contenus sur l'Eurasie.",
+    type: "website",
+    images: [
+      {
+        url: "/featured-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Abonnements EurasiaPeace - Accès premium à divers contenus",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Abonnements - EurasiaPeace",
+    description:
+      "Accédez aux analyses géopolitiques exclusives avec nos abonnements premium EurasiaPeace.",
+    images: ["/featured-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 
 export default function Abonnements() {
   return (
