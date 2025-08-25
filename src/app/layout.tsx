@@ -9,8 +9,9 @@ import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: {
-    default: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
-    template: "%s - EurasiaPeace",
+    default:
+      "EurasiaPeace - Centre de réflexion et de prospective sur la paix en Eurasie",
+    template: "%s | EurasiaPeace",
   },
   description:
     "Think-tank spécialisé dans l'analyse géopolitique de l'Eurasie. Centre de réflexion et de prospective sur la paix, proposant recherches, formations, conseils et publications sur les enjeux eurasiatiques.",
@@ -49,7 +50,8 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
+    title:
+      "EurasiaPeace - Centre de réflexion et de prospective sur la paix en Eurasie",
     description:
       "Centre de réflexion spécialisé dans l'analyse géopolitique de l'Eurasie. Recherches, formations et conseils sur les enjeux de paix et sécurité internationale.",
     url: process.env.NEXT_PUBLIC_CLIENT_URL,
@@ -61,13 +63,14 @@ export const metadata: Metadata = {
         url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
         width: 1200,
         height: 630,
-        alt: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
+        alt: "EurasiaPeace - Centre de réflexion et de prospective sur la paix en Eurasie",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
+    title:
+      "EurasiaPeace - Centre de réflexion et de prospective sur la paix en Eurasie",
     description:
       "Centre de réflexion spécialisé dans l'analyse géopolitique de l'Eurasie.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

@@ -50,9 +50,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Accédez à nos contenus audio exclusifs : podcasts géopolitiques, webinaires éducatifs et interviews d'experts sur l'Eurasie.",
       type: "website",
+      url: process.env.NEXT_PUBLIC_CLIENT_URL,
       images: [
         {
-          url: "/publication-banner.webp",
+          url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
           width: 1200,
           height: 630,
           alt: "Podcasts, Webinaires & La Voix des Pros - EurasiaPeace",
@@ -64,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Cultures - EurasiaPeace",
       description:
         "Découvrez nos podcasts géopolitiques, webinaires et interviews d'experts sur l'Eurasie.",
-      images: ["/publication-banner.webp"],
+      images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
     },
     robots: {
       index: true,

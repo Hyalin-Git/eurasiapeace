@@ -31,11 +31,21 @@ export const metadata: Metadata = {
     description:
       "Rencontrez les chercheurs et experts du Conseil Scientifique d'EurasiaPeace qui garantissent la rigueur de nos recherches géopolitiques.",
     type: "website",
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     locale: "fr_FR",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
+        width: 1200,
+        height: 630,
+        alt: "EurasiaPeace - Centre de Réflexion sur la Paix en Eurasie",
+      },
+    ],
   },
   twitter: {
     card: "summary",
     title: "Conseil Scientifique - EurasiaPeace",
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
     description:
       "Chercheurs et experts du Conseil Scientifique garantissant la rigueur académique de nos recherches géopolitiques.",
   },

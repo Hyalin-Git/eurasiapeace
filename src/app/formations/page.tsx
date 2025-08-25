@@ -69,9 +69,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Formez-vous avec notre centre de formation. Formations interdisciplinaires dispensées par des experts en eurasiatique.",
       type: "website",
+      url: process.env.NEXT_PUBLIC_CLIENT_URL,
       images: [
         {
-          url: "/banner/formation-banner.webp",
+          url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
           width: 1200,
           height: 630,
           alt: "Formations EurasiaPeace - Centre de formation interdisciplinaire",
@@ -83,7 +84,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Formations - EurasiaPeace",
       description:
         "Catalogue de formations interdisciplinaires proposées par des experts et chercheurs.",
-      images: ["/banner/formation-banner.webp"],
+      images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
     },
     robots: {
       index: true,

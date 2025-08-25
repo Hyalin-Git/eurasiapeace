@@ -31,12 +31,22 @@ export const metadata: Metadata = {
     description:
       "Rencontrez les experts du Comité d'Édition d'EurasiaPeace qui garantissent l'excellence de nos publications géopolitiques sur l'Eurasie.",
     type: "website",
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
+        width: 1200,
+        height: 630,
+        alt: "EurasiaPeace - Centre de Réflexion sur la Paix en Eurasie",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Comité d'Édition - EurasiaPeace",
     description:
       "Experts et académiques du Comité d'Édition garantissant l'excellence de nos publications géopolitiques.",
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
   },
   robots: {
     index: true,

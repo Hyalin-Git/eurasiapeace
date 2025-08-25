@@ -36,9 +36,10 @@ export const metadata: Metadata = {
     description:
       "Think-tank innovant spécialisé dans la paix en Eurasie. Recherche interdisciplinaire, formation et conseils sur la résolution de conflits internationaux.",
     type: "website",
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     images: [
       {
-        url: "/morgan.jpg",
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
         width: 1200,
         height: 630,
         alt: "EurasiaPeace - Centre de Réflexion sur la Paix en Eurasie",
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
     title: "Qui Sommes-Nous - EurasiaPeace",
     description:
       "Think-tank interdisciplinaire dédié à la paix en Eurasie. Recherche, formation et expertise géopolitique.",
-    images: ["/morgan.jpg"],
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/morgan.jpg`],
   },
   robots: {
     index: true,

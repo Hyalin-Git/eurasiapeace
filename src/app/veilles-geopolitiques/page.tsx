@@ -50,9 +50,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Restez informé des derniers développements géopolitiques en Eurasie avec nos veilles stratégiques et analyses en temps réel.",
       type: "website",
+      url: process.env.NEXT_PUBLIC_CLIENT_URL,
       images: [
         {
-          url: "/world-map-banner.webp",
+          url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/world-map-banner.webp`,
           width: 1200,
           height: 630,
           alt: "Veilles Géopolitiques EurasiaPeace - Surveillance stratégique",
@@ -64,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Veilles Géopolitiques - EurasiaPeace",
       description:
         "Suivez l'actualité géopolitique eurasiatique avec nos analyses stratégiques en temps réel.",
-      images: ["/world-map-banner.webp"],
+      images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/world-map-banner.webp`],
     },
     robots: {
       index: true,

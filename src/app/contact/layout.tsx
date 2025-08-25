@@ -2,7 +2,7 @@ import GoogleReCaptchaProvider from "@/context/GoogleReCaptchaProvider";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact - EurasiaPeace",
+  title: "Contact",
   description:
     "Contactez l'équipe EurasiaPeace. Dialogue, coopération et échange avec lecteurs, partenaires, chercheurs et professionnels. Email : contact@eurasiapeace.org - Téléphone : +33 (0)6 37 36 36 99",
   keywords: [
@@ -26,9 +26,10 @@ export const metadata: Metadata = {
     description:
       "Entrez en dialogue avec EurasiaPeace. Contactez notre équipe pour vos projets de coopération, recherche ou partenariat géopolitique.",
     type: "website",
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     images: [
       {
-        url: "/headband-contact.png",
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
         width: 1200,
         height: 630,
         alt: "Contact EurasiaPeace - Dialogue et coopération",
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
     title: "Contact - EurasiaPeace",
     description:
       "Contactez EurasiaPeace pour dialogue, coopération et échanges géopolitiques.",
-    images: ["/headband-contact.png"],
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
   },
   robots: {
     index: true,

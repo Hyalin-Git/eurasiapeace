@@ -26,9 +26,10 @@ export const metadata: Metadata = {
     description:
       "Soutenez la recherche géopolitique indépendante et la promotion de la paix en Eurasie. Dons déductibles avec reçu fiscal automatique.",
     type: "website",
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     images: [
       {
-        url: "/banner/contact-banner.webp",
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
         width: 1200,
         height: 630,
         alt: "Faire un don à EurasiaPeace - Soutenir la paix en Eurasie",
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
     title: "Faire un Don - EurasiaPeace",
     description:
       "Soutenez notre mission de recherche et promotion de la paix en Eurasie. Dons déductibles des impôts.",
-    images: ["/banner/contact-banner.webp"],
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
   },
   robots: {
     index: true,

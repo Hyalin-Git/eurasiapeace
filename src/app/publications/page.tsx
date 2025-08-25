@@ -29,9 +29,10 @@ export const metadata: Metadata = {
     description:
       "Accédez à notre collection d'analyses géopolitiques, de dossiers thématiques et de rapports stratégiques sur l'Eurasie.",
     type: "website",
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     images: [
       {
-        url: "/publication-banner.webp",
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
         width: 1200,
         height: 630,
         alt: "Publications EurasiaPeace - Analyses géopolitiques",
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     title: "Publications - EurasiaPeace",
     description:
       "Découvrez nos analyses approfondies sur les enjeux géopolitiques eurasiatiques.",
-    images: ["/publication-banner.webp"],
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
   },
   robots: {
     index: true,
