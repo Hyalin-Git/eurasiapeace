@@ -35,7 +35,7 @@ export default async function GeopoliticalWatchPage({
   return (
     <div className="flex justify-between container py-10">
       {/* Contenu principal */}
-      <div className="xl:max-w-3xl">
+      <div className="w-3/5">
         <BreadCrumb isBgDark={false} />
 
         <Article element={geopoliticalWatch} />
@@ -55,9 +55,13 @@ export default async function GeopoliticalWatchPage({
       </div>
 
       {/* Floating Sidebar - Articles liés */}
-      <RelatedArticles className="max-w-sm hidden xl:block bg-white rounded-lg shadow-lg p-4 mb-4 h-fit">
-        <CardsRow elements={relatedGeopoliticalWatches} />
-      </RelatedArticles>
+      <aside className="max-w-sm hidden xl:block">
+        <div className="flex flex-col gap-4 sticky top-30">
+          <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
+            <CardsRow elements={relatedGeopoliticalWatches} />
+          </RelatedArticles>
+        </div>
+      </aside>
     </div>
   );
 }

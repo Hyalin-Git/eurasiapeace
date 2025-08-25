@@ -139,10 +139,10 @@ export interface Service {
   icon: React.ReactNode;
   title: string;
   description: string;
-  button: {
+  button?: {
     label: string;
   };
-  href: string;
+  href?: string;
   className: {
     background: string;
     button: string;

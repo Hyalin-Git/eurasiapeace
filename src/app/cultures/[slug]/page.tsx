@@ -28,7 +28,7 @@ export default async function CulturePage({
     <div className="py-10">
       <div className="flex justify-between container">
         {/* Contenu principal */}
-        <div>
+        <div className="w-3/5">
           {/* Fil d'Ariane */}
           <BreadCrumb isBgDark={false} />
 
@@ -47,10 +47,14 @@ export default async function CulturePage({
         </div>
 
         {/* Floating Sidebar - Articles liés */}
-        <RelatedArticles className="max-w-sm hidden xl:block bg-white rounded-lg shadow-lg p-4 mb-4 h-fit">
-          <div></div>
-          {/* <CardsRow elements={relatedCultures} /> */}
-        </RelatedArticles>
+        <aside className="max-w-sm hidden xl:block">
+          <div className="flex flex-col gap-4 sticky top-30">
+            <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
+              <div></div>
+              {/* <CardsRow elements={relatedCultures} /> */}
+            </RelatedArticles>
+          </div>
+        </aside>
       </div>
     </div>
   );

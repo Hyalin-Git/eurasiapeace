@@ -3,11 +3,11 @@
 import Section from "@/components/Section";
 import Banner from "@/components/Banner";
 import ServicesCards from "@/components/cards/ServicesCards";
-import Button from "@/ui/Button";
 import { Eye, Landmark } from "lucide-react";
 import Image from "next/image";
 import Testimonials from "@/features/testimonials/components/Testimonials";
 import { getTestimonials } from "@/features/testimonials/server/db/testimonials";
+import LinkButton from "@/ui/LinkButton";
 
 export default async function Conseils() {
   const { data: testimonials, success } = await getTestimonials();
@@ -30,10 +30,6 @@ export default async function Conseils() {
       title: "Institutions publiques",
       description:
         "Analyse stratégique, cartographie des risques, soutien à la décision publique.",
-      button: {
-        label: `Échanger avec un expert institutionnel`,
-      },
-      href: "/publications",
       className: {
         background: "bg-btn-purple/5",
         backgroundHover: "hover:bg-btn-purple/8!",
@@ -51,10 +47,7 @@ export default async function Conseils() {
       title: "ONG et organisations internationales",
       description:
         "Veille terrain, compréhension des dynamiques locales, appui opérationnel.",
-      button: {
-        label: `Recevoir un brief opérationnel`,
-      },
-      href: "/publications",
+
       className: {
         background: "bg-btn-force-blue/5",
         backgroundHover: "hover:bg-btn-force-blue/8!",
@@ -72,10 +65,6 @@ export default async function Conseils() {
       title: "Entreprises et acteurs économiques",
       description:
         "Analyse pays, risques géopolitiques, soutien à l'implantation ou à l'export.",
-      button: {
-        label: `Obtenir un rapport géostratégique`,
-      },
-      href: "/publications",
       className: {
         background: "bg-btn-gold/5",
         backgroundHover: "hover:bg-btn-gold/8!",
@@ -92,10 +81,6 @@ export default async function Conseils() {
       ),
       title: "Consultants et indépendants",
       description: "Appui ponctuel, relecture critique, apport méthodologique.",
-      button: {
-        label: `Solliciter un appui expert`,
-      },
-      href: "/publications",
       className: {
         background: "bg-[#505A6A]/5",
         backgroundHover: "hover:bg-[#505A6A]/8!",
@@ -141,9 +126,11 @@ export default async function Conseils() {
               </p>
             </div>
             <div className="flex flex-col md:flex-row items-center gap-4 mt-10">
-              <Button type="button" className="w-full md:w-auto">
-                Contactez notre équipe
-              </Button>
+              <LinkButton
+                href={"/contact"}
+                label="Contactez notre équipe"
+                className="w-full md:w-auto mx-0! bg-midnight-green hover:bg-midnight-green/90"
+              />
               <p className="text-sm">
                 +20 livrables produits en 2024 pour nos partenaires
               </p>
@@ -173,9 +160,11 @@ export default async function Conseils() {
               description="Nos interventions sont confidentielles, ciblées et livrées dans les formats les plus pertinents pour votre structure."
               className="block lg:sticky top-30 h-fit [&_h2]:text-2xl [&_h2]:font-medium !py-0"
             >
-              <Button type="button" className="hidden lg:block">
-                Contactez notre équipe
-              </Button>
+              <LinkButton
+                href={"/contact"}
+                label="Contactez notre équipe"
+                className="hidden! lg:block! mx-0! bg-midnight-green hover:bg-midnight-green/90"
+              />
             </Section>
             <div className="flex flex-col gap-8 [&_h2]:text-lg [&_h2]:font-medium [&_h2]:mb-2">
               <Section title="VEILLE STRATÉGIQUE SUR-MESURE" className="!py-0">
@@ -275,9 +264,11 @@ export default async function Conseils() {
             nous a permis de mieux comprendre les enjeux et les dynamiques
             locales. Leur approche est rigoureuse et adaptée à nos besoins.
           </p>
-          <Button type="button" className="bg-white !text-midnight-green w-fit">
-            Contactez notre équipe
-          </Button>
+          <LinkButton
+            href={"/contact"}
+            label="Contactez notre équipe"
+            className="text-black! bg-white hover:bg-gray-100/90"
+          />
         </div>
       </section>
     </div>

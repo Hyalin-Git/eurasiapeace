@@ -1,5 +1,3 @@
-"use server";
-
 import { getCategories, getTags } from "@/features/posts/server/db/posts";
 import Banner from "@/components/Banner";
 import Filters from "@/components/filters/Filters";
@@ -9,6 +7,56 @@ import React, { Suspense } from "react";
 import { PostsSkeletons } from "@/features/posts/components/PostsSkeletons";
 import Paginations from "@/components/pagination/Paginations";
 import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Publications - EurasiaPeace",
+  description:
+    "Découvrez notre riche catalogue de publications sur les enjeux géopolitiques eurasiatiques. Explorez nos analyses approfondies, dossiers thématiques et rapports de renseignement stratégique.",
+  keywords: [
+    "publications",
+    "analyses géopolitiques",
+    "Eurasie",
+    "rapports stratégiques",
+    "dossiers thématiques",
+    "renseignement",
+    "géopolitique",
+    "paix",
+    "sécurité internationale",
+  ],
+  openGraph: {
+    title: "Publications - EurasiaPeace",
+    description:
+      "Accédez à notre collection d'analyses géopolitiques, de dossiers thématiques et de rapports stratégiques sur l'Eurasie.",
+    type: "website",
+    images: [
+      {
+        url: "/publication-banner.webp",
+        width: 1200,
+        height: 630,
+        alt: "Publications EurasiaPeace - Analyses géopolitiques",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Publications - EurasiaPeace",
+    description:
+      "Découvrez nos analyses approfondies sur les enjeux géopolitiques eurasiatiques.",
+    images: ["/publication-banner.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 
 export default async function Publications({
   searchParams,

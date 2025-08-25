@@ -1,4 +1,5 @@
 "use client";
+
 import MetaData from "@/components/articles/MetaData";
 import AuthorBox from "@/components/articles/AuthorBox";
 import Tags from "@/components/tags/Tags";
