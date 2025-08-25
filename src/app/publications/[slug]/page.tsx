@@ -140,7 +140,7 @@ export default async function PublicationPage({
   return (
     <div className="relative container flex justify-between py-10">
       {/* Contenu principal */}
-      <div className="w-3/5">
+      <div className="w-full xl:w-3/5">
         {/* Fil d'Ariane */}
         <BreadCrumb isBgDark={false} />
 

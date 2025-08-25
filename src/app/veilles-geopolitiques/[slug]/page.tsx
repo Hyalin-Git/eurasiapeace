@@ -157,7 +157,7 @@ export default async function GeopoliticalWatchPage({
   return (
     <div className="flex justify-between container py-10">
       {/* Contenu principal */}
-      <div className="w-3/5">
+      <div className="w-full xl:w-3/5">
         <BreadCrumb isBgDark={false} />
 
         <Article element={geopoliticalWatch} />

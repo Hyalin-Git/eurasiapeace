@@ -142,7 +142,7 @@ export default async function CulturePage({
     <div className="py-10">
       <div className="flex justify-between container">
         {/* Contenu principal */}
-        <div className="w-3/5">
+        <div className="w-full xl:w-3/5">
           {/* Fil d'Ariane */}
           <BreadCrumb isBgDark={false} />
 
