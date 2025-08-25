@@ -21,13 +21,13 @@ export async function generateMetadata({
 
   if (!success || !culture) {
     return {
-      title: "Contenu non trouvé - EurasiaPeace",
+      title: "Contenu non trouvé",
       description:
         "Ce podcast, webinaire ou interview n'existe pas ou n'est plus disponible.",
     };
   }
 
-  const title = `${culture.title} - EurasiaPeace`;
+  const title = `${culture.title}`;
   const description =
     culture.excerpt ||
     `Découvrez ${culture.title}. Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.`;

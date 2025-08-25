@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Conseil Scientifique - EurasiaPeace",
+  title: "Conseil Scientifique",
   description:
     "Découvrez le Conseil Scientifique d'EurasiaPeace, garants de la rigueur académique. Chercheurs et experts qui supervisent la qualité scientifique de nos recherches géopolitiques sur l'Eurasie.",
   keywords: [
@@ -27,11 +27,10 @@ export const metadata: Metadata = {
     "méthodologie de recherche",
   ],
   openGraph: {
-    title: "Conseil Scientifique - EurasiaPeace",
+    title: "Conseil Scientifique | EurasiaPeace",
     description:
       "Rencontrez les chercheurs et experts du Conseil Scientifique d'EurasiaPeace qui garantissent la rigueur de nos recherches géopolitiques.",
     type: "website",
-    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     locale: "fr_FR",
     images: [
       {
@@ -44,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Conseil Scientifique - EurasiaPeace",
+    title: "Conseil Scientifique | EurasiaPeace",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
     description:
       "Chercheurs et experts du Conseil Scientifique garantissant la rigueur académique de nos recherches géopolitiques.",

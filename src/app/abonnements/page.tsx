@@ -2,7 +2,7 @@ import SubscriptionCards from "@/features/subscriptions/components/SubscriptionC
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Abonnements - EurasiaPeace",
+  title: "Abonnements",
   description:
     "Découvrez nos offres d'abonnement EurasiaPeace. Accédez à divers contenus sur l'Eurasie. Abonnement Contributeur, Premium et Contributeur Spécial disponibles.",
   keywords: [
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     "webinaires",
   ],
   openGraph: {
-    title: "Abonnements - EurasiaPeace",
+    title: "Abonnements | EurasiaPeace",
     description:
       "Rejoignez la communauté EurasiaPeace avec nos abonnements premium. Accès exclusif à divers contenus sur l'Eurasie.",
     type: "website",
     images: [
       {
-        url: "/featured-image.jpg",
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
         width: 1200,
         height: 630,
         alt: "Abonnements EurasiaPeace - Accès premium à divers contenus",
@@ -39,10 +39,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abonnements - EurasiaPeace",
+    title: "Abonnements | EurasiaPeace",
     description:
       "Accédez aux analyses géopolitiques exclusives avec nos abonnements premium EurasiaPeace.",
-    images: ["/featured-image.jpg"],
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
   },
   robots: {
     index: true,
@@ -70,14 +70,8 @@ export default function Abonnements() {
           </p>
         </div>
 
-        <div className="mb-16">
-          <h2 className="font-bold text-center mb-16">
-            Nos offres d&apos;abonnement
-          </h2>
-
-          <div className="flex justify-center">
-            <SubscriptionCards />
-          </div>
+        <div className="flex justify-center">
+          <SubscriptionCards />
         </div>
       </div>
 

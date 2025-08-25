@@ -26,12 +26,12 @@ export async function generateMetadata({
 
   if (!success || !formation) {
     return {
-      title: "Formation non trouvée - EurasiaPeace",
+      title: "Formation non trouvée",
       description: "Cette formation n'existe pas ou n'est plus disponible.",
     };
   }
 
-  const title = `${formation.title} - Formation EurasiaPeace`;
+  const title = `${formation.title}`;
   const description =
     formation.excerpt ||
     formation?.singleFormations?.apercuFormation?.texteIntroFormation ||

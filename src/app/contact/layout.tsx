@@ -22,11 +22,10 @@ export const metadata: Metadata = {
     "think-tank contact",
   ],
   openGraph: {
-    title: "Contact - EurasiaPeace",
+    title: "Contact | EurasiaPeace",
     description:
       "Entrez en dialogue avec EurasiaPeace. Contactez notre équipe pour vos projets de coopération, recherche ou partenariat géopolitique.",
     type: "website",
-    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact - EurasiaPeace",
+    title: "Contact | EurasiaPeace",
     description:
       "Contactez EurasiaPeace pour dialogue, coopération et échanges géopolitiques.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

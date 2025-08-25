@@ -107,6 +107,7 @@ export default function RootLayout({
           easing="ease"
           showSpinner={false}
         />
+
         <AuthProvider>
           <div className="flex flex-col min-h-screen">
             <Header>

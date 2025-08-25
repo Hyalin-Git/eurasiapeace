@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Qui Sommes-Nous - EurasiaPeace",
+  title: "Qui Sommes-Nous",
   description:
     "Découvrez EurasiaPeace, Centre de Réflexion et de Prospective sur la Paix en Eurasie. Think-tank interdisciplinaire menant des activités de recherche, formation, conseils et publication sur la résolution de conflits internationaux.",
   keywords: [
@@ -32,11 +32,10 @@ export const metadata: Metadata = {
     "expertise Eurasie",
   ],
   openGraph: {
-    title: "Qui Sommes-Nous - EurasiaPeace",
+    title: "Qui Sommes-Nous | EurasiaPeace",
     description:
       "Think-tank innovant spécialisé dans la paix en Eurasie. Recherche interdisciplinaire, formation et conseils sur la résolution de conflits internationaux.",
     type: "website",
-    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Qui Sommes-Nous - EurasiaPeace",
+    title: "Qui Sommes-Nous | EurasiaPeace",
     description:
       "Think-tank interdisciplinaire dédié à la paix en Eurasie. Recherche, formation et expertise géopolitique.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/morgan.jpg`],

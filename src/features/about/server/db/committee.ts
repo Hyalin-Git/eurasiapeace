@@ -11,7 +11,7 @@ export async function getCommitteesMembers() {
       query {
         committeesMembers (first: 100) {
             nodes {
-                acfFields {
+                committeesMembersFields {
                     committeeMember
                     picture {
                       node {
@@ -28,7 +28,7 @@ export async function getCommitteesMembers() {
                 }
             }
         }
-        }
+      }
     `;
 
     const res = await fetchGraphQL(query);
@@ -51,7 +51,7 @@ export async function getCommitteesMembers() {
     }
 
     const clearData = res?.data?.committeesMembers?.nodes.map(
-      (m: Members) => m?.acfFields
+      (m: Members) => m?.committeesMembersFields
     );
 
     return {

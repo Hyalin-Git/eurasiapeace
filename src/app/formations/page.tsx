@@ -60,16 +60,15 @@ export async function generateMetadata(): Promise<Metadata> {
   ];
 
   return {
-    title: "Formations - EurasiaPeace",
+    title: "Formations",
     description:
       "Découvrez notre centre de formation interdisciplinaire. Catalogue diversifié de formations proposées par des chercheurs et professionnels experts en géopolitique eurasiatique.",
     keywords,
     openGraph: {
-      title: "Formations - EurasiaPeace",
+      title: "Formations | EurasiaPeace",
       description:
         "Formez-vous avec notre centre de formation. Formations interdisciplinaires dispensées par des experts en eurasiatique.",
       type: "website",
-      url: process.env.NEXT_PUBLIC_CLIENT_URL,
       images: [
         {
           url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
@@ -81,7 +80,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Formations - EurasiaPeace",
+      title: "Formations | EurasiaPeace",
       description:
         "Catalogue de formations interdisciplinaires proposées par des experts et chercheurs.",
       images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

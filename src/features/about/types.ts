@@ -15,5 +15,5 @@ export interface Member {
 }
 
 export interface Members {
-  acfFields: Member[];
+  committeesMembersFields: Member[];
 }

@@ -11,7 +11,6 @@ export default async function CommitteMembers({
   committeeType: "Comité d'édition" | "Conseil scientifique";
 }) {
   const { data, success } = await getCommitteesMembers();
-
   if (!success || data?.length <= 0) {
     return <NoCommitteeMembersFound />;
   }

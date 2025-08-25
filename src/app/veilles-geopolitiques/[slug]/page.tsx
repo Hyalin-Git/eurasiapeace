@@ -24,13 +24,13 @@ export async function generateMetadata({
 
   if (!success || !geopoliticalWatch) {
     return {
-      title: "Veille géopolitique non trouvée - EurasiaPeace",
+      title: "Veille géopolitique non trouvée",
       description:
         "Cette veille géopolitique n'existe pas ou n'est plus disponible.",
     };
   }
 
-  const title = `${geopoliticalWatch.title} - EurasiaPeace`;
+  const title = `${geopoliticalWatch.title}`;
   const description =
     geopoliticalWatch.excerpt ||
     `Découvrez notre veille géopolitique sur ${geopoliticalWatch.title}. Analyse stratégique et surveillance des événements géopolitiques eurasiatiques.`;

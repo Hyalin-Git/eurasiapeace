@@ -12,7 +12,7 @@ import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Conseils & Consultance Géopolitique - EurasiaPeace",
+    title: "Conseils & Consultance",
     description:
       "Expertise géopolitique pour institutions publiques, entreprises et ONG. Analyse stratégique, veille sur-mesure, cartographie des risques et soutien à la décision dans un contexte international complexe.",
     keywords: [
@@ -37,25 +37,25 @@ export async function generateMetadata(): Promise<Metadata> {
       "Eurasie",
     ],
     openGraph: {
-      title: "Conseils & Consultance Géopolitique - EurasiaPeace",
+      title: "Conseils & Consultance | EurasiaPeace",
       description:
         "Accompagnement géopolitique personnalisé pour institutions, entreprises et organisations. Analyses stratégiques, veille sur-mesure et recommandations expertes.",
       type: "website",
       images: [
         {
-          url: "/banner/conseils-banner.webp",
+          url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
           width: 1200,
           height: 630,
-          alt: "Conseils & Consultance Géopolitique EurasiaPeace",
+          alt: "Conseils & Consultance EurasiaPeace",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Conseils & Consultance Géopolitique - EurasiaPeace",
+      title: "Conseils & Consultance | EurasiaPeace",
       description:
         "Expertise géopolitique pour décider face aux enjeux internationaux. Analyses, veille et recommandations stratégiques.",
-      images: ["/banner/conseils-banner.webp"],
+      images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
     },
     robots: {
       index: true,

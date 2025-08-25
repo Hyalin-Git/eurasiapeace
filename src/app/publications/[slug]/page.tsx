@@ -22,12 +22,12 @@ export async function generateMetadata({
 
   if (!success || !post) {
     return {
-      title: "Publication non trouvée - EurasiaPeace",
+      title: "Publication non trouvée",
       description: "Cette publication n'existe pas ou n'est plus disponible.",
     };
   }
 
-  const title = `${post.title} - EurasiaPeace`;
+  const title = `${post.title}`;
   const description =
     post.excerpt ||
     `Découvrez notre analyse approfondie sur ${post.title}. Publication géopolitique spécialisée sur les enjeux eurasiatiques.`;
