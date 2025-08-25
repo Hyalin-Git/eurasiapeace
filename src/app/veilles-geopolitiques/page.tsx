@@ -41,12 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
   ];
 
   return {
-    title: "Veilles Géopolitiques",
+    title: "Veilles Géopolitiques - EurasiaPeace",
     description:
       "Suivez l'actualité géopolitique eurasiatique grâce à nos veilles stratégiques. Analyses des événements, tendances et dynamiques de sécurité internationale en temps réel.",
     keywords,
     openGraph: {
-      title: "Veilles Géopolitiques | EurasiaPeace",
+      title: "Veilles Géopolitiques - EurasiaPeace",
       description:
         "Restez informé des derniers développements géopolitiques en Eurasie avec nos veilles stratégiques et analyses en temps réel.",
       type: "website",
@@ -61,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Veilles Géopolitiques | EurasiaPeace",
+      title: "Veilles Géopolitiques - EurasiaPeace",
       description:
         "Suivez l'actualité géopolitique eurasiatique avec nos analyses stratégiques en temps réel.",
       images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/world-map-banner.webp`],

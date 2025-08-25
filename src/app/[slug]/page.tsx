@@ -130,6 +130,7 @@ export default async function WordpressPage({
         <h1 className="font-bold mb-8 text-gray-900 text-center">
           {data?.title}
         </h1>
+
         <div
           className="prose-lg prose-slate prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-a:text-blue-600 hover:prose-a:text-blue-800"
           dangerouslySetInnerHTML={{ __html: data?.content }}

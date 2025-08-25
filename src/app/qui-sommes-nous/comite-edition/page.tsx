@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Comité d'Édition",
+  title: "Comité d'Édition - EurasiaPeace",
   description:
     "Découvrez le Comité d'Édition d'EurasiaPeace, garants de l'excellence éditoriale. Experts et académiques spécialisés en géopolitique eurasiatique qui supervisent nos publications et analyses.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "comité scientifique",
   ],
   openGraph: {
-    title: "Comité d'Édition | EurasiaPeace",
+    title: "Comité d'Édition - EurasiaPeace",
     description:
       "Rencontrez les experts du Comité d'Édition d'EurasiaPeace qui garantissent l'excellence de nos publications géopolitiques sur l'Eurasie.",
     type: "website",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Comité d'Édition | EurasiaPeace",
+    title: "Comité d'Édition - EurasiaPeace",
     description:
       "Experts et académiques du Comité d'Édition garantissant l'excellence de nos publications géopolitiques.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

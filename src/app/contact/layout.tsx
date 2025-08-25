@@ -2,7 +2,7 @@ import GoogleReCaptchaProvider from "@/context/GoogleReCaptchaProvider";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact - EurasiaPeace",
   description:
     "Contactez l'équipe EurasiaPeace. Dialogue, coopération et échange avec lecteurs, partenaires, chercheurs et professionnels. Email : contact@eurasiapeace.org - Téléphone : +33 (0)6 37 36 36 99",
   keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "think-tank contact",
   ],
   openGraph: {
-    title: "Contact | EurasiaPeace",
+    title: "Contact - EurasiaPeace",
     description:
       "Entrez en dialogue avec EurasiaPeace. Contactez notre équipe pour vos projets de coopération, recherche ou partenariat géopolitique.",
     type: "website",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact | EurasiaPeace",
+    title: "Contact - EurasiaPeace",
     description:
       "Contactez EurasiaPeace pour dialogue, coopération et échanges géopolitiques.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

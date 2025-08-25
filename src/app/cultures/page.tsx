@@ -41,12 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
   ];
 
   return {
-    title: "Cultures",
+    title: "Cultures - EurasiaPeace",
     description:
       "Découvrez nos podcasts, webinaires et interviews d'experts géopolitiques. Écoutez la voix des professionnels et participez à nos formations en ligne sur les enjeux eurasiatiques.",
     keywords,
     openGraph: {
-      title: "Cultures | EurasiaPeace",
+      title: "Cultures - EurasiaPeace",
       description:
         "Accédez à nos contenus audio exclusifs : podcasts géopolitiques, webinaires éducatifs et interviews d'experts sur l'Eurasie.",
       type: "website",
@@ -61,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Cultures | EurasiaPeace",
+      title: "Cultures - EurasiaPeace",
       description:
         "Découvrez nos podcasts géopolitiques, webinaires et interviews d'experts sur l'Eurasie.",
       images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

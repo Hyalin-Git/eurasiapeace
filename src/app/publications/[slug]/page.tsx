@@ -11,6 +11,8 @@ import CardsRow from "@/components/cards/CardsRow";
 import PublishCTA from "@/components/PublishCTA";
 import PostDownload from "@/features/posts/components/PostDownload";
 import { Metadata } from "next";
+import { getRankMathData } from "@/server/api/rankMath";
+import { parseRankMathHead } from "@/lib/jsDom";
 
 export async function generateMetadata({
   params,
@@ -18,85 +20,100 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { data: post, success } = await getPost(slug);
 
-  if (!success || !post) {
+  // Récupérer les données Rank Math
+  const { data: rankMathData, success: rankMathSuccess } =
+    await getRankMathData(slug);
+
+  // Récupérer les données du post pour le titre de fallback
+  const { data: post, success: postSuccess } = await getPost(slug);
+
+  if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Publication non trouvée",
       description: "Cette publication n'existe pas ou n'est plus disponible.",
     };
   }
 
-  const title = `${post.title}`;
-  const description =
-    post.excerpt ||
-    `Découvrez notre analyse approfondie sur ${post.title}. Publication géopolitique spécialisée sur les enjeux eurasiatiques.`;
-  const imageUrl = post.featuredImage?.node?.sourceUrl || "/featured-image.jpg";
-  const publishedDate = post.date;
-
-  // Extraire les catégories et tags pour les mots-clés
-  const categories =
-    post.categories?.nodes?.map(
-      (cat: { name: string; slug: string }) => cat.name
-    ) || [];
-  const tags =
-    post.tags?.nodes?.map((tag: { name: string; slug: string }) => tag.name) ||
-    [];
-  const keywords = [
-    ...categories,
-    ...tags,
-    "géopolitique",
-    "Eurasie",
-    "analyse stratégique",
-    "EurasiaPeace",
-  ];
+  const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title,
-    description,
-    keywords,
-    authors: [{ name: "EurasiaPeace" }],
+    title:
+      meta.title || (postSuccess ? post.title : "Publication EurasiaPeace"),
+    description:
+      meta.description ||
+      "Publication géopolitique spécialisée sur les enjeux eurasiatiques.",
+    keywords: meta.keywords
+      ? meta.keywords.split(",").map((k: string) => k.trim())
+      : undefined,
+    robots: meta.robots
+      ? {
+          index: meta.robots.includes("index"),
+          follow: meta.robots.includes("follow"),
+        }
+      : undefined,
+    authors: meta.articleAuthor
+      ? [{ name: meta.articleAuthor }]
+      : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title,
-      description,
-      type: "article",
-      publishedTime: publishedDate,
-      authors: ["EurasiaPeace"],
-      section: categories[0] || "Publications",
-      tags: tags,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${post.title} - EurasiaPeace`,
-        },
-      ],
-      siteName: "EurasiaPeace",
+      title:
+        meta?.title || (postSuccess ? post.title : "Publication EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Publication géopolitique spécialisée sur les enjeux eurasiatiques.",
+      type: (meta?.ogType as "website" | "article") || "article",
+      url: meta?.ogUrl || `/publications/${slug}`,
+      siteName: meta?.ogSiteName || "EurasiaPeace",
+      publishedTime: meta?.articlePublishedTime || undefined,
+      modifiedTime: meta?.articleModifiedTime || undefined,
+      authors: meta?.articleAuthor ? [meta.articleAuthor] : ["EurasiaPeace"],
+      section: meta?.articleSection || "Publications",
+      tags: meta?.articleTag
+        ? meta.articleTag.split(",").map((t: string) => t.trim())
+        : undefined,
+      images: meta?.ogImage
+        ? [
+            {
+              url: meta.ogImage,
+              alt:
+                meta.ogImageAlt ||
+                (postSuccess ? `${post.title} - EurasiaPeace` : "EurasiaPeace"),
+              width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
+              height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
+            },
+          ]
+        : undefined,
     },
     twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [imageUrl],
-      creator: "@EurasiaPeace",
-      site: "@EurasiaPeace",
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
+      card:
+        (meta?.twitterCard as
+          | "summary"
+          | "summary_large_image"
+          | "app"
+          | "player") || "summary_large_image",
+      site: meta?.twitterSite || "@EurasiaPeace",
+      creator: meta?.twitterCreator || "@EurasiaPeace",
+      title:
+        meta?.title || (postSuccess ? post.title : "Publication EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Publication géopolitique spécialisée sur les enjeux eurasiatiques.",
+      images: meta?.twitterImage
+        ? [
+            {
+              url: meta.twitterImage,
+              alt:
+                meta.twitterImageAlt ||
+                (postSuccess ? `${post.title} - EurasiaPeace` : "EurasiaPeace"),
+            },
+          ]
+        : undefined,
     },
     alternates: {
-      canonical: `/publications/${slug}`,
+      canonical: meta?.canonical || `/publications/${slug}`,
     },
+    category: meta?.articleSection || "Publications",
   };
 }
 

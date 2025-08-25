@@ -2,7 +2,7 @@ import SubscriptionCards from "@/features/subscriptions/components/SubscriptionC
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Abonnements",
+  title: "Abonnements - EurasiaPeace",
   description:
     "Découvrez nos offres d'abonnement EurasiaPeace. Accédez à divers contenus sur l'Eurasie. Abonnement Contributeur, Premium et Contributeur Spécial disponibles.",
   keywords: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "webinaires",
   ],
   openGraph: {
-    title: "Abonnements | EurasiaPeace",
+    title: "Abonnements - EurasiaPeace",
     description:
       "Rejoignez la communauté EurasiaPeace avec nos abonnements premium. Accès exclusif à divers contenus sur l'Eurasie.",
     type: "website",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abonnements | EurasiaPeace",
+    title: "Abonnements - EurasiaPeace",
     description:
       "Accédez aux analyses géopolitiques exclusives avec nos abonnements premium EurasiaPeace.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

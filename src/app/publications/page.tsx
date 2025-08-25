@@ -10,7 +10,7 @@ import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Publications",
+  title: "Publications - EurasiaPeace",
   description:
     "Découvrez notre riche catalogue de publications sur les enjeux géopolitiques eurasiatiques. Explorez nos analyses approfondies, dossiers thématiques et rapports de renseignement stratégique.",
   keywords: [
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "sécurité internationale",
   ],
   openGraph: {
-    title: "Publications | EurasiaPeace",
+    title: "Publications - EurasiaPeace",
     description:
       "Accédez à notre collection d'analyses géopolitiques, de dossiers thématiques et de rapports stratégiques sur l'Eurasie.",
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Publications | EurasiaPeace",
+    title: "Publications - EurasiaPeace",
     description:
       "Découvrez nos analyses approfondies sur les enjeux géopolitiques eurasiatiques.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

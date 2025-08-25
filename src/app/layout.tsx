@@ -8,11 +8,8 @@ import { AuthProvider } from "@/context/AuthProvider";
 import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
-  title: {
-    default:
-      "EurasiaPeace - Centre de réflexion et de prospective sur la paix en Eurasie",
-    template: "%s | EurasiaPeace",
-  },
+  title:
+    "EurasiaPeace - Centre de réflexion et de prospective sur la paix en Eurasie",
   description:
     "Think-tank spécialisé dans l'analyse géopolitique de l'Eurasie. Centre de réflexion et de prospective sur la paix, proposant recherches, formations, conseils et publications sur les enjeux eurasiatiques.",
   keywords: [

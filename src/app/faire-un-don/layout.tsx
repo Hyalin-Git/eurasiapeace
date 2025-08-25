@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Faire un Don",
+  title: "Faire un Don - EurasiaPeace",
   description:
     "Soutenez notre mission de recherche et de promotion de la paix en Eurasie. Dons déductibles à 66% des impôts. Recherche indépendante, formations et dialogue international. Paiement sécurisé.",
   keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "soutien recherche",
   ],
   openGraph: {
-    title: "Faire un Don | EurasiaPeace",
+    title: "Faire un Don - EurasiaPeace",
     description:
       "Soutenez la recherche géopolitique indépendante et la promotion de la paix en Eurasie. Dons déductibles avec reçu fiscal automatique.",
     type: "website",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Faire un Don | EurasiaPeace",
+    title: "Faire un Don - EurasiaPeace",
     description:
       "Soutenez notre mission de recherche et promotion de la paix en Eurasie. Dons déductibles des impôts.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],

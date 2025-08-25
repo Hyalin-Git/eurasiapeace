@@ -13,6 +13,8 @@ import Cards from "@/components/cards/Cards";
 import CardsRow from "@/components/cards/CardsRow";
 import Newsletter from "@/features/newsletter/components/Newsletter";
 import { Metadata } from "next";
+import { getRankMathData } from "@/server/api/rankMath";
+import { parseRankMathHead } from "@/lib/jsDom";
 
 export async function generateMetadata({
   params,
@@ -20,9 +22,16 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { data: geopoliticalWatch, success } = await getGeopoliticalWatch(slug);
 
-  if (!success || !geopoliticalWatch) {
+  // Récupérer les données Rank Math
+  const { data: rankMathData, success: rankMathSuccess } =
+    await getRankMathData(`veille-geopolitique/${slug}`);
+
+  // Récupérer les données de la veille géopolitique pour le titre de fallback
+  const { data: geopoliticalWatch, success: watchSuccess } =
+    await getGeopoliticalWatch(slug);
+
+  if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Veille géopolitique non trouvée",
       description:
@@ -30,82 +39,98 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${geopoliticalWatch.title}`;
-  const description =
-    geopoliticalWatch.excerpt ||
-    `Découvrez notre veille géopolitique sur ${geopoliticalWatch.title}. Analyse stratégique et surveillance des événements géopolitiques eurasiatiques.`;
-  const imageUrl =
-    geopoliticalWatch.featuredImage?.node?.sourceUrl ||
-    "/world-map-banner.webp";
-  const publishedDate = geopoliticalWatch.date;
-
-  // Extraire les types de veilles et tags pour les mots-clés
-  const watchTypes =
-    geopoliticalWatch.typeDeVeilles?.nodes?.map(
-      (type: { name: string; slug: string }) => type.name
-    ) || [];
-  const tags =
-    geopoliticalWatch.tags?.nodes?.map(
-      (tag: { name: string; slug: string }) => tag.name
-    ) || [];
-
-  const keywords = [
-    ...watchTypes,
-    ...tags,
-    "veille géopolitique",
-    "actualité géopolitique",
-    "Eurasie",
-    "surveillance stratégique",
-    "intelligence géopolitique",
-    "EurasiaPeace",
-  ];
+  const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title,
-    description,
-    keywords,
-    authors: [{ name: "EurasiaPeace" }],
+    title:
+      meta.title ||
+      (watchSuccess
+        ? geopoliticalWatch.title
+        : "Veille géopolitique EurasiaPeace"),
+    description:
+      meta.description ||
+      "Veille géopolitique spécialisée sur les enjeux eurasiatiques et la surveillance stratégique.",
+    keywords: meta.keywords
+      ? meta.keywords.split(",").map((k: string) => k.trim())
+      : undefined,
+    robots: meta.robots
+      ? {
+          index: meta.robots.includes("index"),
+          follow: meta.robots.includes("follow"),
+        }
+      : undefined,
+    authors: meta.articleAuthor
+      ? [{ name: meta.articleAuthor }]
+      : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title,
-      description,
-      type: "article",
-      publishedTime: publishedDate,
-      authors: ["EurasiaPeace"],
-      section: watchTypes[0] || "Veilles Géopolitiques",
-      tags: tags,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${geopoliticalWatch.title} - Veille géopolitique EurasiaPeace`,
-        },
-      ],
-      siteName: "EurasiaPeace",
+      title:
+        meta?.title ||
+        (watchSuccess
+          ? geopoliticalWatch.title
+          : "Veille géopolitique EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Veille géopolitique spécialisée sur les enjeux eurasiatiques et la surveillance stratégique.",
+      type: (meta?.ogType as "website" | "article") || "article",
+      url: meta?.ogUrl || `/veilles-geopolitiques/${slug}`,
+      siteName: meta?.ogSiteName || "EurasiaPeace",
+      publishedTime: meta?.articlePublishedTime || undefined,
+      modifiedTime: meta?.articleModifiedTime || undefined,
+      authors: meta?.articleAuthor ? [meta.articleAuthor] : ["EurasiaPeace"],
+      section: meta?.articleSection || "Veilles Géopolitiques",
+      tags: meta?.articleTag
+        ? meta.articleTag.split(",").map((t: string) => t.trim())
+        : undefined,
+      images: meta?.ogImage
+        ? [
+            {
+              url: meta.ogImage,
+              alt:
+                meta.ogImageAlt ||
+                (watchSuccess
+                  ? `${geopoliticalWatch.title} - EurasiaPeace`
+                  : "EurasiaPeace"),
+              width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
+              height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
+            },
+          ]
+        : undefined,
     },
     twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [imageUrl],
-      creator: "@EurasiaPeace",
-      site: "@EurasiaPeace",
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
+      card:
+        (meta?.twitterCard as
+          | "summary"
+          | "summary_large_image"
+          | "app"
+          | "player") || "summary_large_image",
+      site: meta?.twitterSite || "@EurasiaPeace",
+      creator: meta?.twitterCreator || "@EurasiaPeace",
+      title:
+        meta?.title ||
+        (watchSuccess
+          ? geopoliticalWatch.title
+          : "Veille géopolitique EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Veille géopolitique spécialisée sur les enjeux eurasiatiques et la surveillance stratégique.",
+      images: meta?.twitterImage
+        ? [
+            {
+              url: meta.twitterImage,
+              alt:
+                meta.twitterImageAlt ||
+                (watchSuccess
+                  ? `${geopoliticalWatch.title} - EurasiaPeace`
+                  : "EurasiaPeace"),
+            },
+          ]
+        : undefined,
     },
     alternates: {
-      canonical: `/veilles-geopolitiques/${slug}`,
+      canonical: meta?.canonical || `/veilles-geopolitiques/${slug}`,
     },
+    category: meta?.articleSection || "Veilles Géopolitiques",
   };
 }
 

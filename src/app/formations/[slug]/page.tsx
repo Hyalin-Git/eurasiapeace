@@ -15,6 +15,8 @@ import { isEmpty } from "@/utils/isEmpty";
 import Evaluations from "@/features/formations/components/Evaluations";
 import FormationRecap from "@/features/formations/components/FormationRecap";
 import { Metadata } from "next";
+import { getRankMathData } from "@/server/api/rankMath";
+import { parseRankMathHead } from "@/lib/jsDom";
 
 export async function generateMetadata({
   params,
@@ -22,115 +24,109 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { data: formation, success } = await getFormation(slug);
 
-  if (!success || !formation) {
+  // Récupérer les données Rank Math
+  const { data: rankMathData, success: rankMathSuccess } =
+    await getRankMathData(`formation/${slug}`);
+
+  // Récupérer les données de la formation pour le titre de fallback
+  const { data: formation, success: formationSuccess } = await getFormation(
+    slug
+  );
+
+  if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Formation non trouvée",
       description: "Cette formation n'existe pas ou n'est plus disponible.",
     };
   }
 
-  const title = `${formation.title}`;
-  const description =
-    formation.excerpt ||
-    formation?.singleFormations?.apercuFormation?.texteIntroFormation ||
-    `Découvrez notre formation ${formation.title}. Formation géopolitique interdisciplinaire dispensée par des experts EurasiaPeace.`;
-  const imageUrl =
-    formation?.singleFormations?.banner?.node?.sourceUrl ||
-    "/banner/formation-banner.webp";
-  const publishedDate = formation.date;
-
-  // Extraire les informations spécifiques aux formations
-  const typesDeFormation =
-    formation.typesDeFormations?.nodes?.map(
-      (type: { name: string; slug: string }) => type.name
-    ) || [];
-  const niveauxDeFormation =
-    formation.niveauxDeFormation?.nodes?.map(
-      (niveau: { name: string; slug: string }) => niveau.name
-    ) || [];
-  const rythmesDeFormation =
-    formation.rythmesDeFormation?.nodes?.map(
-      (rythme: { name: string; slug: string }) => rythme.name
-    ) || [];
-
-  // Informations sur la modalité de la formation
-  const duree =
-    formation?.singleFormations?.apercuFormation?.modalite?.dureeFormation;
-  const nombreParticipants =
-    formation?.singleFormations?.apercuFormation?.modalite?.nombreParticipants;
-
-  const keywords = [
-    ...typesDeFormation,
-    ...niveauxDeFormation,
-    ...rythmesDeFormation,
-    "formation géopolitique",
-    "formation professionnelle",
-    "Eurasie",
-    "géopolitique",
-    "centre de formation",
-    "formation interdisciplinaire",
-    "éducation géopolitique",
-    "think-tank",
-    "formation continue",
-    "EurasiaPeace",
-  ];
-
-  // Construire une description enrichie avec les détails de la formation
-  let enrichedDescription = description;
-  if (duree) {
-    enrichedDescription += ` Durée: ${duree}.`;
-  }
-  if (nombreParticipants) {
-    enrichedDescription += ` Participants: ${nombreParticipants}.`;
-  }
+  const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title,
-    description: enrichedDescription,
-    keywords,
-    authors: [{ name: "EurasiaPeace" }],
+    title:
+      meta.title ||
+      (formationSuccess ? formation.title : "Formation EurasiaPeace"),
+    description:
+      meta.description ||
+      "Formation géopolitique interdisciplinaire dispensée par des experts EurasiaPeace.",
+    keywords: meta.keywords
+      ? meta.keywords.split(",").map((k: string) => k.trim())
+      : undefined,
+    robots: meta.robots
+      ? {
+          index: meta.robots.includes("index"),
+          follow: meta.robots.includes("follow"),
+        }
+      : undefined,
+    authors: meta.articleAuthor
+      ? [{ name: meta.articleAuthor }]
+      : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title,
-      description: enrichedDescription,
-      type: "article",
-      publishedTime: publishedDate,
-      authors: ["EurasiaPeace"],
-      section: typesDeFormation[0] || "Formations",
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${formation.title} - Formation EurasiaPeace`,
-        },
-      ],
-      siteName: "EurasiaPeace",
+      title:
+        meta?.title ||
+        (formationSuccess ? formation.title : "Formation EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Formation géopolitique interdisciplinaire dispensée par des experts EurasiaPeace.",
+      type: (meta?.ogType as "website" | "article") || "article",
+      url: meta?.ogUrl || `/formations/${slug}`,
+      siteName: meta?.ogSiteName || "EurasiaPeace",
+      publishedTime: meta?.articlePublishedTime || undefined,
+      modifiedTime: meta?.articleModifiedTime || undefined,
+      authors: meta?.articleAuthor ? [meta.articleAuthor] : ["EurasiaPeace"],
+      section: meta?.articleSection || "Formations",
+      tags: meta?.articleTag
+        ? meta.articleTag.split(",").map((t: string) => t.trim())
+        : undefined,
+      images: meta?.ogImage
+        ? [
+            {
+              url: meta.ogImage,
+              alt:
+                meta.ogImageAlt ||
+                (formationSuccess
+                  ? `${formation.title} - EurasiaPeace`
+                  : "EurasiaPeace"),
+              width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
+              height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
+            },
+          ]
+        : undefined,
     },
     twitter: {
-      card: "summary_large_image",
-      title,
-      description: enrichedDescription,
-      images: [imageUrl],
-      creator: "@EurasiaPeace",
-      site: "@EurasiaPeace",
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
+      card:
+        (meta?.twitterCard as
+          | "summary"
+          | "summary_large_image"
+          | "app"
+          | "player") || "summary_large_image",
+      site: meta?.twitterSite || "@EurasiaPeace",
+      creator: meta?.twitterCreator || "@EurasiaPeace",
+      title:
+        meta?.title ||
+        (formationSuccess ? formation.title : "Formation EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Formation géopolitique interdisciplinaire dispensée par des experts EurasiaPeace.",
+      images: meta?.twitterImage
+        ? [
+            {
+              url: meta.twitterImage,
+              alt:
+                meta.twitterImageAlt ||
+                (formationSuccess
+                  ? `${formation.title} - EurasiaPeace`
+                  : "EurasiaPeace"),
+            },
+          ]
+        : undefined,
     },
     alternates: {
-      canonical: `/formations/${slug}`,
+      canonical: meta?.canonical || `/formations/${slug}`,
     },
+    category: meta?.articleSection || "Formations",
   };
 }
 

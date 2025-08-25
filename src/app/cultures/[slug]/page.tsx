@@ -10,6 +10,8 @@ import CardsRow from "@/components/cards/CardsRow";
 import Cards from "@/components/cards/Cards";
 import { getCulture } from "@/features/cultures/server/db/cultures";
 import { Metadata } from "next";
+import { getRankMathData } from "@/server/api/rankMath";
+import { parseRankMathHead } from "@/lib/jsDom";
 
 export async function generateMetadata({
   params,
@@ -17,9 +19,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { data: culture, success } = await getCulture(slug);
 
-  if (!success || !culture) {
+  // Récupérer les données Rank Math
+  const { data: rankMathData, success: rankMathSuccess } =
+    await getRankMathData(`culture/${slug}`);
+
+  // Récupérer les données du contenu culturel pour le titre de fallback
+  const { data: culture, success: cultureSuccess } = await getCulture(slug);
+
+  if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Contenu non trouvé",
       description:
@@ -27,94 +35,92 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${culture.title}`;
-  const description =
-    culture.excerpt ||
-    `Découvrez ${culture.title}. Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.`;
-  const imageUrl =
-    culture.featuredImage?.node?.sourceUrl || "/publication-banner.webp";
-  const publishedDate = culture?.date;
-
-  // Extraire les types de contenus et tags pour les mots-clés
-  const contentTypes =
-    culture.typesDeCulture?.nodes?.map(
-      (type: { name: string; slug: string }) => type.name
-    ) || [];
-  const tags =
-    culture.tags?.nodes?.map(
-      (tag: { name: string; slug: string }) => tag.name
-    ) || [];
-
-  // Déterminer le type de contenu pour des mots-clés spécifiques
-  const isAudioContent = contentTypes.some(
-    (type: string) =>
-      type.toLowerCase().includes("podcast") ||
-      type.toLowerCase().includes("audio")
-  );
-  const isWebinar = contentTypes.some(
-    (type: string) =>
-      type.toLowerCase().includes("webinaire") ||
-      type.toLowerCase().includes("formation")
-  );
-
-  const keywords = [
-    ...contentTypes,
-    ...tags,
-    ...(isAudioContent ? ["podcast", "audio", "écoute"] : []),
-    ...(isWebinar ? ["webinaire", "formation en ligne", "éducation"] : []),
-    "expert géopolitique",
-    "la voix des pros",
-    "Eurasie",
-    "analyse géopolitique",
-    "EurasiaPeace",
-  ];
+  const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title,
-    description,
-    keywords,
-    authors: [{ name: "EurasiaPeace" }],
+    title:
+      meta.title ||
+      (cultureSuccess ? culture.title : "Contenu culturel EurasiaPeace"),
+    description:
+      meta.description ||
+      "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
+    keywords: meta.keywords
+      ? meta.keywords.split(",").map((k: string) => k.trim())
+      : undefined,
+    robots: meta.robots
+      ? {
+          index: meta.robots.includes("index"),
+          follow: meta.robots.includes("follow"),
+        }
+      : undefined,
+    authors: meta.articleAuthor
+      ? [{ name: meta.articleAuthor }]
+      : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title,
-      description,
-      type: "article",
-      publishedTime: publishedDate,
-      authors: ["EurasiaPeace"],
-      section: contentTypes[0] || "Podcasts & Webinaires",
-      tags: tags,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${culture.title} - EurasiaPeace`,
-        },
-      ],
-      siteName: "EurasiaPeace",
+      title:
+        meta?.title ||
+        (cultureSuccess ? culture.title : "Contenu culturel EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
+      type: (meta?.ogType as "website" | "article") || "article",
+      url: meta?.ogUrl || `/cultures/${slug}`,
+      siteName: meta?.ogSiteName || "EurasiaPeace",
+      publishedTime: meta?.articlePublishedTime || undefined,
+      modifiedTime: meta?.articleModifiedTime || undefined,
+      authors: meta?.articleAuthor ? [meta.articleAuthor] : ["EurasiaPeace"],
+      section: meta?.articleSection || "Podcasts & Webinaires",
+      tags: meta?.articleTag
+        ? meta.articleTag.split(",").map((t: string) => t.trim())
+        : undefined,
+      images: meta?.ogImage
+        ? [
+            {
+              url: meta.ogImage,
+              alt:
+                meta.ogImageAlt ||
+                (cultureSuccess
+                  ? `${culture.title} - EurasiaPeace`
+                  : "EurasiaPeace"),
+              width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
+              height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
+            },
+          ]
+        : undefined,
     },
     twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [imageUrl],
-      creator: "@EurasiaPeace",
-      site: "@EurasiaPeace",
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
+      card:
+        (meta?.twitterCard as
+          | "summary"
+          | "summary_large_image"
+          | "app"
+          | "player") || "summary_large_image",
+      site: meta?.twitterSite || "@EurasiaPeace",
+      creator: meta?.twitterCreator || "@EurasiaPeace",
+      title:
+        meta?.title ||
+        (cultureSuccess ? culture.title : "Contenu culturel EurasiaPeace"),
+      description:
+        meta?.description ||
+        "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
+      images: meta?.twitterImage
+        ? [
+            {
+              url: meta.twitterImage,
+              alt:
+                meta.twitterImageAlt ||
+                (cultureSuccess
+                  ? `${culture.title} - EurasiaPeace`
+                  : "EurasiaPeace"),
+            },
+          ]
+        : undefined,
     },
     alternates: {
-      canonical: `/cultures/${slug}`,
+      canonical: meta?.canonical || `/cultures/${slug}`,
     },
+    category: meta?.articleSection || "Podcasts & Webinaires",
   };
 }
 
