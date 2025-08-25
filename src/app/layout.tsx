@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://www.eurasiapeace.org"),
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_CLIENT_URL}`),
   alternates: {
     canonical: "/",
   },
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
     title: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
     description:
       "Centre de réflexion spécialisé dans l'analyse géopolitique de l'Eurasie. Recherches, formations et conseils sur les enjeux de paix et sécurité internationale.",
-    url: "https://www.eurasiapeace.org",
+    url: process.env.NEXT_PUBLIC_CLIENT_URL,
     siteName: "EurasiaPeace",
     type: "website",
     locale: "fr_FR",
     images: [
       {
-        url: "/eurasia-full-logo.webp",
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
         width: 1200,
         height: 630,
         alt: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     title: "EurasiaPeace - Think Tank Géopolitique Eurasiatique",
     description:
       "Centre de réflexion spécialisé dans l'analyse géopolitique de l'Eurasie.",
-    images: ["/eurasia-full-logo.webp"],
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
     creator: "@EurasiaPeace",
     site: "@EurasiaPeace",
   },
