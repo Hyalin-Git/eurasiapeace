@@ -29,11 +29,6 @@ export async function generateMetadata({
   const { data: rankMathData, success: rankMathSuccess } =
     await getRankMathData(`formation/${slug}`);
 
-  // Récupérer les données de la formation pour le titre de fallback
-  const { data: formation, success: formationSuccess } = await getFormation(
-    slug
-  );
-
   if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Formation non trouvée",
@@ -44,9 +39,7 @@ export async function generateMetadata({
   const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title:
-      meta.title ||
-      (formationSuccess ? formation.title : "Formation EurasiaPeace"),
+    title: meta.title || "Formation EurasiaPeace",
     description:
       meta.description ||
       "Formation géopolitique interdisciplinaire dispensée par des experts EurasiaPeace.",
@@ -64,9 +57,7 @@ export async function generateMetadata({
       : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title:
-        meta?.title ||
-        (formationSuccess ? formation.title : "Formation EurasiaPeace"),
+      title: meta?.title || "Formation EurasiaPeace",
       description:
         meta?.description ||
         "Formation géopolitique interdisciplinaire dispensée par des experts EurasiaPeace.",
@@ -84,11 +75,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.ogImage,
-              alt:
-                meta.ogImageAlt ||
-                (formationSuccess
-                  ? `${formation.title} - EurasiaPeace`
-                  : "EurasiaPeace"),
+              alt: meta.ogImageAlt || "EurasiaPeace",
               width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
               height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
             },
@@ -104,9 +91,7 @@ export async function generateMetadata({
           | "player") || "summary_large_image",
       site: meta?.twitterSite || "@EurasiaPeace",
       creator: meta?.twitterCreator || "@EurasiaPeace",
-      title:
-        meta?.title ||
-        (formationSuccess ? formation.title : "Formation EurasiaPeace"),
+      title: meta?.title || "Formation EurasiaPeace",
       description:
         meta?.description ||
         "Formation géopolitique interdisciplinaire dispensée par des experts EurasiaPeace.",
@@ -114,11 +99,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.twitterImage,
-              alt:
-                meta.twitterImageAlt ||
-                (formationSuccess
-                  ? `${formation.title} - EurasiaPeace`
-                  : "EurasiaPeace"),
+              alt: meta.twitterImageAlt || "EurasiaPeace",
             },
           ]
         : undefined,

@@ -16,9 +16,9 @@ export default async function Footer() {
               <span className="font-bold text-lg">Eurasia Peace</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Think-tank spécialisé en géopolitique eurasiatique, dédié à la
-              promotion de la paix et de la compréhension entre l&apos;Europe et
-              l&apos;Asie.
+              Centre de réflexion spécialisé en géopolitique eurasiatique, dédié
+              à la promotion de la paix et de la compréhension entre
+              l&apos;Europe et l&apos;Asie.
             </p>
           </div>
           <div className="space-y-4">

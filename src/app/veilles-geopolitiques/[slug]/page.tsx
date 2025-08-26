@@ -27,10 +27,6 @@ export async function generateMetadata({
   const { data: rankMathData, success: rankMathSuccess } =
     await getRankMathData(`veille-geopolitique/${slug}`);
 
-  // Récupérer les données de la veille géopolitique pour le titre de fallback
-  const { data: geopoliticalWatch, success: watchSuccess } =
-    await getGeopoliticalWatch(slug);
-
   if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Veille géopolitique non trouvée",
@@ -42,11 +38,7 @@ export async function generateMetadata({
   const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title:
-      meta.title ||
-      (watchSuccess
-        ? geopoliticalWatch.title
-        : "Veille géopolitique EurasiaPeace"),
+    title: meta.title || "Veille géopolitique EurasiaPeace",
     description:
       meta.description ||
       "Veille géopolitique spécialisée sur les enjeux eurasiatiques et la surveillance stratégique.",
@@ -64,11 +56,7 @@ export async function generateMetadata({
       : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title:
-        meta?.title ||
-        (watchSuccess
-          ? geopoliticalWatch.title
-          : "Veille géopolitique EurasiaPeace"),
+      title: meta?.title || "Veille géopolitique EurasiaPeace",
       description:
         meta?.description ||
         "Veille géopolitique spécialisée sur les enjeux eurasiatiques et la surveillance stratégique.",
@@ -86,11 +74,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.ogImage,
-              alt:
-                meta.ogImageAlt ||
-                (watchSuccess
-                  ? `${geopoliticalWatch.title} - EurasiaPeace`
-                  : "EurasiaPeace"),
+              alt: meta.ogImageAlt || "EurasiaPeace",
               width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
               height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
             },
@@ -106,11 +90,7 @@ export async function generateMetadata({
           | "player") || "summary_large_image",
       site: meta?.twitterSite || "@EurasiaPeace",
       creator: meta?.twitterCreator || "@EurasiaPeace",
-      title:
-        meta?.title ||
-        (watchSuccess
-          ? geopoliticalWatch.title
-          : "Veille géopolitique EurasiaPeace"),
+      title: meta?.title || "Veille géopolitique EurasiaPeace",
       description:
         meta?.description ||
         "Veille géopolitique spécialisée sur les enjeux eurasiatiques et la surveillance stratégique.",
@@ -118,11 +98,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.twitterImage,
-              alt:
-                meta.twitterImageAlt ||
-                (watchSuccess
-                  ? `${geopoliticalWatch.title} - EurasiaPeace`
-                  : "EurasiaPeace"),
+              alt: meta.twitterImageAlt || "EurasiaPeace",
             },
           ]
         : undefined,

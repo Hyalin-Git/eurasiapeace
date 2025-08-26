@@ -1,5 +1,3 @@
-"use server";
-
 import Filters from "@/components/filters/Filters";
 import FiltersItems from "@/components/filters/FiltersItems";
 import { getTags } from "@/features/posts/server/db/posts";
@@ -12,19 +10,11 @@ import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 import Paginations from "@/components/pagination/Paginations";
 import { Metadata } from "next";
 
-export async function generateMetadata(): Promise<Metadata> {
-  // Récupérer les types de contenus et tags pour les mots-clés
-  const { data: typesDeCulture } = await getTypesDeCulture();
-  const { data: tags } = await getTags();
-
-  // Extraire les noms des types de contenus et tags
-  const contentTypeNames =
-    typesDeCulture?.map((type: { name: string; slug: string }) => type.name) ||
-    [];
-  const tagNames =
-    tags?.map((tag: { name: string; slug: string }) => tag.name) || [];
-
-  const keywords = [
+export const metadata: Metadata = {
+  title: "Cultures - EurasiaPeace",
+  description:
+    "Découvrez nos podcasts, webinaires et interviews d'experts géopolitiques. Écoutez la voix des professionnels et participez à nos formations en ligne sur les enjeux eurasiatiques.",
+  keywords: [
     "podcasts",
     "webinaires",
     "la voix des pros",
@@ -36,49 +26,40 @@ export async function generateMetadata(): Promise<Metadata> {
     "conférences",
     "interviews d'experts",
     "éducation géopolitique",
-    ...contentTypeNames,
-    ...tagNames.slice(0, 10), // Limiter le nombre de tags
-  ];
-
-  return {
+  ],
+  openGraph: {
     title: "Cultures - EurasiaPeace",
     description:
-      "Découvrez nos podcasts, webinaires et interviews d'experts géopolitiques. Écoutez la voix des professionnels et participez à nos formations en ligne sur les enjeux eurasiatiques.",
-    keywords,
-    openGraph: {
-      title: "Cultures - EurasiaPeace",
-      description:
-        "Accédez à nos contenus audio exclusifs : podcasts géopolitiques, webinaires éducatifs et interviews d'experts sur l'Eurasie.",
-      type: "website",
-      images: [
-        {
-          url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
-          width: 1200,
-          height: 630,
-          alt: "Podcasts, Webinaires & La Voix des Pros - EurasiaPeace",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "Cultures - EurasiaPeace",
-      description:
-        "Découvrez nos podcasts géopolitiques, webinaires et interviews d'experts sur l'Eurasie.",
-      images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
-    },
-    robots: {
+      "Accédez à nos contenus audio exclusifs : podcasts géopolitiques, webinaires éducatifs et interviews d'experts sur l'Eurasie.",
+    type: "website",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`,
+        width: 1200,
+        height: 630,
+        alt: "Podcasts, Webinaires & La Voix des Pros - EurasiaPeace",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cultures - EurasiaPeace",
+    description:
+      "Découvrez nos podcasts géopolitiques, webinaires et interviews d'experts sur l'Eurasie.",
+    images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
       index: true,
       follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
-  };
-}
+  },
+};
 
 export default async function CulturesPage({
   searchParams,

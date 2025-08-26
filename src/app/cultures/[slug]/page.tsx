@@ -24,9 +24,6 @@ export async function generateMetadata({
   const { data: rankMathData, success: rankMathSuccess } =
     await getRankMathData(`culture/${slug}`);
 
-  // Récupérer les données du contenu culturel pour le titre de fallback
-  const { data: culture, success: cultureSuccess } = await getCulture(slug);
-
   if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Contenu non trouvé",
@@ -38,9 +35,7 @@ export async function generateMetadata({
   const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title:
-      meta.title ||
-      (cultureSuccess ? culture.title : "Contenu culturel EurasiaPeace"),
+    title: meta.title || "Contenu culturel EurasiaPeace",
     description:
       meta.description ||
       "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
@@ -58,9 +53,7 @@ export async function generateMetadata({
       : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title:
-        meta?.title ||
-        (cultureSuccess ? culture.title : "Contenu culturel EurasiaPeace"),
+      title: meta?.title || "Contenu culturel EurasiaPeace",
       description:
         meta?.description ||
         "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
@@ -78,11 +71,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.ogImage,
-              alt:
-                meta.ogImageAlt ||
-                (cultureSuccess
-                  ? `${culture.title} - EurasiaPeace`
-                  : "EurasiaPeace"),
+              alt: meta.ogImageAlt || "EurasiaPeace",
               width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
               height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
             },
@@ -98,9 +87,7 @@ export async function generateMetadata({
           | "player") || "summary_large_image",
       site: meta?.twitterSite || "@EurasiaPeace",
       creator: meta?.twitterCreator || "@EurasiaPeace",
-      title:
-        meta?.title ||
-        (cultureSuccess ? culture.title : "Contenu culturel EurasiaPeace"),
+      title: meta?.title || "Contenu culturel EurasiaPeace",
       description:
         meta?.description ||
         "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
@@ -108,11 +95,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.twitterImage,
-              alt:
-                meta.twitterImageAlt ||
-                (cultureSuccess
-                  ? `${culture.title} - EurasiaPeace`
-                  : "EurasiaPeace"),
+              alt: meta.twitterImageAlt || "EurasiaPeace",
             },
           ]
         : undefined,

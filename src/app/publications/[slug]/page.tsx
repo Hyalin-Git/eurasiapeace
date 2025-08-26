@@ -25,9 +25,6 @@ export async function generateMetadata({
   const { data: rankMathData, success: rankMathSuccess } =
     await getRankMathData(slug);
 
-  // Récupérer les données du post pour le titre de fallback
-  const { data: post, success: postSuccess } = await getPost(slug);
-
   if (!rankMathSuccess || !rankMathData) {
     return {
       title: "Publication non trouvée",
@@ -38,8 +35,7 @@ export async function generateMetadata({
   const meta = await parseRankMathHead(rankMathData?.head || "");
 
   return {
-    title:
-      meta.title || (postSuccess ? post.title : "Publication EurasiaPeace"),
+    title: meta.title || "Publication EurasiaPeace",
     description:
       meta.description ||
       "Publication géopolitique spécialisée sur les enjeux eurasiatiques.",
@@ -57,8 +53,7 @@ export async function generateMetadata({
       : [{ name: "EurasiaPeace" }],
     publisher: "EurasiaPeace",
     openGraph: {
-      title:
-        meta?.title || (postSuccess ? post.title : "Publication EurasiaPeace"),
+      title: meta?.title || "Publication EurasiaPeace",
       description:
         meta?.description ||
         "Publication géopolitique spécialisée sur les enjeux eurasiatiques.",
@@ -76,9 +71,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.ogImage,
-              alt:
-                meta.ogImageAlt ||
-                (postSuccess ? `${post.title} - EurasiaPeace` : "EurasiaPeace"),
+              alt: meta.ogImageAlt || "EurasiaPeace",
               width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
               height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
             },
@@ -94,8 +87,7 @@ export async function generateMetadata({
           | "player") || "summary_large_image",
       site: meta?.twitterSite || "@EurasiaPeace",
       creator: meta?.twitterCreator || "@EurasiaPeace",
-      title:
-        meta?.title || (postSuccess ? post.title : "Publication EurasiaPeace"),
+      title: meta?.title || "Publication EurasiaPeace",
       description:
         meta?.description ||
         "Publication géopolitique spécialisée sur les enjeux eurasiatiques.",
@@ -103,9 +95,7 @@ export async function generateMetadata({
         ? [
             {
               url: meta.twitterImage,
-              alt:
-                meta.twitterImageAlt ||
-                (postSuccess ? `${post.title} - EurasiaPeace` : "EurasiaPeace"),
+              alt: meta.twitterImageAlt || "EurasiaPeace",
             },
           ]
         : undefined,

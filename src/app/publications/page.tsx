@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     "géopolitique",
     "paix",
     "sécurité internationale",
+    "notes d'analyses",
   ],
   openGraph: {
     title: "Publications - EurasiaPeace",
