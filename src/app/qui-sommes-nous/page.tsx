@@ -67,7 +67,7 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <div>
+    <div className="mb-8">
       {/* Header Section */}
       <section className="bg-headband py-12">
         <div className="container px-4">
