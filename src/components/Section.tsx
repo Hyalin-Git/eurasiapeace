@@ -12,7 +12,7 @@ export default function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className={`py-20 ${className}`}>
+    <section className={`pt-20 ${className}`}>
       <div>
         <div className="flex items-start gap-4">
           {icon && <span className="hidden sm:block">{icon}</span>}

@@ -34,7 +34,7 @@ export default function AuthorBox({ author }: { author: Author }) {
 
       <div className="flex flex-col sm:flex-row gap-6">
         <div className="relative group">
-          <div className="bg-gradient-to-r from-midnight-green to-background-light-blue rounded-full p-0.5 group-hover:animate-pulse">
+          <div className="bg-gradient-to-r from-midnight-green to-background-light-blue w-fit rounded-full p-0.5 group-hover:animate-pulse">
             <Image
               src={avatarUrl || "/default-avatar.webp"}
               alt={name}

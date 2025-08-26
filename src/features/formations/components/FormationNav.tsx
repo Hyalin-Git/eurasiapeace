@@ -11,7 +11,7 @@ export default function FormationNav() {
   }
 
   return (
-    <div className="sticky mt-[-40px] top-20 py-10 bg-gradient-to-b from-background-secondary via-background-secondary to-transparent z-10">
+    <div className="sticky mt-[-40px] top-20 py-10 bg-gradient-to-b from-background-secondary via-background-secondary to-transparent z-10 md:block hidden">
       <div className="flex flex-col sm:flex-row bg-white border divide-y sm:divide-x sm:divide-y-0 divide-gray-200 border-gray-200 rounded-lg h-auto sm:h-12 sm:overflow-hidden">
         <Link
           href="#overview"

@@ -45,11 +45,11 @@ export default async function Activities() {
         </p>
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex lg:flex-row flex-col gap-8">
         {activities.map((activity, index) => (
           <div
             key={index}
-            className="bg-white border border-gray-100 p-8 rounded-2xl shadow-md h-fit"
+            className="bg-white border border-gray-100 p-8 rounded-2xl shadow-md"
           >
             <h3 className="text-2xl font-playfair font-bold text-text-primary mb-4">
               {activity?.title}

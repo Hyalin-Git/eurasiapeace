@@ -312,7 +312,7 @@ export default async function Conseils() {
         </section>
       )}
 
-      <section className="container flex items-center justify-center flex-col gap-4 my-40 mx-100%">
+      <section className="container flex items-center justify-center flex-col gap-4 mt-12 mx-100%">
         <div className="flex items-center justify-center flex-col gap-4 bg-midnight-green max-w-175 p-8 rounded-lg w-full">
           <h2 className="text-white text-center">
             Discutons de vos enjeux, en{" "}

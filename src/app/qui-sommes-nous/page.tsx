@@ -83,7 +83,7 @@ export default function About() {
       </section>
 
       {/* Main Content */}
-      <div className="container max-w-6xl px-4 py-12">
+      <div className="container max-w-6xl px-4 pt-12">
         {/* Que fait EurasiaPeace Section */}
         <section className="mb-16">
           <h2 className="font-playfair font-bold text-text-primary mb-8 text-center">

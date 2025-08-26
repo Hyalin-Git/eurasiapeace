@@ -13,6 +13,7 @@ import PostDownload from "@/features/posts/components/PostDownload";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
+import { isEmpty } from "@/utils/isEmpty";
 
 export async function generateMetadata({
   params,
@@ -137,9 +138,11 @@ export default async function PublicationPage({
         <Article element={post} />
 
         {/* Articles de la même catégorie (version mobile) */}
-        <RelatedArticles className="xl:hidden mt-12">
-          <Cards elements={relatedPosts} className="sm:grid-cols-1" />
-        </RelatedArticles>
+        {!isEmpty(relatedPosts) && (
+          <RelatedArticles className="xl:hidden shadow-none border-0 bg-transparent! mb-10 p-0!">
+            <Cards elements={relatedPosts} className="sm:grid-cols-1" />
+          </RelatedArticles>
+        )}
 
         {/* Newsletter */}
         <Newsletter />
@@ -147,9 +150,11 @@ export default async function PublicationPage({
       {/* Floating Sidebar - Articles liés */}
       <aside className="max-w-sm hidden xl:block">
         <div className="flex flex-col gap-4 sticky top-30">
-          <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
-            <CardsRow elements={relatedPosts} />
-          </RelatedArticles>
+          {!isEmpty(relatedPosts) && (
+            <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
+              <CardsRow elements={relatedPosts} />
+            </RelatedArticles>
+          )}
 
           <PostDownload fileUrl={fileUrl} isPublic={isPublic} />
         </div>

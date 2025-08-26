@@ -9,9 +9,16 @@ export default function CardBanner({
   imageAlt: string;
   bannerSize: string;
 }) {
+  function responsiveBannerSize() {
+    if (bannerSize === "h-[380px]") {
+      return "h-50 md:h-[380px]";
+    }
+    return "h-50";
+  }
+
   return (
     <div
-      className={`relative bg-background-third rounded-t-md ${bannerSize} w-full`}
+      className={`relative bg-background-third rounded-t-md ${responsiveBannerSize()} w-full`}
     >
       {imageUrl && (
         <Image
