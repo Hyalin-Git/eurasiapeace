@@ -145,7 +145,7 @@ export default function Filters({
           }}
         >
           <div
-            className={`overflow-auto max-h-80 transition-all duration-200 ${
+            className={`overflow-auto max-h-80 pb-4 transition-all duration-200 ${
               isOpen
                 ? "delay-75 opacity-100 translate-y-0"
                 : "opacity-0 translate-y-2"
