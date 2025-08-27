@@ -1,6 +1,6 @@
 "use client";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useFiltersContext } from "../../context/FiltersContext";
 
 export default function FiltersItem({
   element,
@@ -15,43 +15,16 @@ export default function FiltersItem({
   className?: string;
 }) {
   const [isSelected, setIsSelected] = useState(false);
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-  const router = useRouter();
-  const currentParams = params.get(query)?.split(",").filter(Boolean) || [];
+  const { selected, toggle } = useFiltersContext();
 
-  // Garder les anciennes régions dans les paramètres quand on en ajoute une nouvelle,
-  // quand on clique sur une région déjà sélectionnée la retirer de l'url
   const handleClick = () => {
-    if (isSelected) {
-      // Retirer la région de la liste
-      const updatedParams = currentParams.filter(
-        (param) => param !== element?.slug
-      );
-
-      if (updatedParams.length === 0) {
-        // Si plus aucune région, supprimer complètement le paramètre
-        params.delete(query);
-      } else {
-        // Sinon, mettre à jour avec les régions restantes
-        params.set("page", "1");
-        params.set(query, updatedParams.join(","));
-      }
-    } else {
-      // Ajouter la région à la liste
-      params.set("page", "1");
-      const updatedParams = [...currentParams, element?.slug];
-      params.set(query, updatedParams.join(","));
-    }
-
-    // Naviguer vers la nouvelle URL
-    router.push(`${pathname}?${params.toString()}`);
+    toggle(query, element.slug);
   };
 
   useEffect(() => {
-    setIsSelected(currentParams.includes(element?.slug));
-  }, [searchParams]);
+    const values = selected[query] || [];
+    setIsSelected(values.includes(element.slug));
+  }, [selected, query, element.slug]);
 
   return (
     <div
