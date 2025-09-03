@@ -1,10 +1,11 @@
 import CardRow from "@/components/cards/CardRow";
 import { ElementProps } from "@/components/cards/types";
+import { isEmpty } from "@/utils/isEmpty";
 
 export default function CardsRow({ elements }: { elements: ElementProps[] }) {
   return (
     <div>
-      {elements.length > 0 ? (
+      {!isEmpty(elements) ? (
         <div className="space-y-3">
           {elements.map((elt: ElementProps, index: number) => (
             <CardRow key={index} element={elt} />

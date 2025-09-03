@@ -15,6 +15,7 @@ import {
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
+import { isEmpty } from "@/utils/isEmpty";
 
 export async function generateMetadata({
   params,
