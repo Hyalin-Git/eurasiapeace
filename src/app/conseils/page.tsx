@@ -1,7 +1,7 @@
 "use server";
 
 import Section from "@/components/Section";
-import Banner from "@/components/Banner";
+import Banner from "@/components/banners/Banner";
 import ServicesCards from "@/components/cards/ServicesCards";
 import { Eye, Landmark } from "lucide-react";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import Testimonials from "@/features/testimonials/components/Testimonials";
 import { getTestimonials } from "@/features/testimonials/server/db/testimonials";
 import LinkButton from "@/ui/LinkButton";
 import { Metadata } from "next";
+import { isEmpty } from "@/utils/isEmpty";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -306,7 +307,7 @@ export default async function Conseils() {
         </section>
       </div>
 
-      {success && (
+      {success && !isEmpty(testimonials) && (
         <section className="flex justify-center items-center w-full bg-background-third py-20">
           <Testimonials testimonials={testimonials} />
         </section>
@@ -320,12 +321,6 @@ export default async function Conseils() {
               toute confidentialité
             </span>
           </h2>
-          <p className="text-sm/7 text-white text-center">
-            L&apos;équipe d&apos;Eurasia Peace a réalisé un travail de veille
-            stratégique sur la zone du Sahel, en particulier sur le Mali, qui
-            nous a permis de mieux comprendre les enjeux et les dynamiques
-            locales. Leur approche est rigoureuse et adaptée à nos besoins.
-          </p>
           <LinkButton
             href={"/contact"}
             label="Contactez notre équipe"

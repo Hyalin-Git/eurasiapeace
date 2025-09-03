@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "relations internationales",
     "sécurité internationale",
     "veilles géopolitiques",
-    "cultures",
+    "Experts",
     "dialogue interculturel",
     "expertise géopolitique",
   ],

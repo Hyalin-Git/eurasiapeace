@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Heart, Users, BookOpen, Globe, Check } from "lucide-react";
-import Banner from "@/components/Banner";
+import Banner from "@/components/banners/Banner";
 import Button from "@/ui/Button";
 import Input from "@/ui/Input";
 import { createPaymentIntent } from "@/server/api/stripe";
@@ -151,22 +151,6 @@ export default function FaireUnDon() {
 
               {/* Impact Information */}
               <div className="w-1/2 space-y-6">
-                {/* Tax Benefits */}
-                <div className="border-primary/20 bg-primary/5 rounded-lg shadow-sm p-6">
-                  <div className="flex items-center mb-4">
-                    <Check className="h-6 w-6 text-primary mr-2" />
-                    <h3 className="text-xl font-semibold">Avantages fiscaux</h3>
-                  </div>
-                  <p className="text-muted-foreground mb-3">
-                    Votre don à Eurasia Peace est déductible de vos impôts :
-                  </p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• 66% de réduction d&apos;impôt sur le revenu</li>
-                    <li>• Plafond de 20% du revenu imposable</li>
-                    <li>• Reçu fiscal automatique</li>
-                  </ul>
-                </div>
-
                 <div className="bg-white rounded-lg shadow-sm p-6">
                   <div className="flex items-center mb-4">
                     <div className="rounded-full bg-primary/10 w-12 h-12 flex items-center justify-center mr-4">
@@ -209,8 +193,7 @@ export default function FaireUnDon() {
                     </h3>
                   </div>
                   <p className="text-muted-foreground">
-                    Nos travaux influencent les décideurs politiques et
-                    contribuent à l&apos;amélioration des relations
+                    Nos travaux contribuent à l&apos;amélioration des relations
                     internationales en Eurasie.
                   </p>
                 </div>

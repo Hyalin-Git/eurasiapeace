@@ -1,7 +1,7 @@
 import Filters from "@/components/filters/Filters";
 import { getGeopoliticalWatchesTypes } from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
 import { getTags } from "@/features/posts/server/db/posts";
-import Banner from "@/components/Banner";
+import Banner from "@/components/banners/Banner";
 import FiltersItems from "@/components/filters/FiltersItems";
 import { Suspense } from "react";
 import GeoWatches from "@/features/geopoliticalWatches/components/GeoWatches";
@@ -99,7 +99,7 @@ export default async function GeopoliticalWatchesPage({
     title: "Veilles géopolitiques",
     content:
       "La veille géopolitique est un outil essentiel pour comprendre les enjeux et les dynamiques de la sécurité internationale. Elle permet de suivre les événements, les tendances et les interactions entre les différents acteurs de la scène géopolitique.",
-    src: "/world-map-banner.webp",
+    src: "/banner/veilles-geopolitiques-banner.webp",
   };
 
   const offset = page ? (parseInt(page) - 1) * 9 : 0;

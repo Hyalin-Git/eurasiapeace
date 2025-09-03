@@ -20,16 +20,14 @@ export default function CardBanner({
     <div
       className={`relative bg-background-third rounded-t-md ${responsiveBannerSize()} w-full`}
     >
-      {imageUrl && (
-        <Image
-          src={imageUrl || ""}
-          alt={imageAlt || "Bannière"}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          quality={100}
-          className="object-cover rounded-t-md"
-        />
-      )}
+      <Image
+        src={imageUrl || "/placeholder-eurasiapeace.webp"}
+        alt={imageAlt || "Bannière"}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        quality={100}
+        className="object-cover rounded-t-md"
+      />
     </div>
   );
 }

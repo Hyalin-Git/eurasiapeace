@@ -1,6 +1,6 @@
 "use server";
 
-import Banner from "@/components/Banner";
+import Banner from "@/components/banners/Banner";
 import { getFormation } from "@/features/formations/server/db/formations";
 import NotFound from "@/app/not-found";
 import { Medal } from "lucide-react";

@@ -1,4 +1,4 @@
-"use server";
+export const dynamic = "force-dynamic"; // <- empêche Next.js de mettre en cache
 
 import { AlertCircle } from "lucide-react";
 import { verifyUserEmail } from "@/features/verification/server/db/verification";

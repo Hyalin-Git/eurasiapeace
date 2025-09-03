@@ -2,54 +2,41 @@
 import { Links, NavigationItems } from "@/features/header/types";
 import NavigationMenu from "./NavigationMenu";
 import {
-  getCultureLinks,
-  getFormationLinks,
   getGeopoliticalWatchLinks,
+  getFormationLinks,
+  getExpertVoicesLinks,
+  getPublicationsLinks,
 } from "../server/db/navigations";
 
 export default async function Navigations() {
-  const [geopoliticalWatchLinks, FormationLinks, CultureLinks] =
-    await Promise.all([
-      getGeopoliticalWatchLinks(),
-      getFormationLinks(),
-      getCultureLinks(),
-    ]);
+  const [
+    publicationsLinks,
+    geopoliticalWatchLinks,
+    formationLinks,
+    expertVoicesLinks,
+  ] = await Promise.all([
+    getPublicationsLinks(),
+    getGeopoliticalWatchLinks(),
+    getFormationLinks(),
+    getExpertVoicesLinks(),
+  ]);
 
   const navigationItems: NavigationItems[] = [
     {
       label: "Publications",
       href: "/publications",
+
       items: [
-        {
-          name: "Nos publications",
-          slug: "/publications",
-        },
-        {
-          name: "Notes d'analyse",
-          slug: "/publications?category=notes-analyse",
-        },
-        {
-          name: "Dossiers thématiques",
-          slug: "/publications?category=dossiers-thematiques",
-        },
-        {
-          name: "Fiches de renseignement",
-          slug: "/publications?category=fiches-de-renseignement",
-        },
-        {
-          name: "Rapports de renseignement",
-          slug: "/publications?category=rapports-de-renseignement",
-        },
+        ...publicationsLinks?.data?.map((elt: Links) => ({
+          name: elt?.name,
+          slug: `/publications?category=${elt?.slug}`,
+        })),
       ],
     },
     {
       label: "Veilles géopolitiques",
       href: "/veilles-geopolitiques",
       items: [
-        {
-          name: "Nos veilles géopolitiques",
-          slug: "/veilles-geopolitiques",
-        },
         ...geopoliticalWatchLinks?.data?.map((elt: Links) => ({
           name: elt?.name,
           slug: `/veilles-geopolitiques?category=${elt?.slug}`,
@@ -57,16 +44,12 @@ export default async function Navigations() {
       ],
     },
     {
-      label: "Cultures",
-      href: "/cultures",
+      label: "La voix des experts",
+      href: "/la-voix-des-experts",
       items: [
-        {
-          name: "Nos cultures",
-          slug: "/cultures",
-        },
-        ...CultureLinks?.data?.map((elt: Links) => ({
+        ...expertVoicesLinks?.data?.map((elt: Links) => ({
           name: elt?.name,
-          slug: `/cultures?category=${elt?.slug}`,
+          slug: `/la-voix-des-experts?category=${elt?.slug}`,
         })),
       ],
     },
@@ -74,11 +57,7 @@ export default async function Navigations() {
       label: "Formations",
       href: "/formations",
       items: [
-        {
-          name: "Nos formations",
-          slug: "/formations",
-        },
-        ...FormationLinks?.data?.map((elt: Links) => ({
+        ...formationLinks?.data?.map((elt: Links) => ({
           name: elt?.name,
           slug: `/formations?category=${elt?.slug}`,
         })),

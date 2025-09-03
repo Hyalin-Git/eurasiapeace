@@ -1,128 +1,123 @@
-// Interfaces pour le typage des paramètres
-interface User {
-    firstname?: string;
-    lastname?: string;
-    email?: string;
-}
+import { User } from "@/features/user/types";
 
 interface MessageDetails {
-    firstname?: string;
-    lastname?: string;
-    email?: string;
-    phone?: string;
-    subject?: string;
-    message?: string;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  phone?: string;
+  subject?: string;
+  message?: string;
 }
 
 const colors = {
-    backgroundPrimary: '#fbfcfd',
-    textPrimary: '#2a303b',
-    textSecondary: '#8d8d8d',
-    darkBlue: '#32649e',
-    forceBlue: '#4a89a8',
-    gold: '#d1a65e',
-    midnightGreen: '#084854',
-    borderPrimary: '#ebf0f8',
+  backgroundPrimary: "#fbfcfd",
+  textPrimary: "#2a303b",
+  textSecondary: "#8d8d8d",
+  darkBlue: "#32649e",
+  forceBlue: "#4a89a8",
+  gold: "#d1a65e",
+  midnightGreen: "#084854",
+  borderPrimary: "#ebf0f8",
 };
 
 const emailStyles = {
-    container: {
-        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-        backgroundColor: colors.backgroundPrimary,
-        color: colors.textPrimary,
-        textAlign: 'center',
-        padding: '40px 20px',
-    },
-    header: {
-        marginBottom: '30px',
-    },
-    logo: {
-        maxWidth: '200px',
-        margin: '0 auto',
-    },
-    content: {
-        maxWidth: '600px',
-        margin: '0 auto',
-        padding: '30px',
-        backgroundColor: '#ffffff',
-        borderRadius: '12px',
-        border: `1px solid ${colors.forceBlue}`,
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-    },
-    title: {
-        fontSize: '28px',
-        fontWeight: 'bold',
-        color: colors.forceBlue,
-        marginBottom: '20px',
-    },
-    paragraph: {
-        fontSize: '17px',
-        lineHeight: '1.7',
-        marginBottom: '25px',
-        textAlign: 'left',
-    },
-    button: {
-        backgroundColor: colors.gold,
-        borderRadius: '50px',
-        padding: '15px 35px',
-        color: '#ffffff',
-        fontWeight: 'bold',
-        fontSize: '16px',
-        textDecoration: 'none',
-        display: 'inline-block',
-        marginTop: '10px',
-        letterSpacing: '0.5px',
-    },
-    highlight: {
-        color: colors.gold,
-        fontWeight: 'bold',
-    },
-    label: {
-        fontWeight: 'bold',
-        color: colors.darkBlue,
-    },
-    messageBox: {
-        border: `1px solid ${colors.borderPrimary}`,
-        borderRadius: '8px',
-        padding: '15px',
-        marginTop: '10px',
-        backgroundColor: colors.backgroundPrimary,
-    },
-    note: {
-        fontSize: '14px',
-        color: colors.textSecondary,
-        marginTop: '30px',
-        textAlign: 'center',
-    },
-    summary: {
-        border: `1px solid ${colors.borderPrimary}`,
-        borderRadius: '8px',
-        padding: '20px',
-        marginTop: '20px',
-        backgroundColor: colors.backgroundPrimary,
-    },
-    summaryTitle: {
-        fontSize: '18px',
-        fontWeight: 'bold',
-        color: colors.darkBlue,
-        marginBottom: '15px',
-    },
-    footer: {
-        marginTop: '30px',
-        fontSize: '13px',
-        color: colors.textSecondary,
-    },
+  container: {
+    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+    backgroundColor: colors.backgroundPrimary,
+    color: colors.textPrimary,
+    textAlign: "center",
+    padding: "40px 20px",
+  },
+  header: {
+    marginBottom: "30px",
+  },
+  logo: {
+    maxWidth: "200px",
+    margin: "0 auto",
+  },
+  content: {
+    maxWidth: "600px",
+    margin: "0 auto",
+    padding: "30px",
+    backgroundColor: "#ffffff",
+    borderRadius: "12px",
+    border: `1px solid ${colors.forceBlue}`,
+    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+  },
+  title: {
+    fontSize: "28px",
+    fontWeight: "bold",
+    color: colors.forceBlue,
+    marginBottom: "20px",
+  },
+  paragraph: {
+    fontSize: "17px",
+    lineHeight: "1.7",
+    marginBottom: "25px",
+    textAlign: "left",
+  },
+  button: {
+    backgroundColor: colors.gold,
+    borderRadius: "50px",
+    padding: "15px 35px",
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: "16px",
+    textDecoration: "none",
+    display: "inline-block",
+    marginTop: "10px",
+    letterSpacing: "0.5px",
+  },
+  highlight: {
+    color: colors.gold,
+    fontWeight: "bold",
+  },
+  label: {
+    fontWeight: "bold",
+    color: colors.darkBlue,
+  },
+  messageBox: {
+    border: `1px solid ${colors.borderPrimary}`,
+    borderRadius: "8px",
+    padding: "15px",
+    marginTop: "10px",
+    backgroundColor: colors.backgroundPrimary,
+  },
+  note: {
+    fontSize: "14px",
+    color: colors.textSecondary,
+    marginTop: "30px",
+    textAlign: "center",
+  },
+  summary: {
+    border: `1px solid ${colors.borderPrimary}`,
+    borderRadius: "8px",
+    padding: "20px",
+    marginTop: "20px",
+    backgroundColor: colors.backgroundPrimary,
+  },
+  summaryTitle: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: colors.darkBlue,
+    marginBottom: "15px",
+  },
+  footer: {
+    marginTop: "30px",
+    fontSize: "13px",
+    color: colors.textSecondary,
+  },
 };
 
 export function emailAccountCreation(user: User) {
-    const templates = {
-        subject: "Bienvenue chez Eurasia Peace !",
-        text: `
+  const templates = {
+    subject: "Bienvenue chez Eurasia Peace !",
+    text: `
        <div style="${emailStyles.container}">
             <div style="${emailStyles.content}">
                 <h1 style="${emailStyles.title}">Bienvenue chez Eurasia Peace !</h1>
                 <p style="${emailStyles.paragraph}">
-                    Bonjour ${user.firstname},
+                    Bonjour ${user.firstName},
                 </p>
                 <p style="${emailStyles.paragraph}">
                     Nous sommes ravis de vous accueillir. Votre compte a été créé avec succès. Vous avez désormais accès à un contenu exclusif, incluant nos analyses géopolitiques, nos formations et bien plus encore.
@@ -136,19 +131,19 @@ export function emailAccountCreation(user: User) {
             </p>
         </div>
     `,
-    };
-    return templates;
+  };
+  return templates;
 }
 
 export function emailResetPassword(user: User) {
-    const templates = {
-        subject: "Réinitialisation de votre mot de passe",
-        text: `
+  const templates = {
+    subject: "Réinitialisation de votre mot de passe",
+    text: `
        <div style="${emailStyles.container}">
             <div style="${emailStyles.content}">
                 <h1 style="${emailStyles.title}">Réinitialisation de votre mot de passe</h1>
                 <p style="${emailStyles.paragraph}">
-                    Bonjour ${user.firstname},
+                    Bonjour ${user.firstName},
                 </p>
                 <p style="${emailStyles.paragraph}">
                     Nous avons reçu une demande de réinitialisation du mot de passe pour votre compte sur Eurasia Peace.
@@ -170,14 +165,14 @@ export function emailResetPassword(user: User) {
             </p>
         </div>
     `,
-    };
-    return templates;
+  };
+  return templates;
 }
 
 export function emailNewMessage(contactDetails: MessageDetails) {
-    const templates = {
-        subject: "Nouveau message de contact",
-        text: `
+  const templates = {
+    subject: "Nouveau message de contact",
+    text: `
        <div style={emailStyles.container}>
             <div style="${emailStyles.content}">
                 <h1 style="${emailStyles.title}">Nouveau message de contact</h1>
@@ -205,14 +200,14 @@ export function emailNewMessage(contactDetails: MessageDetails) {
             </p>
         </div>
     `,
-    };
-    return templates;
+  };
+  return templates;
 }
 
 export function emailNewMessageConfirmation(contactDetails: MessageDetails) {
-    const templates = {
-        subject: "Nous avons bien reçu votre message",
-        text: `
+  const templates = {
+    subject: "Nous avons bien reçu votre message",
+    text: `
        <div style={emailStyles.container}>
             <div style="${emailStyles.content}">
                 <h1 style="${emailStyles.title}">Nous avons bien reçu votre message</h1>
@@ -238,6 +233,6 @@ export function emailNewMessageConfirmation(contactDetails: MessageDetails) {
             </p>
         </div>
     `,
-    };
-    return templates;
+  };
+  return templates;
 }

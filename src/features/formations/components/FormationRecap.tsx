@@ -38,6 +38,15 @@ export default function FormationRecap({
 
   const tagContent = niveauformation ? niveauformation : "Aucun niveau requis";
 
+  const particulierProgressif =
+    formation?.singleFormations?.modalites?.tarifs?.particulierProgressif;
+  const particulierIntensif =
+    formation?.singleFormations?.modalites?.tarifs?.particulierIntensif;
+  const entrepriseProgressif =
+    formation?.singleFormations?.modalites?.tarifs?.entrepriseProgressif;
+  const entrepriseIntensif =
+    formation?.singleFormations?.modalites?.tarifs?.entrepriseIntensif;
+
   return (
     <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-xs">
       {/* Header */}
@@ -75,30 +84,34 @@ export default function FormationRecap({
           </ul>
 
           <span className="text-md font-bold">Particuliers</span>
-          {!isEmpty(recapitulatif) ? (
-            <ul className="flex flex-col gap-1 [&_li]:text-text-secondary [&_li]:text-sm [&_li]:flex [&_li]:items-center [&_li]:gap-2 mt-2 mb-2">
-              {recapitulatif.map((date, idx) => (
-                <li key={idx}>
-                  <Calendar size={16} />
-                  du{" "}
-                  {moment(date?.startingDate).utc().format("ddd D MMM à HH:mm")}
-                  {date?.endingDate && (
-                    <>
-                      {" au " +
-                        moment(date.endingDate)
-                          .utc()
-                          .format("ddd D MMM à HH:mm")}
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <span className="flex gap-2 mt-2 mb-2 text-sm text-text-secondary">
-              <Calendar size={16} />
-              Aucune dates disponibles
-            </span>
-          )}
+          <div>
+            {!isEmpty(recapitulatif) ? (
+              <ul className="flex flex-col gap-1 [&_li]:text-text-secondary [&_li]:text-sm [&_li]:flex [&_li]:items-center [&_li]:gap-2 mt-2 mb-2">
+                {recapitulatif.map((date, idx) => (
+                  <li key={idx}>
+                    <Calendar size={16} />
+                    du{" "}
+                    {moment(date?.startingDate)
+                      .utc()
+                      .format("ddd D MMM à HH:mm")}
+                    {date?.endingDate && (
+                      <>
+                        {" au " +
+                          moment(date.endingDate)
+                            .utc()
+                            .format("ddd D MMM à HH:mm")}
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span className="flex gap-2 mt-2 mb-2 text-sm text-text-secondary">
+                <Calendar size={16} />
+                Aucune date disponible
+              </span>
+            )}
+          </div>
 
           <span className="text-md font-bold">Entreprises</span>
           <ul className="[&_li]:text-text-secondary [&_li]:text-sm [&_li]:flex [&_li]:items-center [&_li]:gap-2 mt-2">
@@ -107,6 +120,49 @@ export default function FormationRecap({
               Dates à convenir ensemble
             </li>
           </ul>
+        </div>
+
+        {/* Tarifs */}
+        <div className="bg-background-secondary p-4 border border-gray-200 rounded-lg">
+          <span className="text-md font-bold">Tarifs</span>
+          <div className="flex flex-col gap-2 mt-2">
+            <div>
+              <span className="font-semibold">Particuliers :</span>
+              <ul className="ml-2">
+                {particulierProgressif && (
+                  <li className="text-sm text-text-secondary">
+                    Progressif : {particulierProgressif} €
+                  </li>
+                )}
+                {particulierIntensif && (
+                  <li className="text-sm text-text-secondary">
+                    Intensif : {particulierIntensif} €
+                  </li>
+                )}
+                {!particulierProgressif && !particulierIntensif && (
+                  <li className="text-sm text-text-secondary">Non renseigné</li>
+                )}
+              </ul>
+            </div>
+            <div>
+              <span className="font-semibold">Entreprises :</span>
+              <ul className="ml-2">
+                {entrepriseProgressif && (
+                  <li className="text-sm text-text-secondary">
+                    Progressif : {entrepriseProgressif} €
+                  </li>
+                )}
+                {entrepriseIntensif && (
+                  <li className="text-sm text-text-secondary">
+                    Intensif : {entrepriseIntensif} €
+                  </li>
+                )}
+                {!entrepriseProgressif && !entrepriseIntensif && (
+                  <li className="text-sm text-text-secondary">Non renseigné</li>
+                )}
+              </ul>
+            </div>
+          </div>
         </div>
 
         {formateur && (

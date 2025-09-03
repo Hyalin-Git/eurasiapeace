@@ -10,7 +10,7 @@ export default function Category({
     slug: string;
     name: string;
   };
-  type?: "posts" | "geopolitics" | "cultures" | "formations" | string;
+  type?: "posts" | "geopolitics" | "la-voix-dun-expert" | "formations" | string;
 }) {
   if (!category?.name) return null;
 
@@ -21,8 +21,8 @@ export default function Category({
         return `/publications?category=${category?.slug}`;
       case "veille-geopolitique":
         return `/veilles-geopolitiques?category=${category?.slug}`;
-      case "culture":
-        return `/cultures?category=${category?.slug}`;
+      case "la-voix-dun-expert":
+        return `/la-voix-des-experts?category=${category?.slug}`;
       case "formation":
         return `/formations?category=${category?.slug}`;
       default:

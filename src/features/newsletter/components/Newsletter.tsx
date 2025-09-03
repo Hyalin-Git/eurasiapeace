@@ -28,7 +28,7 @@ export default function Newsletter() {
 
   return (
     <GoogleReCaptchaProvider>
-      <div className="bg-headband rounded-lg shadow-lg p-6 text-white">
+      <div className="bg-headband rounded-lg shadow-lg p-6 text-white max-w-4xl mx-auto">
         <div className="text-center">
           <div className="flex justify-center gap-2">
             <MailOpen size={24} />

@@ -33,7 +33,7 @@ export interface ElementProps {
       slug: string;
     }[];
   };
-  typesDeCulture?: {
+  typesExperts?: {
     nodes: {
       name: string;
       slug: string;

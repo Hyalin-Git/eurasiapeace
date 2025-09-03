@@ -12,7 +12,7 @@ export default function SubscriptionCards() {
       services: [
         "Accès à l'intégralité du contenu du site",
         "Articles, dossiers thématiques, rapports complets",
-        "Réduction de 25% sur toutes les formations EurasiaPeace",
+        "Réduction de 15% sur toutes les formations EurasiaPeace",
       ],
       color: "forceBlue" as const,
       lookup_key: "Abonnement_EurasiaPeace-8f7f84b",

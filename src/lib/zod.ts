@@ -62,6 +62,17 @@ export const signInSchema = z.object({
     .max(64, "L'adresse e-mail ou le mot de passe est invalide"),
 });
 
+export const updateUserSchema = z.object({
+  lastName: z
+    .string()
+    .min(2, "Le nom saisi est invalide")
+    .max(50, "Le nom saisi est invalide"),
+  firstName: z
+    .string()
+    .min(2, "Le prénom saisi est invalide")
+    .max(50, "Le prénom saisi est invalide"),
+});
+
 export const contactSchema = z.object({
   firstName: z
     .string()
@@ -127,6 +138,40 @@ export const passwordSchema = z
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Les mots de passe ne correspondent pas",
+        path: ["confirmPassword"],
+      });
+    }
+  });
+
+export const updatePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,64}$/,
+        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
+      )
+      .max(64, "Le mot de passe est trop long"),
+    newPassword: z
+      .string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,64}$/,
+        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
+      )
+      .max(64, "Le mot de passe est trop long"),
+    confirmPassword: z
+      .string()
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,64}$/,
+        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
+      )
+      .max(64, "Le mot de passe est trop long"),
+  })
+  .superRefine(({ confirmPassword, newPassword }, ctx) => {
+    if (confirmPassword !== newPassword) {
       ctx.addIssue({
         code: "custom",
         message: "Les mots de passe ne correspondent pas",

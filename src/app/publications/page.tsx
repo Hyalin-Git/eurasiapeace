@@ -1,5 +1,5 @@
 import { getCategories, getTags } from "@/features/posts/server/db/posts";
-import Banner from "@/components/Banner";
+import Banner from "@/components/banners/Banner";
 import Filters from "@/components/filters/Filters";
 import FiltersItems from "@/components/filters/FiltersItems";
 import Posts from "@/features/posts/components/Posts";
@@ -99,7 +99,7 @@ export default async function Publications({
     title: "Publications",
     content:
       "Découvrez notre riche catalogue de publications. Explorez nos notes d'analyses approfondies, nos dossiers thématiques détaillés ainsi que nos fiches et rapports de renseignement pour une compréhension stratégique des enjeux contemporains.",
-    src: "/publication-banner.webp",
+    src: "/banner/publications-banner.webp",
   };
 
   const offset = page ? (parseInt(page) - 1) * 9 : 0;

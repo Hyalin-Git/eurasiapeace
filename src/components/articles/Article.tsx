@@ -28,7 +28,9 @@ export default function Article({ element }: { element: ArticleInterface }) {
   const lastPart = content.slice(2000);
 
   const category =
-    element?.categories?.nodes[0] || element?.typeDeVeilles?.nodes[0];
+    element?.categories?.nodes[0] ||
+    element?.typeDeVeilles?.nodes[0] ||
+    element?.typesExperts?.nodes[0];
   const readingTime = element?.readingTime;
   const publishedAt = moment(element?.date).format("DD/MM/YYYY");
 

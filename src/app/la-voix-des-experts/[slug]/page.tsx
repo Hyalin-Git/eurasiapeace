@@ -8,7 +8,10 @@ import RelatedArticles from "@/components/articles/RelatedArticles";
 import Newsletter from "@/features/newsletter/components/Newsletter";
 import CardsRow from "@/components/cards/CardsRow";
 import Cards from "@/components/cards/Cards";
-import { getCulture } from "@/features/cultures/server/db/cultures";
+import {
+  getExpertVoice,
+  getRelatedExpertsVoices,
+} from "@/features/expertsVoices/server/db/expertsVoices";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
@@ -22,7 +25,7 @@ export async function generateMetadata({
 
   // Récupérer les données Rank Math
   const { data: rankMathData, success: rankMathSuccess } =
-    await getRankMathData(`culture/${slug}`);
+    await getRankMathData(`la-voix-dun-expert/${slug}`);
 
   if (!rankMathSuccess || !rankMathData) {
     return {
@@ -58,7 +61,7 @@ export async function generateMetadata({
         meta?.description ||
         "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
       type: (meta?.ogType as "website" | "article") || "article",
-      url: meta?.ogUrl || `/cultures/${slug}`,
+      url: meta?.ogUrl || `/la-voix-des-experts/${slug}`,
       siteName: meta?.ogSiteName || "EurasiaPeace",
       publishedTime: meta?.articlePublishedTime || undefined,
       modifiedTime: meta?.articleModifiedTime || undefined,
@@ -101,58 +104,57 @@ export async function generateMetadata({
         : undefined,
     },
     alternates: {
-      canonical: meta?.canonical || `/cultures/${slug}`,
+      canonical: meta?.canonical || `/la-voix-des-experts/${slug}`,
     },
     category: meta?.articleSection || "Podcasts & Webinaires",
   };
 }
 
-export default async function CulturePage({
+export default async function ExpertVoicePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
 
-  const { data: culture, success } = await getCulture(slug);
-  //   const { data: relatedCultures } = await getRelatedCultures();
+  const { data: expertVoice, success } = await getExpertVoice(slug);
+  const { data: relatedExpertsVoices } = await getRelatedExpertsVoices(
+    expertVoice?.typesExperts?.nodes[0]?.slug,
+    expertVoice?.id
+  );
 
   if (!success) {
     return <NotFound />;
   }
 
   return (
-    <div className="py-10">
-      <div className="flex justify-between container">
-        {/* Contenu principal */}
-        <div className="w-full xl:w-3/5">
-          {/* Fil d'Ariane */}
-          <BreadCrumb isBgDark={false} />
+    <div className="flex justify-between container py-10">
+      {/* Contenu principal */}
+      <div className="w-full xl:w-3/5">
+        {/* Fil d'Ariane */}
+        <BreadCrumb isBgDark={false} />
 
-          <Article element={culture} />
+        <Article element={expertVoice} />
 
-          <ReaderOpinion />
+        <ReaderOpinion />
 
-          {/* Articles de la même catégorie (version mobile) */}
-          <RelatedArticles className="xl:hidden mt-12">
-            <div></div>
-            {/* <Cards elements={relatedCultures} className="sm:grid-cols-1" /> */}
-          </RelatedArticles>
+        {/* Articles de la même catégorie (version mobile) */}
+        <RelatedArticles className="xl:hidden mt-12">
+          <Cards elements={relatedExpertsVoices} className="sm:grid-cols-1" />
+        </RelatedArticles>
 
-          {/* Newsletter */}
-          <Newsletter />
-        </div>
-
-        {/* Floating Sidebar - Articles liés */}
-        <aside className="max-w-sm hidden xl:block">
-          <div className="flex flex-col gap-4 sticky top-30">
-            <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
-              <div></div>
-              {/* <CardsRow elements={relatedCultures} /> */}
-            </RelatedArticles>
-          </div>
-        </aside>
+        {/* Newsletter */}
+        <Newsletter />
       </div>
+
+      {/* Floating Sidebar - Articles liés */}
+      <aside className="max-w-sm hidden xl:block">
+        <div className="flex flex-col gap-4 sticky top-30">
+          <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
+            <CardsRow elements={relatedExpertsVoices} />
+          </RelatedArticles>
+        </div>
+      </aside>
     </div>
   );
 }

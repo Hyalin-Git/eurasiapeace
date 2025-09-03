@@ -22,7 +22,12 @@ export default function Objectives({ formation }: { formation: Formation }) {
             objectifs.map((obj, idx) => (
               <InfoBoxColumn
                 key={idx}
-                icon={<CirclePlus size={24} className="text-btn-gold" />}
+                icon={
+                  <CirclePlus
+                    size={24}
+                    className="text-btn-gold min-h-6 min-w-6 relative top-0.5"
+                  />
+                }
                 title={obj?.titreObjectif}
                 content={obj?.descriptionObjectif}
               />

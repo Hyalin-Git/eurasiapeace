@@ -25,6 +25,7 @@ export default function HeaderUser({ user }: { user: UserInterface }) {
   async function handleLogout() {
     await signOut();
     await mutate("/api/auth/verify-token");
+    router.push("/connexion");
   }
 
   const userPlan =
@@ -60,13 +61,18 @@ export default function HeaderUser({ user }: { user: UserInterface }) {
       {/* User */}
       <div
         ref={refs.setReference}
-        className={`flex items-start gap-2 text-sm font-[600] text-btn-force-blue  bg-btn-force-blue/20 py-2 px-4 rounded-lg hover:bg-btn-force-blue/40  transition-all duration-300 ease-in-out cursor-pointer ${
+        className={`relative flex items-start gap-2 text-sm font-[600] text-btn-force-blue  bg-btn-force-blue/20 py-2 px-4 rounded-lg hover:bg-btn-force-blue/40  transition-all duration-300 ease-in-out cursor-pointer ${
           isOpen ? "bg-btn-force-blue/40" : ""
         }`}
       >
         <CircleUserRound size={24} />
         <div className="flex flex-col">
-          {user?.firstName} {user?.lastName}
+          <Link
+            href={"/mon-compte"}
+            className="before:absolute before:z-1 before:content-[''] before:top-0 before:left-0 before:right-0 before:bottom-0"
+          >
+            {user?.firstName} {user?.lastName}
+          </Link>
           <span className="text-[12px]! text-gray-500/60! font-medium!">
             {userPlan}
           </span>
@@ -77,9 +83,9 @@ export default function HeaderUser({ user }: { user: UserInterface }) {
       <DropdownHeader floatingConfig={{ refs, floatingStyles }} isOpen={isOpen}>
         <ul className="[&>li]:p-2 [&>li]:text-sm [&>li]:font-medium [&>li]:cursor-pointer [&>li]:hover:bg-btn-force-blue/10 [&>li]:hover:text-btn-force-blue [&>li]:transition-all [&>li]:duration-300 [&>li]:ease-in-out">
           <li>
-            <Link href="/profil" className="flex items-center gap-2">
+            <Link href="/mon-compte" className="flex items-center gap-2">
               <User size={16} />
-              Mon profil
+              Mon compte
             </Link>
           </li>
           {hasUserPlan && (

@@ -9,8 +9,9 @@ export default function FormFields({
   type,
   placeholder,
   required,
-  defaultValue,
+  defaultValue = "",
   error,
+  className = "",
 }: {
   label: string;
   id: string;
@@ -18,10 +19,12 @@ export default function FormFields({
   type: string;
   placeholder: string;
   required: boolean;
-  defaultValue: string;
+  defaultValue?: string;
   error?: string;
+  className?: string;
 }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [inputValue, setInputValue] = useState(defaultValue);
 
   return (
     <div className="group w-full">
@@ -29,7 +32,7 @@ export default function FormFields({
       <label
         htmlFor={id}
         className={`text-sm transition-all duration-300 group-focus-within:text-black ${
-          defaultValue ? "text-black" : "text-text-secondary "
+          inputValue ? "text-black" : "text-text-secondary "
         }`}
       >
         {label}
@@ -51,9 +54,11 @@ export default function FormFields({
           placeholder={placeholder}
           required={required}
           defaultValue={defaultValue}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           className={`w-full border-b py-2 transition-all duration-300 group-focus-within:border-black placeholder:text-text-secondary placeholder:font-medium placeholder:text-[15px] ${
-            defaultValue ? "border-black" : "border-gray-400/80"
-          } ${error ? "border-red-500!" : ""}`}
+            inputValue ? "border-black" : "border-gray-400/80"
+          } ${error ? "border-red-500!" : ""} ${className}`}
         />
 
         {/* Password visibility */}

@@ -49,7 +49,12 @@ export async function registerToFormation(
         <p><strong>Message :</strong> ${message}</p>
       `;
 
-    await sendEmail(email, `${process.env.EMAIL_FROM}`, subject, msgTemplate);
+    await sendEmail(
+      email,
+      `${process.env.EMAIL_FORMATION}`,
+      subject,
+      msgTemplate
+    );
 
     return {
       success: true,

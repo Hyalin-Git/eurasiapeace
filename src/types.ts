@@ -1,4 +1,4 @@
-// Article references posts, geopolitical watches and cultures.
+// Article references posts, geopolitical watches and Experts voices.
 export interface Article {
   contentType: {
     node: {
@@ -22,6 +22,12 @@ export interface Article {
     }[];
   };
   typeDeVeilles?: {
+    nodes: {
+      name: string;
+      slug: string;
+    }[];
+  };
+  typesExperts?: {
     nodes: {
       name: string;
       slug: string;
@@ -176,13 +182,15 @@ export interface Formation {
 }
 
 export interface User {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
-  id: string;
+  avatar: string;
   role: string;
   customerId?: string;
   subscriptionId?: string;
+  registeredAt: string;
 }
 
 export interface Filters {
@@ -206,7 +214,7 @@ export interface Filters {
     field: string;
     terms: string[];
   };
-  typeDeCultures?: {
+  typesExperts?: {
     taxonomy: string;
     field: string;
     terms: string[];

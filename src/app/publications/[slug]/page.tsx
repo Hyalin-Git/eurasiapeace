@@ -8,12 +8,12 @@ import Cards from "@/components/cards/Cards";
 import RelatedArticles from "@/components/articles/RelatedArticles";
 import Article from "@/components/articles/Article";
 import CardsRow from "@/components/cards/CardsRow";
-import PublishCTA from "@/components/PublishCTA";
 import PostDownload from "@/features/posts/components/PostDownload";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
 import { isEmpty } from "@/utils/isEmpty";
+import BannerCTA from "@/components/banners/BannerCTA";
 
 export async function generateMetadata({
   params,
@@ -129,38 +129,43 @@ export default async function PublicationPage({
   const isPublic = post?.contenuPublic?.isPublic ?? "Publique";
 
   return (
-    <div className="relative container flex justify-between py-10">
-      {/* Contenu principal */}
-      <div className="w-full xl:w-3/5">
-        {/* Fil d'Ariane */}
-        <BreadCrumb isBgDark={false} />
+    <div>
+      <BannerCTA
+        title="Vous souhaitez publier votre article ?"
+        href="/contact"
+      />
 
-        <Article element={post} />
+      <div className="relative container flex justify-between py-10">
+        {/* Contenu principal */}
+        <div className="w-full xl:w-3/5">
+          {/* Fil d'Ariane */}
+          <BreadCrumb isBgDark={false} />
 
-        {/* Articles de la même catégorie (version mobile) */}
-        {!isEmpty(relatedPosts) && (
-          <RelatedArticles className="xl:hidden shadow-none border-0 bg-transparent! mb-10 p-0!">
-            <Cards elements={relatedPosts} className="sm:grid-cols-1" />
-          </RelatedArticles>
-        )}
+          <Article element={post} />
 
-        {/* Newsletter */}
-        <Newsletter />
-      </div>
-      {/* Floating Sidebar - Articles liés */}
-      <aside className="max-w-sm hidden xl:block">
-        <div className="flex flex-col gap-4 sticky top-30">
+          {/* Articles de la même catégorie (version mobile) */}
           {!isEmpty(relatedPosts) && (
-            <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
-              <CardsRow elements={relatedPosts} />
+            <RelatedArticles className="xl:hidden shadow-none border-0 bg-transparent! mb-10 p-0!">
+              <Cards elements={relatedPosts} className="sm:grid-cols-1" />
             </RelatedArticles>
           )}
 
-          <PostDownload fileUrl={fileUrl} isPublic={isPublic} />
+          {/* Newsletter */}
+          <Newsletter />
         </div>
-      </aside>
+        {/* Floating Sidebar - Articles liés */}
+        <aside className="max-w-sm hidden xl:block">
+          <div className="flex flex-col gap-4 sticky top-30">
+            {!isEmpty(relatedPosts) && (
+              <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
+                <CardsRow elements={relatedPosts} />
+              </RelatedArticles>
+            )}
 
-      <PublishCTA />
+            <PostDownload fileUrl={fileUrl} isPublic={isPublic} />
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

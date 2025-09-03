@@ -3,7 +3,7 @@ import {
   getRythmesDeFormation,
   getTypesDeFormations,
 } from "@/features/formations/server/db/formations";
-import Banner from "@/components/Banner";
+import Banner from "@/components/banners/Banner";
 import Filters from "@/components/filters/Filters";
 import FiltersItems from "@/components/filters/FiltersItems";
 import { Formations } from "@/features/formations/components/Formations";
@@ -115,6 +115,7 @@ export default async function FormationsPage({
     content:
       "Le Centre de formation interdisciplinaire d'EurasiaPeace à dominante géopolitique  regroupe des chercheurs et professionnels  pour proposer un catalogue de formation diversifié en cours d'élaboration et qui s'oriente autour de plusieurs axes distincts, complémentaires et cohérents avec l'activité de recherche de notre think-tank.",
     src: "/banner/formation-banner.webp",
+    qualiopi: true,
   };
 
   const offset = page ? (parseInt(page) - 1) * 9 : 0;

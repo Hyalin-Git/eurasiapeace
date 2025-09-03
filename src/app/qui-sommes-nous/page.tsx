@@ -3,6 +3,7 @@ import Committees from "@/features/about/components/Committees";
 import JoinUs from "@/features/about/components/JoinUs";
 import Image from "next/image";
 import { Metadata } from "next";
+import { Quote } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Qui Sommes-Nous - EurasiaPeace",
@@ -66,6 +67,8 @@ export const metadata: Metadata = {
 };
 
 export default function About() {
+  const guideUrl = `${process.env.APOLLO_URI}/wp-content/uploads/2025/03/Guide-de-redaction-_-Note-dAnalyse-.docx.pdf`;
+
   return (
     <div className="mb-8">
       {/* Header Section */}
@@ -139,7 +142,36 @@ export default function About() {
           </div>
         </section>
 
+        <div className="bg-white rounded-md shadow-sm border border-gray-100 p-8 mb-10">
+          <p className="italic text-center">
+            <Quote
+              size={14}
+              className="text-midnight-green inline mr-1 mb-2 -scale-x-100"
+            />
+            La paix n&apos;est pas l&apos;absence de guerre soit stricto sensu
+            l&apos;affrontement armé d&apos;entités humaines à des fins
+            politiques. Elle est d&apos;abord une situation dans laquelle
+            s&apos;incarne un cycle vertueux régi par la triple obligation de
+            «donner - recevoir - rendre» seule à même de créer du «vivre
+            ensemble» et du lien social créateur d&apos;institutions communes
+            transmises à travers les générations et pour lesquelles les
+            protagonistes ont plus à perdre qu&apos;à gagner à le rompre
+            <Quote size={14} className="text-midnight-green inline ml-2 mb-2" />
+          </p>
+        </div>
+
         <Committees />
+
+        <div className="-mt-10 mb-16 flex justify-center">
+          <a
+            href={`/media${guideUrl.split("uploads")[1]}`}
+            target="_blank"
+            className="text-center bg-midnight-green text-white py-2 px-4 rounded-md hover:bg-midnight-green/90 transition-all duration-300"
+            download
+          >
+            Télécharger le guide de rédaction
+          </a>
+        </div>
 
         <Activities />
 

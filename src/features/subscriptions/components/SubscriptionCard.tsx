@@ -162,7 +162,7 @@ export default function SubscriptionCard({
         {/* Subscription action button */}
         {handleDisplayBtn()}
 
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-gray-500 text-center font-bold">
           {subscription.moreInfo}
         </p>
       </div>

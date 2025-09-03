@@ -151,7 +151,7 @@ export async function signUp(prevState: InitialState, formData: FormData) {
     }
 
     const code =
-      emailVerification.data.createUserVerification.userVerification.code;
+      emailVerification?.data?.createUserVerification?.userVerification?.code;
 
     const subject = "Veuillez confirmer votre adresse e-mail";
     const html = `

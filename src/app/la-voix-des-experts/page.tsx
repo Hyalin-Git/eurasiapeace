@@ -1,17 +1,17 @@
 import Filters from "@/components/filters/Filters";
 import FiltersItems from "@/components/filters/FiltersItems";
 import { getTags } from "@/features/posts/server/db/posts";
-import { getTypesDeCulture } from "@/features/cultures/server/db/cultures";
-import Banner from "@/components/Banner";
-import Cultures from "@/features/cultures/components/Cultures";
+import { getTypesExperts } from "@/features/expertsVoices/server/db/expertsVoices";
+import Banner from "@/components/banners/Banner";
 import { Suspense } from "react";
-import { CulturesSkeletons } from "@/features/cultures/components/CultureSkeletons";
 import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 import Paginations from "@/components/pagination/Paginations";
 import { Metadata } from "next";
+import ExpertsVoices from "@/features/expertsVoices/components/ExpertsVoices";
+import { ExpertsVoicesSkeletons } from "@/features/expertsVoices/components/ExpertsVoicesSkeletons";
 
 export const metadata: Metadata = {
-  title: "Cultures - EurasiaPeace",
+  title: "La voix des experts - EurasiaPeace",
   description:
     "Découvrez nos podcasts, webinaires et interviews d'experts géopolitiques. Écoutez la voix des professionnels et participez à nos formations en ligne sur les enjeux eurasiatiques.",
   keywords: [
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     "éducation géopolitique",
   ],
   openGraph: {
-    title: "Cultures - EurasiaPeace",
+    title: "La voix des experts - EurasiaPeace",
     description:
       "Accédez à nos contenus audio exclusifs : podcasts géopolitiques, webinaires éducatifs et interviews d'experts sur l'Eurasie.",
     type: "website",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cultures - EurasiaPeace",
+    title: "La voix des experts - EurasiaPeace",
     description:
       "Découvrez nos podcasts géopolitiques, webinaires et interviews d'experts sur l'Eurasie.",
     images: [`${process.env.NEXT_PUBLIC_CLIENT_URL}/eurasia-full-logo.webp`],
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CulturesPage({
+export default async function ExpertsVoicesPage({
   searchParams,
 }: {
   searchParams: Promise<{
@@ -76,8 +76,8 @@ export default async function CulturesPage({
   const tagTerms = tag ? tag.split(",") : [];
 
   const filters = {
-    typeDeCultures: {
-      taxonomy: "TYPEDECULTURE",
+    category: {
+      taxonomy: "TYPEEXPERT",
       field: "SLUG",
       terms: categoryTerms || [],
     },
@@ -88,19 +88,19 @@ export default async function CulturesPage({
     },
   };
 
-  const [typesDeCultureRes, tagsRes] = await Promise.all([
-    getTypesDeCulture(),
+  const [typesExpertsRes, tagsRes] = await Promise.all([
+    getTypesExperts(),
     getTags(),
   ]);
 
-  const { data: typesDeCulture } = typesDeCultureRes;
+  const { data: typesExperts } = typesExpertsRes;
   const { data: tags } = tagsRes;
 
   const bannerProps = {
-    title: "Cultures",
+    title: "La voix des experts",
     content:
       "Découvrez notre riche catalogue de publications. Explorez nos notes d'analyses approfondies, nos dossiers thématiques détaillés ainsi que nos fiches et rapports de renseignement pour une compréhension stratégique des enjeux contemporains.",
-    src: "/publication-banner.webp",
+    src: "/banner/la-voix-des-experts-banner.png",
   };
 
   const offset = page ? (parseInt(page) - 1) * 9 : 0;
@@ -114,7 +114,7 @@ export default async function CulturesPage({
             <span className="text-md text-text-primary font-bold">
               Catégories
             </span>
-            <FiltersItems items={typesDeCulture} query="category" />
+            <FiltersItems items={typesExperts} query="category" />
             <span className="text-md text-text-primary font-bold">
               Étiquettes
             </span>
@@ -124,9 +124,9 @@ export default async function CulturesPage({
 
         <Suspense
           key={page + search + category + tag}
-          fallback={<CulturesSkeletons count={9} />}
+          fallback={<ExpertsVoicesSkeletons count={9} />}
         >
-          <Cultures
+          <ExpertsVoices
             count={9}
             filters={filters}
             search={search}
@@ -135,11 +135,11 @@ export default async function CulturesPage({
         </Suspense>
 
         <Suspense
-          key={search + category + tag + "cultures"}
+          key={search + category + tag + "laVoixDesExperts"}
           fallback={<PaginationSkeleton />}
         >
           <Paginations
-            type="cultures"
+            type="laVoixDesExperts"
             limit={9}
             filters={filters}
             search={search}

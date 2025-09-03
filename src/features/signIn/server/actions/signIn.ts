@@ -72,7 +72,7 @@ export async function signIn(prevState: InitialState, formData: FormData) {
     // ! Check if the user has a verified email before logging in
     const emailVerification = await checkUserEmailVerified(sanitizedEmail);
 
-    if (!emailVerification.success) {
+    if (!emailVerification?.success) {
       throw {
         success: false,
         status: 400,
@@ -83,7 +83,7 @@ export async function signIn(prevState: InitialState, formData: FormData) {
       };
     }
 
-    if (emailVerification.data?.emailVerified === "0") {
+    if (emailVerification?.data?.emailVerified === false) {
       return {
         success: false,
         status: 403,

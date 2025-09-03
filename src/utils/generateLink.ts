@@ -11,8 +11,8 @@ export const generateLink = (contentType: string, slug: string) => {
     case "veille-geopolitique":
       type = "veilles-geopolitiques";
       break;
-    case "culture":
-      type = "cultures";
+    case "la-voix-dun-expert":
+      type = "la-voix-des-experts";
       break;
     default:
       type = "publications";

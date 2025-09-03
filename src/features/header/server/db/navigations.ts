@@ -2,11 +2,68 @@
 import { Error } from "@/types";
 import { fetchGraphQL } from "@/utils/authFetch";
 
-export async function getCultureLinks() {
+export async function getPublicationsLinks() {
   try {
     const query = `
       query {
-        typesDeCulture {
+        categories {
+          nodes {
+            slug
+            name
+          }
+        }
+      }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message:
+          res.message ||
+          "Erreur lors de la récupération des liens des publications",
+        data: [],
+      };
+    }
+
+    if (res?.data?.categories?.nodes.length === 0) {
+      throw {
+        success: false,
+        status: 404,
+        message: "Aucun lien de publications trouvé",
+        data: [],
+      };
+    }
+
+    return {
+      success: true,
+      status: 200,
+      message: "Lien de publications récupérés avec succès",
+      data: res?.data?.categories?.nodes,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+
+    console.log(
+      err?.message || "Erreur lors de la récupération des liens de publications"
+    );
+
+    return {
+      success: false,
+      status: err?.status || 500,
+      message: "Erreur lors de la récupération des liens de publications",
+      data: [],
+    };
+  }
+}
+
+export async function getExpertVoicesLinks() {
+  try {
+    const query = `
+      query {
+        typesExperts {
           nodes {
             name
             slug
@@ -22,16 +79,17 @@ export async function getCultureLinks() {
         success: false,
         status: res.status || 500,
         message:
-          res.message || "Erreur lors de la récupération des liens de cultures",
+          res.message ||
+          "Erreur lors de la récupération des liens de la voix des experts",
         data: [],
       };
     }
 
-    if (res?.data?.typesDeCulture?.nodes.length === 0) {
+    if (res?.data?.typesExperts?.nodes.length === 0) {
       throw {
         success: false,
         status: 404,
-        message: "Aucun lien de culture trouvé",
+        message: "Aucun lien de la voix des experts trouvé",
         data: [],
       };
     }
@@ -39,20 +97,22 @@ export async function getCultureLinks() {
     return {
       success: true,
       status: 200,
-      message: "Lien de cultures récupérés avec succès",
-      data: res?.data?.typesDeCulture?.nodes,
+      message: "Lien de la voix des experts récupérés avec succès",
+      data: res?.data?.typesExperts?.nodes,
     };
   } catch (e: unknown) {
     const err = e as Error;
 
     console.log(
-      err?.message || "Erreur lors de la récupération des liens de cultures"
+      err?.message ||
+        "Erreur lors de la récupération des liens de la voix des experts"
     );
 
     return {
       success: false,
       status: err?.status || 500,
-      message: "Erreur lors de la récupération des liens de cultures",
+      message:
+        "Erreur lors de la récupération des liens de la voix des experts",
       data: [],
     };
   }

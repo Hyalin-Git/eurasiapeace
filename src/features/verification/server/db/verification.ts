@@ -2,7 +2,10 @@
 
 import { Error } from "@/types";
 import moment from "moment";
-import { fetchGraphQL } from "@/utils/authFetch";
+import {
+  fetchGraphQLWithAuth,
+  fetchGraphQLWithoutCache,
+} from "@/utils/authFetch";
 
 export async function verifyUserEmail(code: string) {
   try {
@@ -26,7 +29,7 @@ export async function verifyUserEmail(code: string) {
       }
     `;
 
-    const res = await fetchGraphQL(query);
+    const res = await fetchGraphQLWithoutCache(query);
 
     if (!res.success) {
       throw {
@@ -44,7 +47,7 @@ export async function verifyUserEmail(code: string) {
       };
     }
 
-    const userVerification = res.data?.userVerification;
+    const userVerification = res?.data?.userVerification;
 
     const actualTime = moment().subtract(2, "hours");
 
@@ -68,7 +71,7 @@ export async function verifyUserEmail(code: string) {
       }
     `;
 
-    const verificationsRes = await fetchGraphQL(verificationsQuery);
+    const verificationsRes = await fetchGraphQLWithoutCache(verificationsQuery);
 
     if (!verificationsRes.success) {
       throw {
@@ -93,7 +96,7 @@ export async function verifyUserEmail(code: string) {
         }
       `;
 
-      const deleteRes = await fetchGraphQL(deleteQuery);
+      const deleteRes = await fetchGraphQLWithoutCache(deleteQuery);
 
       if (!deleteRes.success) {
         console.log(
@@ -133,25 +136,28 @@ async function updateUserEmailVerified(userEmail: string) {
       };
     }
 
-    const res = await fetch(
-      `${process.env.WP_API_URL}/verify-email?email=${userEmail}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const mutation = `
+      mutation UpdateEmailVerified($email: String!) {
+          updateUserEmailVerified(input: {
+            email: $email,
+            emailVerified: true
+          }) {
+            user {
+              id
+              emailVerified
+            }
+            success
+          }
+        }
+   `;
 
-    const response = await res.json();
+    const { data } = await fetchGraphQLWithAuth(mutation, { email: userEmail });
 
-    if (!response.success) {
-      throw {
+    if (!data?.updateUserEmailVerified?.success) {
+      return {
         success: false,
-        status: response?.status || 500,
-        message:
-          response?.message ||
-          "Failed to update user email verification status",
+        status: 500,
+        message: "Failed to update user email verification status",
       };
     }
 

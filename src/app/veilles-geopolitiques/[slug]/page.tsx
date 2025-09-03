@@ -15,6 +15,7 @@ import Newsletter from "@/features/newsletter/components/Newsletter";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
+import BannerCTA from "@/components/banners/BannerCTA";
 
 export async function generateMetadata({
   params,
@@ -131,35 +132,41 @@ export default async function GeopoliticalWatchPage({
   }
 
   return (
-    <div className="flex justify-between container py-10">
-      {/* Contenu principal */}
-      <div className="w-full xl:w-3/5">
-        <BreadCrumb isBgDark={false} />
+    <div>
+      <BannerCTA
+        title="Vous souhaitez publier une veilles géopolitique ?"
+        href="/abonnements"
+      />
+      <div className="flex justify-between container py-10">
+        {/* Contenu principal */}
+        <div className="w-full xl:w-3/5">
+          <BreadCrumb isBgDark={false} />
 
-        <Article element={geopoliticalWatch} />
+          <Article element={geopoliticalWatch} />
 
-        <ReaderOpinion />
+          <ReaderOpinion />
 
-        {/* Articles de la même catégorie (version mobile) */}
-        <RelatedArticles className="xl:hidden mt-12">
-          <Cards
-            elements={relatedGeopoliticalWatches}
-            className="sm:grid-cols-1"
-          />
-        </RelatedArticles>
-
-        {/* Newsletter */}
-        <Newsletter />
-      </div>
-
-      {/* Floating Sidebar - Articles liés */}
-      <aside className="max-w-sm hidden xl:block">
-        <div className="flex flex-col gap-4 sticky top-30">
-          <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
-            <CardsRow elements={relatedGeopoliticalWatches} />
+          {/* Articles de la même catégorie (version mobile) */}
+          <RelatedArticles className="xl:hidden mt-12">
+            <Cards
+              elements={relatedGeopoliticalWatches}
+              className="sm:grid-cols-1"
+            />
           </RelatedArticles>
+
+          {/* Newsletter */}
+          <Newsletter />
         </div>
-      </aside>
+
+        {/* Floating Sidebar - Articles liés */}
+        <aside className="max-w-sm hidden xl:block">
+          <div className="flex flex-col gap-4 sticky top-30">
+            <RelatedArticles className="bg-white rounded-lg p-4 mb-4 h-fit">
+              <CardsRow elements={relatedGeopoliticalWatches} />
+            </RelatedArticles>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

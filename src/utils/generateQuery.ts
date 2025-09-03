@@ -56,18 +56,6 @@ export function generateQuery(
           terms: [${tagTerms}]
           }`);
     }
-
-    // Ajouter les types de cultures si ils existent
-    if (filters.typeDeCultures && filters.typeDeCultures?.terms?.length > 0) {
-      const typeDeCulturesTerms = filters.typeDeCultures.terms
-        .map((f: string) => `"${f}"`)
-        .join(", ");
-      taxQueries.push(`{
-            taxonomy: ${filters.typeDeCultures.taxonomy}, 
-            field: SLUG, 
-            terms: [${typeDeCulturesTerms}]
-            }`);
-    }
   }
 
   // Construire les conditions de recherche

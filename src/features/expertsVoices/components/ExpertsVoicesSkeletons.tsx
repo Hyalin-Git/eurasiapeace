@@ -1,4 +1,4 @@
-export function CultureSkeleton({ single = true }: { single?: boolean }) {
+export function ExpertVoiceSkeleton({ single = true }: { single?: boolean }) {
   return (
     <div className="flex flex-col bg-background-light-primary rounded-md border border-gray-200 h-full text-left shadow-sm">
       {/* Card header - Banner avec catégorie */}
@@ -57,11 +57,11 @@ export function CultureSkeleton({ single = true }: { single?: boolean }) {
   );
 }
 
-export function CulturesSkeletons({ count = 6 }: { count?: number }) {
+export function ExpertsVoicesSkeletons({ count = 6 }: { count?: number }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       {Array.from({ length: count }).map((_, index) => (
-        <CultureSkeleton key={index} single={false} />
+        <ExpertVoiceSkeleton key={index} single={false} />
       ))}
     </div>
   );

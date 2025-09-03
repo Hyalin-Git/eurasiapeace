@@ -35,7 +35,7 @@ export default function MetaData({
         <span>{readingTime} min de lecture</span>
       </div>
 
-      {author && (
+      {author && author?.firstName && (
         <div className="flex items-center gap-2">
           <CircleUser size={16} />
           <span>

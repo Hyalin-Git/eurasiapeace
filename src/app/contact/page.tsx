@@ -1,6 +1,6 @@
 "use client";
 import { sendContact } from "@/features/contact/server/actions/contact";
-import Banner from "@/components/Banner";
+import Banner from "@/components/banners/Banner";
 import Form from "@/components/form/Form";
 import FormFields from "@/components/form/FormFields";
 import TextareaField from "@/components/form/TextareaField";

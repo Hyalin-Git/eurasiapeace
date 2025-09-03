@@ -18,7 +18,7 @@ export default function Toast({
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowToast(false);
-    }, 3000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [showToast, setShowToast]);
@@ -30,7 +30,13 @@ export default function Toast({
           showToast ? "opacity-100" : "opacity-0"
         }`}
       >
-        <h1 className="font-semibold text-red-500">{title}</h1>
+        <h1
+          className={`font-semibold text-2xl ${
+            success ? "text-green-500" : "text-red-500"
+          }`}
+        >
+          {title}
+        </h1>
         <p className="text-gray-700 mt-2">{message}</p>
       </div>
     </Portal>

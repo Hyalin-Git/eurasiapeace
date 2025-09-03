@@ -50,7 +50,7 @@ export default async function Footer() {
                 <Link href="/veilles-geopolitiques">Veilles géopolitiques</Link>
               </li>
               <li>
-                <Link href="/cultures">Cultures</Link>
+                <Link href="/la-voix-des-experts">La voix des experts</Link>
               </li>
               <li>
                 <Link href="/formations">Formations</Link>

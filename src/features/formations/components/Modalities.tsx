@@ -41,7 +41,9 @@ export default function Modalities({ formation }: { formation: Formation }) {
               </td>
             </tr>
             <tr>
-              <td className="p-3 font-medium">Entreprise</td>
+              <td className="p-3 font-medium">
+                Entreprise et financements publics
+              </td>
               <td className="p-3 text-center">
                 <span className="bg-gray-200 px-1 py-1 rounded font-medium">
                   {entrepriseProgressif + " €" || "800 €"}

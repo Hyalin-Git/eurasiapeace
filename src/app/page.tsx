@@ -17,6 +17,7 @@ import { GeoWatchesSkeletons } from "@/features/geopoliticalWatches/components/G
 import { FormationsSkeletons } from "@/features/formations/components/FormationSkeletons";
 import GeoWatchesCarousel from "@/features/geopoliticalWatches/components/GeoWatchesCarousel";
 import GeoWatchesCarouselSkeleton from "@/features/geopoliticalWatches/components/GeoWatchesCarouselSkeleton";
+import Newsletter from "@/features/newsletter/components/Newsletter";
 
 const servicesData = [
   {
@@ -139,6 +140,7 @@ export default async function Home() {
         <Section
           title="Nos formations"
           description="Formations expertes pour approfondir vos connaissances géopolitiques et stratégiques"
+          className="mb-12"
         >
           <Suspense fallback={<FormationsSkeletons count={2} />}>
             <Formations />
@@ -149,6 +151,8 @@ export default async function Home() {
             className="mt-10"
           />
         </Section>
+
+        <Newsletter />
       </div>
     </div>
   );

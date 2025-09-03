@@ -3,26 +3,35 @@
 import { sendEmail } from "@/lib/nodemailer";
 import { createEmailVerification } from "@/server/db/verifications";
 import { Error } from "@/types";
+import { fetchGraphQLWithAuth } from "@/utils/authFetch";
 
 export async function checkUserEmailVerified(userEmail: string) {
   try {
-    const res = await fetch(
-      `${process.env.WP_API_URL}/check-email-verification?email=${userEmail}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    if (!userEmail) {
+      return {
+        success: false,
+        status: 400,
+        message: "User email is required",
+      };
+    }
+
+    const query = `
+     query getUserEmailVerification($email: ID!) {
+      user (id: $email, idType: EMAIL) {
+        emailVerified
       }
-    );
+    }
+    `;
 
-    const response = await res.json();
+    const res = await fetchGraphQLWithAuth(query, {
+      email: userEmail,
+    });
 
-    if (!response.success) {
+    if (!res.success) {
       return {
         success: false,
         status: res.status,
-        message: response.message || "Email verification check failed",
+        message: "Email verification check failed",
       };
     }
 
@@ -30,7 +39,7 @@ export async function checkUserEmailVerified(userEmail: string) {
       success: true,
       status: 200,
       message: "Email verification status retrieved",
-      data: response.data,
+      data: res?.data?.user,
     };
   } catch (e: unknown) {
     const err = e as Error;
