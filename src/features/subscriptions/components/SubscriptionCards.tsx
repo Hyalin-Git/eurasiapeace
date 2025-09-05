@@ -1,3 +1,4 @@
+"use client";
 import SubscriptionCard from "./SubscriptionCard";
 
 export default function SubscriptionCards() {
@@ -15,7 +16,7 @@ export default function SubscriptionCards() {
         "Réduction de 15% sur toutes les formations EurasiaPeace",
       ],
       color: "forceBlue" as const,
-      lookup_key: "Abonnement_EurasiaPeace-8f7f84b",
+      lookup_key: "abonnement_eurasiapeace",
     },
     {
       id: 2,
@@ -24,6 +25,7 @@ export default function SubscriptionCards() {
       duration: "mois",
       moreInfo: "Conditionné à l'abonnement EurasiaPeace",
       buttonText: "Postuler comme contributeur",
+
       services: [
         "Canal de communication direct avec l'équipe EurasiaPeace (WhatsApp)",
         "Statut d'auteur avec espace de publication sur le site",
@@ -34,7 +36,7 @@ export default function SubscriptionCards() {
         "Développement de votre réseau professionnel",
       ],
       color: "purple" as const,
-      lookup_key: "Abonnement_Contributeur_Spécial-518489b",
+      lookup_key: "abonnement_contributeur_special",
     },
   ];
 

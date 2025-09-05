@@ -1,26 +1,14 @@
 "use client";
 
-import { refreshAccessToken } from "@/server/api/auth";
 import LinkButton from "@/ui/LinkButton";
 import { CircleCheck, CircleX } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { mutate } from "swr";
 
 export default function Checkout() {
   const searchParams = useSearchParams();
 
   const success = searchParams.get("success");
   const canceled = searchParams.get("canceled");
-
-  async function handleUpdateUser() {
-    await refreshAccessToken();
-    await mutate("/api/auth/verify-token");
-  }
-
-  useEffect(() => {
-    handleUpdateUser();
-  }, []);
 
   return (
     <div
@@ -36,15 +24,14 @@ export default function Checkout() {
               <CircleCheck size={80} className="text-green-600" />
             </div>
             <h1 className="text-2xl font-bold text-green-800 mb-2 text-center">
-              Votre abonnement a été activé avec succès
+              Votre paiement a été effectué avec succès
             </h1>
             <p className="text-center max-w-md text-gray-700 mb-2">
               Vous allez recevoir votre facture ainsi qu&apos;un email de
               confirmation dans les prochaines minutes.
               <br />
               <br />
-              Vous pouvez dès maintenant accéder à l&apos;ensemble de nos
-              contenus premium.
+              Vous pouvez dès maintenant accéder à votre contenu.
             </p>
             <div className="flex flex-col gap-2 w-full mt-2">
               <LinkButton

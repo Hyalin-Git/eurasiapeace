@@ -1,11 +1,13 @@
 "use client";
-import { createCheckoutSession } from "@/server/api/stripe";
-import { useAuth } from "@/context/AuthProvider";
+
+import { createSubscriptionCheckout } from "@/server/api/stripe";
 import { Check, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Subscription } from "../types";
 import Toast from "@/components/Toast";
+import { useSubscription } from "@/context/SubscriptionContext";
+import { useAuth } from "@/context/AuthProvider";
 
 export default function SubscriptionCard({
   subscription,
@@ -13,6 +15,8 @@ export default function SubscriptionCard({
   subscription: Subscription;
 }) {
   const { user } = useAuth();
+  const { hasContributorSubscription, hasEurasiaPeaceSubscription } =
+    useSubscription();
   const [showToast, setShowToast] = useState<boolean>(false);
   const router = useRouter();
 
@@ -34,12 +38,18 @@ export default function SubscriptionCard({
 
   async function handleCheckoutSession(lookup_key: string) {
     const userId = user?.id || "";
-    const subscriptionId = user?.subscriptionId || "";
-    const customerId = user?.customerId || "";
+    const userCustomerId = user?.customerId || "";
 
     // Handle error if user is not authenticated
     if (!user) {
       return router.push("/connexion?redirect_url=/abonnements");
+    }
+
+    if (
+      lookup_key === "abonnement_contributeur_special" &&
+      !user?.canSubscribeContributor
+    ) {
+      return router.push("/contact");
     }
 
     // Handle error if lookup_key is not provided
@@ -48,11 +58,10 @@ export default function SubscriptionCard({
       return;
     }
 
-    const { data, success, status } = await createCheckoutSession(
+    const { data, success, status } = await createSubscriptionCheckout(
       lookup_key,
       userId,
-      subscriptionId,
-      customerId
+      userCustomerId
     );
 
     // Handle error if not authenticated (refresh token failed)
@@ -71,11 +80,11 @@ export default function SubscriptionCard({
   }
 
   const isUserSubscriber =
-    user?.role === "subscriber" &&
+    hasEurasiaPeaceSubscription &&
     subscription.title === "Abonnement EurasiaPeace";
 
   const isUserContributor =
-    user?.role === "contributor" &&
+    hasContributorSubscription &&
     subscription.title === "Abonnement Contributeur Spécial";
 
   function handleDisplayBtn() {
@@ -119,7 +128,9 @@ export default function SubscriptionCard({
             } transition-colors duration-300`}
             onClick={() => handleCheckoutSession(subscription.lookup_key)}
           >
-            {subscription.buttonText}
+            {user?.canSubscribeContributor
+              ? "S'abonner maintenant"
+              : subscription.buttonText}
           </button>
         );
       }

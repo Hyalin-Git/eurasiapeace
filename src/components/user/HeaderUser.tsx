@@ -9,9 +9,12 @@ import { mutate } from "swr";
 import DropdownHeader from "@/components/dropdown/DropdownHeader";
 import { createPortalSession } from "@/server/api/stripe";
 import { useRouter } from "next/navigation";
-import { User as UserInterface } from "@/types";
+import { AuthUser } from "@/types";
+import { useSubscription } from "@/context/SubscriptionContext";
 
-export default function HeaderUser({ user }: { user: UserInterface }) {
+export default function HeaderUser({ user }: { user: AuthUser }) {
+  const { hasContributorSubscription, hasEurasiaPeaceSubscription } =
+    useSubscription();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -28,28 +31,33 @@ export default function HeaderUser({ user }: { user: UserInterface }) {
     router.push("/connexion");
   }
 
-  const userPlan =
-    user?.role === "subscriber"
-      ? "Membre EurasiaPeace"
-      : user?.role === "contributor"
-      ? "Contributeur EurasiaPeace"
-      : "Visiteur";
-
-  const hasUserPlan =
-    user?.role === "subscriber" || user?.role === "contributor";
-
   async function handleCustomerPortal() {
     // Redirect to the customer portal for managing subscriptions
-    const customerId = user?.customerId || "";
+    const customerId = user?.customerId;
+
+    if (!customerId) return;
+
     const { data, success } = await createPortalSession(customerId);
 
     if (!success) {
       console.error("Error creating portal session:", data);
+
       return;
     }
 
     // Redirect to the portal session URL
     router.push(data?.url);
+  }
+
+  function displaySubscription() {
+    if (!hasContributorSubscription && !hasEurasiaPeaceSubscription) {
+      return "Visiteur";
+    }
+
+    if (hasContributorSubscription) return "Contributeur spécial";
+    if (hasEurasiaPeaceSubscription) return "Abonné EurasiaPeace";
+
+    return "Visiteur";
   }
 
   return (
@@ -74,7 +82,7 @@ export default function HeaderUser({ user }: { user: UserInterface }) {
             {user?.firstName} {user?.lastName}
           </Link>
           <span className="text-[12px]! text-gray-500/60! font-medium!">
-            {userPlan}
+            {displaySubscription()}
           </span>
         </div>
       </div>
@@ -88,15 +96,16 @@ export default function HeaderUser({ user }: { user: UserInterface }) {
               Mon compte
             </Link>
           </li>
-          {hasUserPlan && (
-            <li
-              className="flex items-center gap-2"
-              onClick={handleCustomerPortal}
-            >
-              <ReceiptText size={16} />
-              Gérer ma facturation
-            </li>
-          )}
+          {(hasEurasiaPeaceSubscription || hasContributorSubscription) &&
+            user?.customerId && (
+              <li
+                className="flex items-center gap-2"
+                onClick={handleCustomerPortal}
+              >
+                <ReceiptText size={16} />
+                Gérer ma facturation
+              </li>
+            )}
           <li
             className="flex items-center gap-2 text-red-500 hover:text-red-600!"
             onClick={handleLogout}

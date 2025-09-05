@@ -1,16 +1,12 @@
-import { User } from "@/types";
-
-export function showPaywall(authorization: string, user: User | null) {
+export function showPaywall(authorization: string, hasSubscription: boolean) {
   // Public content so no paywall
-  if (authorization === "Publique") {
+  if (authorization === "Public" || authorization === "Publique") {
     return false;
   }
 
-  if (user) {
-    // User is logged in and has an active subscription so no paywall
-    if (authorization === "Abonnement requis" && user?.role === "subscriber") {
-      return false;
-    }
+  // User is logged in and has an active subscription so no paywall
+  if (authorization === "Abonnement requis" && hasSubscription) {
+    return false;
   }
 
   return true;

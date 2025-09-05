@@ -227,10 +227,14 @@ export async function getExpertVoice(slug: string) {
               }
               firstName
               lastName
+              description
             }
           }
           wordCount
           readingTime
+          contenuPublic {
+            isPublic 
+          }
           contentType {
             node {
               name

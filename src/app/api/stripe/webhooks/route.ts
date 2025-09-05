@@ -3,9 +3,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { getStripe } from "@/lib/stripe";
-import { findUserIdByCustomerId } from "@/server/api/users";
 import { sendEmail } from "@/lib/nodemailer";
-import { createPortalSession } from "@/server/api/stripe";
+import {
+  saveUserSubscription,
+  updateUserSubscription,
+} from "@/server/db/stripe";
+import {
+  stripeInvoiceFailed,
+  stripeInvoicePaid,
+  stripePDFPurchaseTemplate,
+} from "@/features/stripe/utils/stripeEmailTemplates";
+import moment from "moment";
+import { updateUserRole } from "@/features/user/server/db/user";
+import { getUserSubscriptions } from "@/features/subscriptions/server/db";
 
 interface ErrorResponse {
   success: boolean;
@@ -54,94 +64,199 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const customer = await stripe.customers.retrieve(
-      data.object.customer as string
-    );
-
-    const isFirstInvoice = data.object.billing_reason === "subscription_create";
-
     switch (eventType) {
-      case "checkout.session.completed":
-        // Payment is successful and the subscription is created.
-        await addUserSubscription(
-          data.object.customer,
-          data.object.subscription,
-          data.object?.metadata?.userId
+      case "customer.subscription.created":
+        // The subscription was created.
+        // ! Save the user subscription in the DB
+
+        const sessions = await stripe.checkout.sessions.list({
+          subscription: data?.object?.id,
+          limit: 1,
+        });
+
+        const session = sessions.data[0];
+        const userId = session?.metadata?.userId;
+
+        await saveUserSubscription(
+          Number(userId),
+          data?.object?.customer || "", // customerId
+          data?.object?.id || "", // subscriptionId
+          data?.object?.status || "active", // status
+          data?.object?.items?.data[0]?.price?.lookup_key || "", // lookup_key
+          data?.object?.current_period_end // expiresAt
         );
 
-        console.log(`Checkout session completed: ${data.object.id}`);
-        break;
-      case "invoice.paid":
-        // Continue to provision the subscription as payments continue to be made.
-        await addUserSubscription(
-          data.object.customer,
-          data.object.subscription,
-          data.object?.metadata?.userId
-        );
-
-        // Send a confirmation email to the customer.
-        if (!("deleted" in customer)) {
-          await sendEmail(
-            "noreply@eurasiapeace.org",
-            customer.email as string,
-            isFirstInvoice
-              ? "Votre abonnement a été créé avec succès"
-              : "Votre abonnement a été renouvelé avec succès",
-            `<p>Bonjour ${customer.name},</p>
-            ${
-              isFirstInvoice
-                ? `<p>Merci pour votre abonnement à EurasiaPeace. Votre paiement a été reçu avec succès.</p>`
-                : `<p>Votre abonnement a été renouvelé avec succès.</p>`
-            }`
-          );
-        }
-
-        console.log(`Invoice paid for customerId: ${data.object.customer}`);
-        break;
-      case "invoice.payment_failed":
-        // The payment failed or the customer does not have a valid payment method.
-        await removeUserSubscription(data.object.customer as string);
-
-        const portalSession = await createPortalSession(data.object.customer);
-
-        if (!portalSession.success) {
-          throw new Error(portalSession.message);
-        }
-
-        const emailContent = `
-        <p>Bonjour, votre moyen de paiement a échoué.</p>
-        <a href="${portalSession.data.url}">Mettre à jour votre méthode de paiement</a>
-        `;
-
-        if (!("deleted" in customer)) {
-          await sendEmail(
-            "noreply@eurasiapeace.org",
-            customer.email as string,
-            "Votre abonnement a été annulé",
-            emailContent
-          );
+        // ! IF CONTRIBUTOR SUBSCRIPTION THEN CHANGE USER ROLE TO AUTHOR IN WP
+        if (
+          data?.object?.items?.data[0]?.price?.lookup_key ===
+          "abonnement_contributeur_special"
+        ) {
+          await updateUserRole(Number(userId), ["author", "subscriber"]);
         }
 
         console.log(
-          `Invoice payment failed for customerId: ${data.object.customer}`
+          `Subscription created for customerId: ${data?.object?.customer}`
+        );
+        break;
+      case "customer.subscription.updated":
+        // The subscription was updated or renewed.
+        // ! Update the user subscription in the DB
+
+        await updateUserSubscription(
+          data?.object?.id, // subscriptionId
+          data?.object?.status, // status
+          data?.object?.current_period_end // expiresAt
+        );
+
+        console.log(
+          `Subscription updated for customerId: ${data?.object?.customer}`
         );
         break;
       case "customer.subscription.deleted":
         // The subscription was canceled or expired.
-        await removeUserSubscription(data?.object.customer as string);
+        // ! Update the user subscription in the DB
 
-        if (!("deleted" in customer)) {
+        const deletedSubscription = await updateUserSubscription(
+          data?.object?.id, // subscriptionId
+          data?.object?.status, // status
+          data?.object?.current_period_end // expiresAt
+        );
+
+        // ! IF CONTRIBUTOR SUBSCRIPTION THEN CHANGE USER ROLE TO USER IN WP
+
+        if (
+          deletedSubscription?.data?.plan === "abonnement_contributeur_special"
+        ) {
+          await updateUserRole(Number(deletedSubscription?.data?.userId), [
+            "subscriber",
+          ]);
+        }
+
+        // ! IF EURASIA PEACE SUB IS STOPPED, CANCEL ALL OTHER ACTIVE SUBSCRIPTIONS
+        if (deletedSubscription?.data?.plan === "abonnement_eurasiapeace") {
+          // GET ALL USER SUBSCRIPTIONS FROM THE DB AND CANCEL THEM WITH STRIPE API
+          const userSubscriptions = await getUserSubscriptions(
+            deletedSubscription?.data?.userId
+          );
+
+          console.log(
+            "Annulation automatique des autres abonnements pour l'utilisateur:",
+            deletedSubscription?.data?.userId
+          );
+
+          for (const sub of userSubscriptions?.data || []) {
+            // Cancel all active subscriptions except the one that was just deleted
+            if (sub.subscriptionId !== data?.object?.id) {
+              try {
+                const cancelledSubscription = await stripe.subscriptions.update(
+                  sub.subscriptionId,
+                  { cancel_at_period_end: true }
+                );
+
+                await updateUserSubscription(
+                  sub.subscriptionId, // subscriptionId
+                  "canceled", // status
+                  data?.object?.current_period_end // expiresAt
+                );
+
+                console.log(
+                  `Abonnement ${sub.subscriptionId} (${sub.plan}) annulé automatiquement:`,
+                  cancelledSubscription
+                );
+              } catch (error) {
+                console.error(
+                  `Erreur lors de l'annulation de l'abonnement ${sub.subscriptionId}:`,
+                  error
+                );
+              }
+            }
+          }
+        }
+        console.log(
+          `Subscription deleted for customerId: ${data?.object?.customer}`
+        );
+        break;
+      case "checkout.session.completed":
+        if (data?.object?.mode === "payment") {
+          const purchaseTemplate = stripePDFPurchaseTemplate(
+            data?.object?.customer_details?.email,
+            data?.object?.metadata?.fileUrl || "",
+            data?.object?.amount_total || 0,
+            moment(data?.object?.created * 1000).format(
+              "MMMM Do YYYY, h:mm:ss a"
+            )
+          );
+
           await sendEmail(
-            "noreply@eurasiapeace.org",
-            customer.email as string,
-            "Votre abonnement a été annulé",
-            "Nous sommes désolés de vous voir partir. Si vous souhaitez nous faire part de vos commentaires, n'hésitez pas à répondre à cet e-mail."
+            process?.env?.EMAIL_FROM,
+            data?.object?.customer_details?.email,
+            purchaseTemplate.subject,
+            purchaseTemplate.text,
+            [
+              {
+                filename: `PDF-${data?.object?.metadata?.fileUrl}`,
+                path: data?.object?.metadata?.fileUrl,
+                contentType: "application/pdf",
+              },
+            ]
           );
         }
 
-        console.log(
-          `Subscription deleted for customerId: ${data.object.customer}`
+        console.log(" Checkout session completed");
+        break;
+      case "invoice.paid":
+        // ! Send an email to the customer that their invoice has been paid
+
+        const invoicePaidTemplate = stripeInvoicePaid(
+          data?.object?.customer_email,
+          data?.object?.lines?.data[0]?.price?.lookup_key || "", // subscription
+          data?.object?.amount_paid, // amount in cents
+          data?.object?.number, // invoice number
+          moment(data?.object?.status_transitions?.paid_at).format(
+            "MMMM Do YYYY, h:mm:ss a"
+          )
         );
+
+        await sendEmail(
+          process?.env?.EMAIL_FROM,
+          data?.object?.customer_email,
+          invoicePaidTemplate.subject,
+          invoicePaidTemplate.text,
+          [
+            {
+              filename: `invoice-${data?.object?.number}.pdf`,
+              path: data?.object?.invoice_pdf,
+              contentType: "application/pdf",
+            },
+          ]
+        );
+
+        console.log(`Invoice paid for customerId: ${data?.object?.customer}`);
+        break;
+      case "invoice.payment_failed":
+        // ! Send an email to the customer that their payment has failed
+
+        const invoiceFailedTemplate = stripeInvoiceFailed(
+          data?.object?.customer_email,
+          data?.object?.lines?.data[0]?.price?.lookup_key || "",
+          data?.object?.amount_due,
+          data?.object?.number,
+          moment(data?.object?.status_transitions?.finalized_at).format(
+            "MMMM Do YYYY, h:mm:ss a"
+          )
+        );
+
+        await sendEmail(
+          process?.env?.EMAIL_FROM,
+          data?.object?.customer_email,
+          invoiceFailedTemplate.subject,
+          invoiceFailedTemplate.text
+        );
+
+        console.log(
+          `Invoice payment failed for customerId: ${data?.object?.customer}`
+        );
+        break;
       case "payment_intent.succeeded":
         // Handle one-time payments
         console.log(`Payment status: ${data.object.status}`);
@@ -159,94 +274,4 @@ export async function POST(req: NextRequest) {
 
   // Return a response to acknowledge receipt of the event.
   return NextResponse.json({ message: "Received" }, { status: 200 });
-}
-
-async function addUserSubscription(
-  customerId: string,
-  subscriptionId: string,
-  userId: string
-) {
-  try {
-    let uid = userId;
-
-    if (!uid) {
-      const { success, data } = await findUserIdByCustomerId(customerId);
-
-      if (!success || !data) {
-        throw new Error("User not found for the given customerId");
-      }
-
-      uid = data;
-    }
-
-    // Sending a request to the WordPress API to update the user role as subscriber
-    // Saving the customerId and subscriptionId in the WordPress database as user meta
-    const res = await fetch(`${process.env.WP_API_URL}/promote-user`, {
-      method: "POST",
-      body: JSON.stringify({
-        userId: uid,
-        customerId: customerId,
-        subscriptionId: subscriptionId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const response = await res.json();
-
-    if (!response.success) {
-      throw new Error(response.message);
-    }
-
-    console.log(`Adding subscription for userId: ${userId}`);
-  } catch (e: unknown) {
-    const err = e as ErrorResponse;
-
-    console.log(
-      err?.message ||
-        "Une erreur est survenue lors de la promotion de l'utilisateur"
-    );
-  }
-}
-
-async function removeUserSubscription(customerId: string) {
-  try {
-    if (!customerId) {
-      throw new Error("Paramètres manquants");
-    }
-
-    // Find the userId associated with the customerId
-    const { success, data: userId } = await findUserIdByCustomerId(customerId);
-
-    if (!success || !userId) {
-      throw new Error("User not found for the given customerId");
-    }
-
-    // Sending a request to the WordPress API to remove the user role as subscriber
-    const res = await fetch(`${process.env.WP_API_URL}/demote-user`, {
-      method: "POST",
-      body: JSON.stringify({
-        userId: userId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const response = await res.json();
-
-    if (!response.success) {
-      throw new Error(response.message);
-    }
-
-    console.log(`Removing subscription for userId: ${userId}`);
-  } catch (e: unknown) {
-    const err = e as ErrorResponse;
-
-    console.log(
-      err?.message ||
-        "Une erreur est survenue lors de la démotion de l'utilisateur"
-    );
-  }
 }

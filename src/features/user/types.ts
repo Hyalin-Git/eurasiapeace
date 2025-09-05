@@ -6,6 +6,7 @@ export interface User {
   avatar: {
     url: string;
   };
+  description: string | null;
   registeredDate: string;
 }
 

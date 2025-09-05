@@ -227,3 +227,19 @@ export interface Error {
   message: string;
   data: null;
 }
+
+export interface AuthUser {
+  id: string;
+  emailVerified?: string;
+  canSubscribeContributor: boolean;
+  email: string;
+  firstName: string;
+  lastName: string;
+  customerId?: string;
+  subscriptions?: [
+    {
+      subscriptionPlan: string;
+      subscriptionStatus: string;
+    }
+  ];
+}

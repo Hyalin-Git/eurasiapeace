@@ -150,22 +150,73 @@ export async function createPortalSession(customerId: string) {
   }
 }
 
-export async function createCheckoutSession(
-  lookup_key: string,
-  userId: string,
-  subscriptionId: string,
-  customerId: string
+export async function createPayementCheckout(
+  name: string,
+  fileUrl: string,
+  amount: number
 ) {
   try {
     const res = await authFetch(
-      `${process.env.API_URL}/stripe/create-checkout-session`,
+      `${process.env.API_URL}/stripe/create-payment-checkout`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          fileUrl: fileUrl,
+          amount: amount,
+        }),
+      }
+    );
+
+    if (!res.success) {
+      throw {
+        success: false,
+        status: res.status || 500,
+        message:
+          res.message ||
+          "Une erreur est survenue lors de la création de la session de paiement",
+        data: null,
+      };
+    }
+
+    return {
+      success: true,
+      status: 200,
+      message: "Session de paiement créée avec succès",
+      data: res?.data,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+    console.log(
+      err?.message ||
+        "Une erreur est survenue lors de la création de la session de paiement"
+    );
+
+    return {
+      success: false,
+      status: 500,
+      message:
+        err?.message ||
+        "Une erreur est survenue lors de la création de la session de paiement",
+      data: null,
+    };
+  }
+}
+
+export async function createSubscriptionCheckout(
+  lookup_key: string,
+  userId: string,
+  userCustomerId: string
+) {
+  try {
+    const res = await authFetch(
+      `${process.env.API_URL}/stripe/create-subscription-checkout`,
       {
         method: "POST",
         body: JSON.stringify({
           lookup_key,
           userId,
-          subscriptionId,
-          customerId,
+          userCustomerId,
         }),
       }
     );

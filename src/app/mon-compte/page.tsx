@@ -10,9 +10,16 @@ export default function MonCompte() {
   const { user: authUser } = useAuth();
   const { data: user, isLoading, mutate } = useUser(authUser?.id || "");
 
+  if (!authUser) return null;
+
   return (
     <div className="container mx-auto max-w-6xl px-4 md:px-6 py-10">
-      <UserInfo user={user} isLoading={isLoading} mutate={mutate} />
+      <UserInfo
+        authUser={authUser}
+        user={user}
+        isLoading={isLoading}
+        mutate={mutate}
+      />
 
       <Separator className="my-10" />
 

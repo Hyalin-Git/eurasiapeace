@@ -204,6 +204,7 @@ export async function getPost(slug: string) {
               }
               firstName
               lastName
+              description
             }
           } 
           acfFields {

@@ -6,6 +6,8 @@ import FormFields from "@/components/form/FormFields";
 import { useActionState, useEffect } from "react";
 import { updateUser } from "../server/actions.ts/user";
 import Button from "@/ui/Button";
+import TextareaField from "@/components/form/TextareaField";
+import { useSubscription } from "@/context/SubscriptionContext";
 
 const initialState: InitialState = {
   success: false,
@@ -24,6 +26,7 @@ export default function UserInfoEdit({
   setIsEdit: (isEdit: boolean) => void;
   mutate: () => void;
 }) {
+  const { hasContributorSubscription } = useSubscription();
   const [state, formAction, pending] = useActionState(updateUser, initialState);
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export default function UserInfoEdit({
   return (
     <Form action={formAction}>
       <div className="flex flex-col gap-4 md:flex-row w-full mt-0 md:mt-6">
-        <div className="flex flex-col lg:flex-row w-full gap-4 lg:gap-10">
+        <div className="w-full">
           <input
             type="text"
             id="uid"
@@ -45,25 +48,38 @@ export default function UserInfoEdit({
             hidden
           />
 
-          <FormFields
-            id="last-name"
-            type="text"
-            label="Nom"
-            placeholder="Entrez votre nom"
-            defaultValue={user?.lastName}
-            required={true}
-            className="border rounded-sm px-2 mt-1"
-          />
+          <div className="flex flex-col lg:flex-row w-full gap-4 lg:gap-10">
+            <FormFields
+              id="last-name"
+              type="text"
+              label="Nom"
+              placeholder="Entrez votre nom"
+              defaultValue={user?.lastName}
+              required={true}
+              className="border rounded-sm px-2 mt-1"
+            />
 
-          <FormFields
-            id="first-name"
-            type="text"
-            label="Prénom"
-            placeholder="Entrez votre prénom"
-            defaultValue={user?.firstName}
-            required={true}
-            className="border rounded-sm px-2 mt-1"
-          />
+            <FormFields
+              id="first-name"
+              type="text"
+              label="Prénom"
+              placeholder="Entrez votre prénom"
+              defaultValue={user?.firstName}
+              required={true}
+              className="border rounded-sm px-2 mt-1"
+            />
+          </div>
+
+          {hasContributorSubscription && (
+            <div className="mt-4">
+              <TextareaField
+                id="description"
+                label="Biographie"
+                placeholder="Entrez votre biographie"
+                defaultValue={user?.description || ""}
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="flex justify-end gap-2 mt-6 md:mt-8 md:w-full">

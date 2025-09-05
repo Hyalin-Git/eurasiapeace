@@ -53,7 +53,6 @@ export default function FormFields({
           name={id}
           placeholder={placeholder}
           required={required}
-          defaultValue={defaultValue}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           className={`w-full border-b py-2 transition-all duration-300 group-focus-within:border-black placeholder:text-text-secondary placeholder:font-medium placeholder:text-[15px] ${

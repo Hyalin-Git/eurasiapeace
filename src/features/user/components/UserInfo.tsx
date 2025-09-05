@@ -10,22 +10,54 @@ import moment from "moment";
 import "moment/locale/fr";
 import { User } from "../types";
 import UserInfoSkeleton from "./UserInfoSkeleton";
-import { set } from "nprogress";
 import UserUpdateEmail from "./UserUpdateEmail";
+import LinkButton from "@/ui/LinkButton";
+import { useSubscription } from "@/context/SubscriptionContext";
+import { useRouter } from "next/navigation";
+import { AuthUser } from "@/types";
+import { createPortalSession } from "@/server/api/stripe";
 
 export default function UserInfo({
+  authUser,
   user,
   isLoading,
   mutate,
 }: {
+  authUser: AuthUser;
   user: User;
   isLoading: boolean;
   mutate: () => void;
 }) {
+  const {
+    subscription,
+    hasContributorSubscription,
+    hasEurasiaPeaceSubscription,
+  } = useSubscription();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
+  const router = useRouter();
 
   if (isLoading) return <UserInfoSkeleton />;
+
+  const hasBoth = hasContributorSubscription && hasEurasiaPeaceSubscription;
+
+  async function handleCustomerPortal() {
+    // Redirect to the customer portal for managing subscriptions
+    const customerId = authUser?.customerId;
+
+    if (!customerId) return;
+
+    const { data, success } = await createPortalSession(customerId);
+
+    if (!success) {
+      console.error("Error creating portal session:", data);
+
+      return;
+    }
+
+    // Redirect to the portal session URL
+    router.push(data?.url);
+  }
 
   const fullName = `${user?.firstName} ${user?.lastName}`;
 
@@ -42,12 +74,12 @@ export default function UserInfo({
   return (
     <Section
       icon={<User2 className="text-btn-force-blue" size={32} />}
-      title="Profil"
+      title="Mon compte"
       description="Vos informations personnelles."
       className="pt-0!"
     >
-      <div className="flex justify-between items-baseline flex-col md:flex-row">
-        <div className="flex gap-2">
+      <div className="flex justify-between items-baseline flex-col lg:flex-row">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-200">
             <Image
               src={user?.avatar?.url || "/default-avatar.webp"}
@@ -70,7 +102,31 @@ export default function UserInfo({
                 (Modifier mon adresse e-mail)
               </span>
             </p>
-            <p className="text-black/60 text-sm">Visiteur</p>
+            <p className="text-black/60 text-sm">
+              Abonnement(s) : {subscription}{" "}
+              {hasBoth ? (
+                <span
+                  className="text-xs text-midnight-green font-medium cursor-pointer"
+                  onClick={handleCustomerPortal}
+                >
+                  (Gérer mes abonnements)
+                </span>
+              ) : hasContributorSubscription ? (
+                <span
+                  className="text-xs text-midnight-green font-medium cursor-pointer"
+                  onClick={handleCustomerPortal}
+                >
+                  (Gérer mon abonnement)
+                </span>
+              ) : hasEurasiaPeaceSubscription ? (
+                <span
+                  className="text-xs text-midnight-green font-medium cursor-pointer"
+                  onClick={handleCustomerPortal}
+                >
+                  (Gérer mon abonnement)
+                </span>
+              ) : null}
+            </p>
             <p className="text-black/60 text-sm">
               Membre depuis le {moment(user?.registeredDate).format("LL")}
             </p>
@@ -78,8 +134,27 @@ export default function UserInfo({
         </div>
 
         {!isEdit && (
-          <div className="mt-6 md:mt-0">
-            <Button type="button" onClick={handleIsEdit}>
+          <div className="flex flex-col sm:flex-row gap-4 mt-6 lg:mt-0 w-full sm:w-auto">
+            {hasContributorSubscription ? (
+              <LinkButton
+                href={`${process.env.NEXT_PUBLIC_WP_API_URI}`}
+                blank={true}
+                label="Espace rédacteur"
+                className="bg-midnight-green hover:bg-midnight-green/90 w-full sm:w-fit"
+              />
+            ) : (
+              <LinkButton
+                href={"/abonnements"}
+                label="Devenir rédacteur"
+                className="bg-midnight-green hover:bg-midnight-green/90 w-full sm:w-fit"
+              />
+            )}
+
+            <Button
+              type="button"
+              onClick={handleIsEdit}
+              className="w-full sm:w-fit"
+            >
               Modifier le profil
             </Button>
           </div>

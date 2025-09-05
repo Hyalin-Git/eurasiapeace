@@ -125,8 +125,10 @@ export default async function PublicationPage({
     return <NotFound />;
   }
 
+  const postTitle = post?.title || "Publication EurasiaPeace";
+  const category = post?.categories?.nodes[0];
   const fileUrl = post?.acfFields?.pdf?.node?.filePath;
-  const isPublic = post?.contenuPublic?.isPublic ?? "Publique";
+  const isPublic = post?.contenuPublic?.isPublic ?? "Public";
 
   return (
     <div>
@@ -162,7 +164,12 @@ export default async function PublicationPage({
               </RelatedArticles>
             )}
 
-            <PostDownload fileUrl={fileUrl} isPublic={isPublic} />
+            <PostDownload
+              postTitle={postTitle}
+              category={category}
+              fileUrl={fileUrl}
+              isPublic={isPublic}
+            />
           </div>
         </aside>
       </div>

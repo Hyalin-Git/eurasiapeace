@@ -4,6 +4,7 @@ import { contactSchema } from "@/lib/zod";
 import { Error } from "@/types";
 import DOMPurify from "isomorphic-dompurify";
 import { InitialState } from "../../types";
+import { contactEmailTemplate } from "../../utils/contactEmailTemplate";
 
 export async function sendContact(prevState: InitialState, formData: FormData) {
   try {
@@ -46,19 +47,20 @@ export async function sendContact(prevState: InitialState, formData: FormData) {
 
     const { data } = validatedFields;
 
-    const emailContent = `
-          Name: ${data.lastName} ${data.firstName}
-          Email: ${data.email}
-          Phone: ${data.phone}
-          Subject: ${data.subject}
-          Message: ${data.message}
-          `;
+    const contactTemplate = contactEmailTemplate({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phone: data.phone,
+      subject: data.subject,
+      message: data.message,
+    });
 
     const res = await sendEmail(
       email,
-      "test@test.com",
-      "Nouveau message de contact",
-      emailContent
+      process.env.EMAIL_FROM as string,
+      contactTemplate.subject,
+      contactTemplate.text
     );
 
     if (!res.success) {

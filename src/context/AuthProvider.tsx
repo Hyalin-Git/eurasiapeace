@@ -1,7 +1,7 @@
 "use client";
 
 import { verifyToken } from "@/server/api/auth";
-import { User } from "@/types";
+import { AuthUser, User } from "@/types";
 import {
   createContext,
   useState,
@@ -12,7 +12,7 @@ import {
 import useSWR from "swr";
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   setUser: Dispatch<SetStateAction<User | null>>;
 }
 

@@ -4,6 +4,7 @@ import { sendEmail } from "@/lib/nodemailer";
 import { formationSchema } from "@/lib/zod";
 import { Error } from "@/types";
 import { InitialState } from "../../types";
+import { formationEmailTemplate } from "../../utils/formationEmailTemplates";
 
 export async function registerToFormation(
   title: string,
@@ -37,23 +38,20 @@ export async function registerToFormation(
       };
     }
 
-    const subject =
-      "Nouvelle demande de participation à la formation : " + title;
-
-    const msgTemplate = `
-        <h1>${subject}</h1>
-  
-        <p><strong>Nom :</strong> ${firstName} ${lastName}</p>
-        <p><strong>Email :</strong> ${email}</p>
-        <p><strong>Téléphone :</strong> ${phone}</p>
-        <p><strong>Message :</strong> ${message}</p>
-      `;
+    const msgTemplate = formationEmailTemplate(
+      title,
+      firstName,
+      lastName,
+      email,
+      phone,
+      message
+    );
 
     await sendEmail(
       email,
       `${process.env.EMAIL_FORMATION}`,
-      subject,
-      msgTemplate
+      msgTemplate.subject,
+      msgTemplate.text
     );
 
     return {

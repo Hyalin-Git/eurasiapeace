@@ -71,6 +71,10 @@ export const updateUserSchema = z.object({
     .string()
     .min(2, "Le prénom saisi est invalide")
     .max(50, "Le prénom saisi est invalide"),
+  description: z
+    .string()
+    .max(500, "La description est trop longue (500 caractères max)")
+    .optional(),
 });
 
 export const contactSchema = z.object({

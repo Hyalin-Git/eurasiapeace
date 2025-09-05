@@ -99,7 +99,7 @@ export default async function ExpertsVoicesPage({
   const bannerProps = {
     title: "La voix des experts",
     content:
-      "Découvrez notre riche catalogue de publications. Explorez nos notes d'analyses approfondies, nos dossiers thématiques détaillés ainsi que nos fiches et rapports de renseignement pour une compréhension stratégique des enjeux contemporains.",
+      "Allez à la rencontre des chercheurs, des professionnels et des spécialistes que nous interviewons ou que nous invitons dans nos webinaires",
     src: "/banner/la-voix-des-experts-banner.png",
   };
 

@@ -63,7 +63,7 @@ export default function UserUpdatePassword({ user }: { user: User }) {
           hidden
         />
 
-        <div className="flex gap-10">
+        <div className="flex flex-col md:flex-row gap-10">
           <FormFields
             id="current-password"
             label="Mot de passe actuel"

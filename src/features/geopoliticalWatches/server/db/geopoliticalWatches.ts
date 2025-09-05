@@ -224,10 +224,14 @@ export async function getGeopoliticalWatch(slug: string) {
               }
               firstName
               lastName
+              description
             }
           }
           wordCount
           readingTime
+          contenuPublic {
+            isPublic 
+          }
           contentType {
             node {
               name

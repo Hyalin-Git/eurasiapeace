@@ -1,7 +1,10 @@
+import { useAuth } from "@/context/AuthProvider";
 import Link from "next/link";
 import React from "react";
 
 export default function Paywall() {
+  const { user } = useAuth();
+
   return (
     <div className="mt-8 mb-12 bg-gradient-to-br from-blue-400 to-blue-900 border border-amber-200 rounded-lg p-8 text-center">
       <div className="flex items-center justify-center mb-4">
@@ -30,12 +33,15 @@ export default function Paywall() {
         >
           Découvrir nos abonnements
         </Link>
-        <Link
-          href="/connexion"
-          className="bg-white text-amber-600 px-6 py-3 rounded-lg font-medium border border-amber-600 hover:bg-amber-50 transition-colors"
-        >
-          Se connecter
-        </Link>
+
+        {!user && (
+          <Link
+            href="/connexion"
+            className="bg-white text-amber-600 px-6 py-3 rounded-lg font-medium border border-amber-600 hover:bg-amber-50 transition-colors"
+          >
+            Se connecter
+          </Link>
+        )}
       </div>
     </div>
   );

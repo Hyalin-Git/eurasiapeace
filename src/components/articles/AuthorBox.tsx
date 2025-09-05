@@ -56,7 +56,7 @@ export default function AuthorBox({ author }: { author: Author }) {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-full border border-border-primary shadow-sm">
             <div className="w-2 h-2 bg-midnight-green rounded-full animate-pulse"></div>
             <span className="text-xs font-medium text-text-third">
-              Auteur expert
+              Auteur vérifié
             </span>
           </div>
         </div>

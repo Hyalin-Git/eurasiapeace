@@ -7,13 +7,13 @@ import Separator from "@/ui/Separator";
 import SocialShare from "@/components/articles/Share";
 import Paywall from "@/components/articles/Paywall";
 import { showPaywall } from "@/utils/showPaywall";
-import { useAuth } from "@/context/AuthProvider";
 import moment from "moment";
 import Banner from "./Banner";
 import { Article as ArticleInterface } from "@/types";
+import { useSubscription } from "@/context/SubscriptionContext";
 
 export default function Article({ element }: { element: ArticleInterface }) {
-  const { user } = useAuth();
+  const { hasEurasiaPeaceSubscription } = useSubscription();
   const title = element?.title;
   const content = element?.content;
   const featuredImage = element?.featuredImage?.node?.sourceUrl;
@@ -21,8 +21,8 @@ export default function Article({ element }: { element: ArticleInterface }) {
   const tags = element?.tags?.nodes;
   const author = element?.author?.node;
 
-  const isPublic = element?.contenuPublic?.isPublic ?? "Publique";
-  const isPaywall = showPaywall(isPublic, user);
+  const isPublic = element?.contenuPublic?.isPublic ?? "Public";
+  const isPaywall = showPaywall(isPublic, hasEurasiaPeaceSubscription);
 
   const firstPart = content.slice(0, 2000);
   const lastPart = content.slice(2000);
@@ -67,7 +67,9 @@ export default function Article({ element }: { element: ArticleInterface }) {
       {featuredImage && <Separator />}
 
       {/* Contenu principal */}
-      <div className="relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none">
+      <div
+        className={`relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none`}
+      >
         <div dangerouslySetInnerHTML={{ __html: firstPart }} />
         <div
           dangerouslySetInnerHTML={{ __html: lastPart }}

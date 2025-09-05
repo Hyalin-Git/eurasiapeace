@@ -5,7 +5,7 @@ import { CircleUserRound } from "lucide-react";
 import Image from "next/image";
 import { ReactNode, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import HeaderUser from "@/components/user/HeaderUser";
+import HeaderUser from "../user/HeaderUser";
 
 export default function Header({ children }: { children: ReactNode }) {
   const { user } = useAuth();

@@ -21,10 +21,12 @@ export async function updateUser(prevState: InitialState, formData: FormData) {
     const uid = formData.get("uid") as string;
     const lastName = formData.get("last-name") as string;
     const firstName = formData.get("first-name") as string;
+    const description = formData.get("description") as string;
 
     // Sanitize the data to prevent XSS attacks
     const sanitizedLastName = DOMPurify.sanitize(lastName);
     const sanitizedFirstName = DOMPurify.sanitize(firstName);
+    const sanitizedDescription = DOMPurify.sanitize(description);
 
     if (!uid) {
       return {
@@ -39,6 +41,7 @@ export async function updateUser(prevState: InitialState, formData: FormData) {
     const validation = updateUserSchema.safeParse({
       lastName: sanitizedLastName,
       firstName: sanitizedFirstName,
+      description: sanitizedDescription,
     });
 
     if (!validation.success) {
@@ -52,12 +55,13 @@ export async function updateUser(prevState: InitialState, formData: FormData) {
     }
 
     const mutation = `
-      mutation UpdateUser($uid: ID!, $lastName: String!, $firstName: String!) {
+      mutation UpdateUser($uid: ID!, $lastName: String!, $firstName: String!, $description: String) {
         updateUser(
           input: {
             id: $uid
             lastName: $lastName
             firstName: $firstName
+            description: $description
             clientMutationId: "updateUser"
           }
         ) {
@@ -67,9 +71,10 @@ export async function updateUser(prevState: InitialState, formData: FormData) {
     `;
 
     const response = await fetchGraphQLWithAuth(mutation, {
-      uid,
-      lastName,
-      firstName,
+      uid: uid,
+      lastName: sanitizedLastName,
+      firstName: sanitizedFirstName,
+      description: sanitizedDescription,
     });
 
     if (!response?.success) {

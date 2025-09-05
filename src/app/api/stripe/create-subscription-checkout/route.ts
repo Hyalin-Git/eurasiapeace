@@ -6,8 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     const stripe = await getStripe();
 
-    const { lookup_key, userId, subscriptionId, customerId } =
-      await request.json();
+    const { lookup_key, userId, userCustomerId } = await request.json();
 
     if (!userId || !lookup_key) {
       return NextResponse.json(
@@ -17,25 +16,6 @@ export async function POST(request: NextRequest) {
         },
         { status: 400 }
       );
-    }
-
-    if (subscriptionId) {
-      const subscription = await stripe.subscriptions.retrieve(
-        subscriptionId || ""
-      );
-
-      if (
-        subscription?.status === "active" ||
-        subscription?.status === "trialing"
-      ) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "La subscription est déjà active",
-          },
-          { status: 400 }
-        );
-      }
     }
 
     const prices = await stripe.prices.list({
@@ -51,8 +31,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         userId: userId,
       },
-      client_reference_id: customerId || undefined,
-      customer: customerId || undefined,
+      customer: userCustomerId || undefined,
       line_items: [
         {
           price: prices.data[0].id,

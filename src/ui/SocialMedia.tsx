@@ -8,7 +8,7 @@ export default function SocialMedia({ className }: { className?: string }) {
     <div className={`flex items-center gap-5 ${className}`}>
       <div className="grid grid-cols-5 gap-5">
         <Link
-          href="https://x.com/sharer/sharer.php?u=https://eurasiapeace.org"
+          href="https://x.com/eurasia_peace"
           target="_blank"
           className="flex-1 cursor-pointer rounded transition-colors"
         >
@@ -19,16 +19,20 @@ export default function SocialMedia({ className }: { className?: string }) {
             height={32}
           />
         </Link>
-        <button className="flex-1 cursor-pointer rounded transition-colors">
+        <Link
+          href={"https://fr.linkedin.com/company/eurasiapeace"}
+          target="_blank"
+          className="flex-1 cursor-pointer rounded transition-colors"
+        >
           <Image
             src="/social-media/icon-linkedin.svg"
-            alt="Facebook"
+            alt="LinkedIn"
             width={32}
             height={32}
           />
-        </button>
+        </Link>
         <Link
-          href="https://www.facebook.com/sharer/sharer.php?u=https://eurasiapeace.org"
+          href="https://www.facebook.com/p/EurasiaPeace-100077017295602/"
           target="_blank"
           className="flex-1 cursor-pointer rounded transition-colors"
         >
@@ -40,25 +44,13 @@ export default function SocialMedia({ className }: { className?: string }) {
           />
         </Link>
         <Link
-          href="https://www.instagram.com/sharer/sharer.php?u=https://eurasiapeace.org"
+          href="https://www.instagram.com/eurasiapeace/"
           target="_blank"
           className="flex-1 cursor-pointer rounded transition-colors"
         >
           <Image
             src="/social-media/icon-instagram.svg"
             alt="Instagram"
-            width={32}
-            height={32}
-          />
-        </Link>
-        <Link
-          href="https://www.youtube.com/sharer/sharer.php?u=https://eurasiapeace.org"
-          target="_blank"
-          className="flex-1 cursor-pointer rounded transition-colors"
-        >
-          <Image
-            src="/social-media/icon-youtube.svg"
-            alt="Youtube"
             width={32}
             height={32}
           />

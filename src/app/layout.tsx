@@ -6,6 +6,7 @@ import Header from "@/components/header/Header";
 import Navigations from "@/features/header/components/Navigations";
 import { AuthProvider } from "@/context/AuthProvider";
 import NextTopLoader from "nextjs-toploader";
+import { SubscriptionProvider } from "@/context/SubscriptionContext";
 
 export const metadata: Metadata = {
   title:
@@ -106,13 +107,15 @@ export default function RootLayout({
         />
 
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header>
-              <Navigations />
-            </Header>
-            <main>{children}</main>
-            <Footer />
-          </div>
+          <SubscriptionProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header>
+                <Navigations />
+              </Header>
+              <main>{children}</main>
+              <Footer />
+            </div>
+          </SubscriptionProvider>
         </AuthProvider>
       </body>
     </html>

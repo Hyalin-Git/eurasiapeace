@@ -107,6 +107,7 @@ function PaymentForm({ buttonText }: { buttonText: string }) {
     </form>
   );
 }
+
 export default function Checkout({
   clientSecret,
   buttonText,
