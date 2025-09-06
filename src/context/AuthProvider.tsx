@@ -1,7 +1,7 @@
 "use client";
 
 import { verifyToken } from "@/server/api/auth";
-import { AuthUser, User } from "@/types";
+import { AuthUser } from "@/types";
 import {
   createContext,
   useState,
@@ -13,13 +13,13 @@ import useSWR from "swr";
 
 interface AuthContextType {
   user: AuthUser | null;
-  setUser: Dispatch<SetStateAction<User | null>>;
+  setUser: Dispatch<SetStateAction<AuthUser | null>>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
 
   useSWR("/api/auth/verify-token", verifyToken, {
     onSuccess: (data) => {

@@ -14,6 +14,7 @@ import {
   stripePDFPurchaseTemplate,
 } from "@/features/stripe/utils/stripeEmailTemplates";
 import moment from "moment";
+import "moment/locale/fr";
 import { updateUserRole } from "@/features/user/server/db/user";
 import { getUserSubscriptions } from "@/features/subscriptions/server/db";
 
@@ -182,9 +183,7 @@ export async function POST(req: NextRequest) {
             data?.object?.customer_details?.email,
             data?.object?.metadata?.fileUrl || "",
             data?.object?.amount_total || 0,
-            moment(data?.object?.created * 1000).format(
-              "MMMM Do YYYY, h:mm:ss a"
-            )
+            moment().format("MMMM Do YYYY, h:mm:ss")
           );
 
           await sendEmail(
@@ -212,9 +211,7 @@ export async function POST(req: NextRequest) {
           data?.object?.lines?.data[0]?.price?.lookup_key || "", // subscription
           data?.object?.amount_paid, // amount in cents
           data?.object?.number, // invoice number
-          moment(data?.object?.status_transitions?.paid_at).format(
-            "MMMM Do YYYY, h:mm:ss a"
-          )
+          moment().format("MMMM Do YYYY, h:mm:ss")
         );
 
         await sendEmail(
@@ -241,9 +238,7 @@ export async function POST(req: NextRequest) {
           data?.object?.lines?.data[0]?.price?.lookup_key || "",
           data?.object?.amount_due,
           data?.object?.number,
-          moment(data?.object?.status_transitions?.finalized_at).format(
-            "MMMM Do YYYY, h:mm:ss a"
-          )
+          moment().format("MMMM Do YYYY, h:mm:ss")
         );
 
         await sendEmail(

@@ -26,6 +26,8 @@ export default function Newsletter() {
   const hasServerError = state?.status === 500;
   const isSuccess = state?.success && state?.status === 200;
 
+  console.log(state);
+
   return (
     <GoogleReCaptchaProvider>
       <div className="bg-headband rounded-lg shadow-lg p-6 text-white max-w-4xl mx-auto">

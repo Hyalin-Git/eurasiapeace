@@ -63,19 +63,48 @@ export function updateWarningEmailTemplate(
 
 export function passwordChangeSuccessTemplate(email: string) {
   return {
-    subject: "Votre mot de passe a été changé avec succès",
+    subject: "✅ Mot de passe modifié avec succès - Eurasia Peace",
     text: `
-      <div>
-        <h1>Changement de mot de passe confirmé</h1>
-        <p>Bonjour,</p>
-        <p>Nous vous confirmons que votre mot de passe a été changé avec succès.</p>
-        <ul>
-            <li>Adresse e-mail : ${email}</li>
-            <li>Date de changement : ${new Date().toLocaleString()}</li>
-        </ul>
-        <p>Si vous n'êtes pas à l'origine de ce changement, veuillez contacter immédiatement notre service d'assistance pour sécuriser votre compte.</p>
-        <p>Merci de votre confiance,</p>
-        <p>L'équipe EurasiaPeace</p>
+      <div style="max-width: 800px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.5; color: #333; font-size: 16px;">
+        <div style="padding: 25px; background: #f9f9f9;">
+          <div style="background: white; padding: 22px; border-radius: 8px; margin-bottom: 18px;">
+            <h2 style="color: #28a745; margin-top: 0; font-size: 20px;">Mot de passe modifié avec succès</h2>
+            <p style="font-size: 15px;">Bonjour,</p>
+            <p style="font-size: 15px;">Nous vous confirmons que votre mot de passe a été modifié avec succès sur votre compte Eurasia Peace.</p>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 4px; margin: 20px 0;">
+              <h3 style="color: #0066cc; margin-top: 0; font-size: 18px;">Détails de la modification</h3>
+              <p style="font-size: 15px;"><strong>Adresse e-mail :</strong> ${email}</p>
+              <p style="font-size: 15px;"><strong>Date de changement :</strong> ${new Date().toLocaleDateString(
+                "fr-FR"
+              )} à ${new Date().toLocaleTimeString("fr-FR")}</p>
+            </div>
+            
+            <div style="background: #e9f7ef; padding: 15px; border-radius: 4px; border-left: 4px solid #28a745; margin: 20px 0;">
+              <p style="margin: 0; font-size: 14px;">
+                <strong>✅ Confirmation :</strong> Votre compte est maintenant sécurisé avec votre nouveau mot de passe.
+              </p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${process.env.NEXT_PUBLIC_CLIENT_URL}/mon-compte" 
+                 style="background-color: #0066cc; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 15px; display: inline-block;">
+                👤 Accéder à mon compte
+              </a>
+            </div>
+            
+            <div style="background: #f8d7da; padding: 15px; border-radius: 4px; border-left: 4px solid #dc3545; margin: 20px 0;">
+              <p style="margin: 0; font-size: 14px;">
+                <strong>🛡️ Sécurité :</strong> Si vous n'avez pas effectué cette modification, contactez immédiatement notre support pour sécuriser votre compte.
+              </p>
+            </div>
+          </div>
+          
+          <div style="text-align: center; color: #666; font-size: 14px;">
+            <p>Merci de votre confiance.</p>
+            <p><strong>L'équipe Eurasia Peace</strong></p>
+          </div>
+        </div>
       </div>
     `,
   };

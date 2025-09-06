@@ -1,16 +1,24 @@
 "use server";
 
 import { sendEmail } from "@/lib/nodemailer";
+import {
+  passwordResetCodeTemplate,
+  passwordResetConfirmationTemplate,
+} from "./forgotPasswordTemplates";
 
 export async function sendEmailPasswordReset(email: string, code: string) {
   if (!email || !code) {
     throw new Error("Email and code are required");
   }
 
-  const subject = "Réinitialisation de votre mot de passe";
-  const text = `Bonjour, voici le code : ${code}`;
+  const emailTemplate = passwordResetCodeTemplate(code);
 
-  await sendEmail(process.env.EMAIL_FROM, email, subject, text);
+  await sendEmail(
+    process.env.EMAIL_FROM || "contact@eurasiapeace.org",
+    email,
+    emailTemplate.subject,
+    emailTemplate.text
+  );
 }
 
 export async function sendEmailPasswordResetConfirmation(email: string) {
@@ -18,8 +26,12 @@ export async function sendEmailPasswordResetConfirmation(email: string) {
     throw new Error("Email is required");
   }
 
-  const subject = "Confirmation de réinitialisation de votre mot de passe";
-  const text = `Bonjour, votre mot de passe a été réinitialisé avec succès.`;
+  const emailTemplate = passwordResetConfirmationTemplate();
 
-  await sendEmail(process.env.EMAIL_FROM, email, subject, text);
+  await sendEmail(
+    process.env.EMAIL_FROM || "contact@eurasiapeace.org",
+    email,
+    emailTemplate.subject,
+    emailTemplate.text
+  );
 }

@@ -247,8 +247,9 @@ function generateEmailTemplate(title: string, content: string) {
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                   <span>© ${new Date().getFullYear()} EurasiaPeace. Tous droits réservés.</span>
                   <div>
-                    <a href="#" style="color: rgba(255,255,255,0.8); text-decoration: none; margin-right: 15px;">Politique de confidentialité</a>
-                    <a href="#" style="color: rgba(255,255,255,0.8); text-decoration: none;">Se désabonner</a>
+                    <a href="${
+                      process.env.NEXT_PUBLIC_CLIENT_URL
+                    }/politique-de-confidentialite" style="color: rgba(255,255,255,0.8); text-decoration: none; margin-right: 15px;">Politique de confidentialité</a>
                   </div>
                 </div>
               </div>

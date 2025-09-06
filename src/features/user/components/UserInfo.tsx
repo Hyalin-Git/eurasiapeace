@@ -10,7 +10,7 @@ import moment from "moment";
 import "moment/locale/fr";
 import { User } from "../types";
 import UserInfoSkeleton from "./UserInfoSkeleton";
-import UserUpdateEmail from "./UserUpdateEmail";
+// import UserUpdateEmail from "./UserUpdateEmail";
 import LinkButton from "@/ui/LinkButton";
 import { useSubscription } from "@/context/SubscriptionContext";
 import { useRouter } from "next/navigation";
@@ -34,7 +34,7 @@ export default function UserInfo({
     hasEurasiaPeaceSubscription,
   } = useSubscription();
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
+  // const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
   const router = useRouter();
 
   if (isLoading) return <UserInfoSkeleton />;
@@ -63,13 +63,13 @@ export default function UserInfo({
 
   function handleIsEdit() {
     setIsEdit(true);
-    setIsEditingEmail(false);
+    // setIsEditingEmail(false);
   }
 
-  function handleIsEditingEmail() {
-    setIsEditingEmail(true);
-    setIsEdit(false);
-  }
+  // function handleIsEditingEmail() {
+  //   setIsEditingEmail(true);
+  //   setIsEdit(false);
+  // }
 
   return (
     <Section
@@ -95,12 +95,12 @@ export default function UserInfo({
             <p className="font-semibold text-md">{fullName}</p>
             <p className="text-black/60 text-sm">
               {user?.email}{" "}
-              <span
+              {/* <span
                 className="text-xs text-midnight-green font-medium cursor-pointer"
                 onClick={handleIsEditingEmail}
               >
                 (Modifier mon adresse e-mail)
-              </span>
+              </span> */}
             </p>
             <p className="text-black/60 text-sm">
               Abonnement(s) : {subscription}{" "}
@@ -164,9 +164,9 @@ export default function UserInfo({
         <UserInfoEdit user={user} setIsEdit={setIsEdit} mutate={mutate} />
       )}
 
-      {isEditingEmail && (
+      {/* {isEditingEmail && (
         <UserUpdateEmail user={user} setIsEditingEmail={setIsEditingEmail} />
-      )}
+      )} */}
     </Section>
   );
 }

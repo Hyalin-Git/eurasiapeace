@@ -22,6 +22,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  const authenticatedRoutes = ["/mon-compte"];
+
+  if (authenticatedRoutes.includes(request.nextUrl.pathname) && !authToken) {
+    return NextResponse.redirect(new URL("/connexion", request.url));
+  }
+
   // Routes API accessibles uniquement si l'utilisateur est connecté
   const authenticatedApiRoutes = [
     "/api/stripe/create-checkout-session",
@@ -77,6 +83,7 @@ export const config = {
   matcher: [
     "/connexion",
     "/inscription",
+    "/mon-compte",
     "/api/stripe/create-checkout-session",
     "/api/stripe/create-portal-session",
     "/api/stripe/cancel-subscription",

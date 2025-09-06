@@ -4,6 +4,7 @@ import { sendEmail } from "@/lib/nodemailer";
 import { createEmailVerification } from "@/server/db/verifications";
 import { Error } from "@/types";
 import { fetchGraphQLWithAuth } from "@/utils/authFetch";
+import { resendVerificationEmailTemplate } from "../../utils/signInEmailsTemplates";
 
 export async function checkUserEmailVerified(userEmail: string) {
   try {
@@ -77,14 +78,17 @@ export async function resendVerificationEmail(userEmail: string) {
     const code =
       emailVerification.data.createUserVerification.userVerification.code;
 
-    const subject = "Veuillez confirmer votre adresse e-mail";
-    const html = `
-          <p>Bonjour,</p>
-          <p>Merci de vous être inscrit sur notre site. Veuillez cliquer sur le lien ci-dessous pour confirmer votre adresse e-mail :</p>
-          <a href="${process.env.NEXT_PUBLIC_CLIENT_URL}/verification/${code}">Confirmer mon adresse e-mail</a>
-        `;
+    const emailTemplate = resendVerificationEmailTemplate(
+      code,
+      process.env.NEXT_PUBLIC_CLIENT_URL || ""
+    );
 
-    await sendEmail("contact@eurasiapeace.org", userEmail, subject, html);
+    await sendEmail(
+      process.env.EMAIL_FROM || "contact@eurasiapeace.org",
+      userEmail,
+      emailTemplate.subject,
+      emailTemplate.text
+    );
 
     return {
       success: true,

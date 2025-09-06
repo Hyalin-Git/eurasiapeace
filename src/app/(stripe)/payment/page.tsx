@@ -58,7 +58,7 @@ export default async function SuccessPage({
   return (
     <div
       id="payment-status"
-      className={`h-full flex items-center justify-center ${content.bg} transition-colors duration-300`}
+      className={`h-full min-h-screen flex items-center justify-center ${content.bg} transition-colors duration-300`}
     >
       <div
         className={`w-full max-w-md mx-auto rounded-xl shadow-lg border ${content.border} p-8 flex flex-col items-center gap-6`}

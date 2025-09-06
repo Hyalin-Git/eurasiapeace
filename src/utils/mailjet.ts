@@ -19,4 +19,10 @@ export async function subscribeToNewsletter(email: string) {
       message: "Erreur lors de l'inscription à la newsletter",
     };
   }
+
+  return {
+    success: true,
+    status: 200,
+    message: "Inscription à la newsletter réussie",
+  };
 }

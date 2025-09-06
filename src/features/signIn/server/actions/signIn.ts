@@ -100,6 +100,7 @@ export async function signIn(prevState: InitialState, formData: FormData) {
     cookieStore.set("authToken", res.data.login.authToken, {
       httpOnly: true,
       secure: false,
+      sameSite: "lax",
       maxAge: 300, // 300 seconds
       path: "/",
     });
@@ -107,6 +108,7 @@ export async function signIn(prevState: InitialState, formData: FormData) {
     cookieStore.set("rtk", res.data.login.refreshToken, {
       httpOnly: true,
       secure: false,
+      sameSite: "lax",
       maxAge: 60 * 60 * 24 * 365, // 1 year
       path: "/",
     });

@@ -48,7 +48,7 @@ export default function FormationRecap({
     formation?.singleFormations?.modalites?.tarifs?.entrepriseIntensif;
 
   return (
-    <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-xs">
+    <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-xs ">
       {/* Header */}
       <div>
         <h3 className="text-xl font-bold line-clamp-1 mb-2">
