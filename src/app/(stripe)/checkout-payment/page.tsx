@@ -1,14 +1,14 @@
-"use client";
+"use server";
 
 import LinkButton from "@/ui/LinkButton";
 import { CircleCheck, CircleX } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 
-export default function Checkout() {
-  const searchParams = useSearchParams();
-
-  const success = searchParams.get("success");
-  const canceled = searchParams.get("canceled");
+export default async function Checkout({
+  searchParams,
+}: {
+  searchParams: Promise<{ success: string; canceled: string }>;
+}) {
+  const { success, canceled } = await searchParams;
 
   return (
     <div
