@@ -33,7 +33,10 @@ export default function PostDownload({
   const rightCategory =
     category?.name === "Notes d'analyse" ||
     category?.name === "Dossiers thématiques" ||
-    category?.name === "Rapports de renseignement";
+    category?.name === "Rapports de renseignement" ||
+    category?.name === "Note d'analyse" ||
+    category?.name === "Dossier thématique" ||
+    category?.name === "Rapport de renseignement";
 
   if (!rightCategory) {
     return null;
@@ -49,11 +52,20 @@ export default function PostDownload({
     // Logique d'achat du PDF à l'unité
     let price = 490; // Prix par défaut
 
-    if (category?.name === "Rapports de renseignement") {
+    if (
+      category?.name === "Rapports de renseignement" ||
+      category?.name === "Rapport de renseignement"
+    ) {
       price = 990; // Prix pour Rapports de renseignement
-    } else if (category?.name === "Dossiers thématiques") {
+    } else if (
+      category?.name === "Dossiers thématiques" ||
+      category?.name === "Dossier thématique"
+    ) {
       price = 1490; // Prix pour Dossiers thématiques
-    } else if (category?.name === "Notes d'analyse") {
+    } else if (
+      category?.name === "Notes d'analyse" ||
+      category?.name === "Note d'analyse"
+    ) {
       price = 490; // Prix pour Notes d'analyse
     }
 

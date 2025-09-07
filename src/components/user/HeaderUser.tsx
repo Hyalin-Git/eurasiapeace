@@ -69,19 +69,19 @@ export default function HeaderUser({ user }: { user: AuthUser }) {
       {/* User */}
       <div
         ref={refs.setReference}
-        className={`relative flex items-start gap-2 text-sm font-[600] text-btn-force-blue  bg-btn-force-blue/20 py-2 px-4 rounded-lg hover:bg-btn-force-blue/40  transition-all duration-300 ease-in-out cursor-pointer ${
+        className={`relative flex items-start gap-2 max-w-[170px] truncate text-sm font-[600] text-btn-force-blue  bg-btn-force-blue/20 py-2 px-2 sm:px-4 rounded-lg hover:bg-btn-force-blue/40  transition-all duration-300 ease-in-out cursor-pointer ${
           isOpen ? "bg-btn-force-blue/40" : ""
         }`}
       >
-        <CircleUserRound size={24} />
-        <div className="flex flex-col">
+        <CircleUserRound size={28} />
+        <div className="flex flex-col w-full">
           <Link
             href={"/mon-compte"}
-            className="before:absolute before:z-1 before:content-[''] before:top-0 before:left-0 before:right-0 before:bottom-0"
+            className="before:absolute before:z-1 before:content-[''] before:top-0 before:left-0 before:right-0 before:bottom-0 truncate w-full"
           >
             {user?.firstName} {user?.lastName}
           </Link>
-          <span className="text-[12px]! text-gray-500/60! font-medium!">
+          <span className="text-[12px]! text-gray-500/60! font-medium! truncate w-full">
             {displaySubscription()}
           </span>
         </div>

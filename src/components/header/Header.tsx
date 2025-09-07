@@ -27,7 +27,7 @@ export default function Header({ children }: { children: ReactNode }) {
           isScrolled ? "h-[80px]" : "h-[100px]"
         }`}
       >
-        <nav className="xl:container flex items-center justify-between gap-4 h-full w-full mx-auto px-2">
+        <nav className="xl:container flex items-center justify-between gap-2 sm:gap-4 h-full w-full mx-auto px-2">
           {/* Home */}
           <Link
             href="/"
@@ -40,7 +40,7 @@ export default function Header({ children }: { children: ReactNode }) {
               height={60}
               className="w-auto h-auto"
             />
-            <span className="font-bold text-md hidden sm:inline uppercase">
+            <span className="hidden sm:block font-bold text-sm sm:text-md uppercase">
               EurasiaPeace
             </span>
           </Link>
@@ -51,7 +51,7 @@ export default function Header({ children }: { children: ReactNode }) {
           ) : (
             <Link
               href="/connexion"
-              className="flex items-center gap-2 text-sm font-[600] text-btn-force-blue border border-btn-force-blue py-3 px-4 rounded-lg hover:bg-btn-force-blue hover:text-white transition-all duration-300 ease-in-out cursor-pointer"
+              className="flex items-center gap-2 text-sm font-[600] text-btn-force-blue border border-btn-force-blue py-3 px-2 sm:px-4 rounded-lg hover:bg-btn-force-blue hover:text-white transition-all duration-300 ease-in-out cursor-pointer"
             >
               <CircleUserRound size={18} />
               Connexion
