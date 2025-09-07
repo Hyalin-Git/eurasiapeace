@@ -6,7 +6,6 @@ import {
 } from "@/features/geopoliticalWatches/server/db/geopoliticalWatches";
 import NotFound from "@/app/not-found";
 import Article from "@/components/articles/Article";
-import ReaderOpinion from "@/components/articles/ReaderOpinion";
 import RelatedArticles from "@/components/articles/RelatedArticles";
 import BreadCrumb from "@/components/BreadCrumb";
 import Cards from "@/components/cards/Cards";
@@ -143,8 +142,6 @@ export default async function GeopoliticalWatchPage({
           <BreadCrumb isBgDark={false} />
 
           <Article element={geopoliticalWatch} />
-
-          <ReaderOpinion />
 
           {/* Articles de la même catégorie (version mobile) */}
           <RelatedArticles className="xl:hidden mt-12">

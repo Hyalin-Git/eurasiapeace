@@ -3,7 +3,6 @@
 import Article from "@/components/articles/Article";
 import BreadCrumb from "@/components/BreadCrumb";
 import NotFound from "@/app/not-found";
-import ReaderOpinion from "@/components/articles/ReaderOpinion";
 import RelatedArticles from "@/components/articles/RelatedArticles";
 import Newsletter from "@/features/newsletter/components/Newsletter";
 import CardsRow from "@/components/cards/CardsRow";
@@ -135,8 +134,6 @@ export default async function ExpertVoicePage({
         <BreadCrumb isBgDark={false} />
 
         <Article element={expertVoice} />
-
-        <ReaderOpinion />
 
         {/* Articles de la même catégorie (version mobile) */}
         <RelatedArticles className="xl:hidden mt-12">

@@ -152,6 +152,15 @@ export default async function PublicationPage({
             </RelatedArticles>
           )}
 
+          <div className="block xl:hidden mb-10">
+            <PostDownload
+              postTitle={postTitle}
+              category={category}
+              fileUrl={fileUrl}
+              isPublic={isPublic}
+            />
+          </div>
+
           {/* Newsletter */}
           <Newsletter />
         </div>
