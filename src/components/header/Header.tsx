@@ -40,7 +40,7 @@ export default function Header({ children }: { children: ReactNode }) {
               height={60}
               className="w-auto h-auto"
             />
-            <span className="font-bold text-sm sm:text-md uppercase">
+            <span className="font-bold text-sm sm:text-md uppercase hidden min-[365px]:inline">
               EurasiaPeace
             </span>
           </Link>
