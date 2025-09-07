@@ -40,14 +40,16 @@ export default function Header({ children }: { children: ReactNode }) {
               height={60}
               className="w-auto h-auto"
             />
-            <span className="hidden sm:block font-bold text-sm sm:text-md uppercase">
+            <span className="font-bold text-sm sm:text-md uppercase">
               EurasiaPeace
             </span>
           </Link>
           {/* Navigations */}
           {children}
           {user ? (
-            <HeaderUser user={user} />
+            <div className="hidden sm:block">
+              <HeaderUser user={user} />
+            </div>
           ) : (
             <Link
               href="/connexion"

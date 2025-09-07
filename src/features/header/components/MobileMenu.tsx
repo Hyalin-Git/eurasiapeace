@@ -1,5 +1,7 @@
 "use client";
 import { NavigationItems } from "@/features/header/types";
+import HeaderUser from "@/components/user/HeaderUser";
+import { useAuth } from "@/context/AuthProvider";
 import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +13,7 @@ export default function MobileMenu({
 }: {
   navigationItems: NavigationItems[];
 }) {
+  const { user } = useAuth();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
@@ -132,6 +135,78 @@ export default function MobileMenu({
                     const isSubmenuOpen = openSubmenu === item.label;
                     const isLast = index === navigationItems.length - 1;
 
+                    // Afficher HeaderUser juste avant Publications
+                    if (item.label === "Publications" && user) {
+                      return (
+                        <>
+                          <div className="mb-2">
+                            <HeaderUser user={user} />
+                          </div>
+                          <div
+                            key={index}
+                            className={`border-b border-gray-200 pb-2 ${
+                              isLast ? "border-b-0" : ""
+                            }`}
+                          >
+                            <div className="flex justify-between items-center w-full">
+                              <Link
+                                href={item?.href || "#"}
+                                onClick={item?.href ? closeMenu : undefined}
+                                className={`group flex justify-between items-center gap-2 py-3 px-2 ${
+                                  !hasItems ? "w-full" : ""
+                                } text-gray-700 hover:text-btn-force-blue transition-colors`}
+                              >
+                                {item.label}
+                                {!hasItems && (
+                                  <ChevronRight
+                                    size={18}
+                                    className="group-hover:translate-x-1 transition-transform duration-200"
+                                  />
+                                )}
+                              </Link>
+                              {hasItems && (
+                                <button
+                                  onClick={() => toggleSubmenu(item.label)}
+                                  className="flex-1 flex justify-end items-center p-2 cursor-pointer"
+                                  aria-label={`Toggle ${item.label} submenu`}
+                                >
+                                  <ChevronDown
+                                    size={18}
+                                    className={`transition-transform duration-200 ${
+                                      isSubmenuOpen ? "rotate-180" : ""
+                                    }`}
+                                  />
+                                </button>
+                              )}
+                            </div>
+
+                            {/* Sous-menu */}
+                            {hasItems && isSubmenuOpen && (
+                              <div className="flex items-stretch gap-3 ml-4">
+                                <div className="border-l-2 border-gray-300 rounded-l-sm self-stretch flex-shrink-0 w-0.5 mb-[24px]"></div>
+                                <div className="flex-1">
+                                  {item.items?.map((subItem, idx) => {
+                                    return (
+                                      <div key={idx}>
+                                        <Link
+                                          href={subItem?.slug || "#"}
+                                          onClick={closeMenu}
+                                          className="menu-custom-list relative block py-2 px-2 text-gray-600 hover:text-btn-force-blue transition-colors"
+                                        >
+                                          {subItem.name}
+                                        </Link>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      );
+                    }
+
+                    // ...rendu normal pour les autres items
                     return (
                       <div
                         key={index}
