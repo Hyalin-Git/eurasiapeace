@@ -29,6 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
       "analyse pays",
       "risques géopolitiques",
       "institutions publiques",
+      "entreprises et financements publics",
+      "financements publics",
       "entreprises",
       "ONG",
       "organisations internationales",
@@ -40,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: "Conseils & Consultance - EurasiaPeace",
       description:
-        "Accompagnement géopolitique personnalisé pour institutions, entreprises et organisations. Analyses stratégiques, veille sur-mesure et recommandations expertes.",
+        "Accompagnement géopolitique personnalisé pour institutions, entreprises et financements publics. Analyses stratégiques, veille sur-mesure et recommandations expertes.",
       type: "website",
       images: [
         {
@@ -125,7 +127,7 @@ export default async function Conseils() {
           className={`h-14 w-14 p-3 text-text-primary rounded-md bg-linear-to-br from-btn-gold/40`}
         />
       ),
-      title: "Entreprises et acteurs économiques",
+      title: "Entreprises et financements publics",
       description:
         "Analyse pays, risques géopolitiques, soutien à l'implantation ou à l'export.",
       className: {

@@ -3,6 +3,81 @@ import { generateQuery } from "@/utils/generateQuery";
 import { Error, Filters } from "@/types";
 import { fetchGraphQL } from "@/utils/authFetch";
 
+export async function getHeroPost() {
+  try {
+    // ! Get latest post which is not a "fiche de renseignement" referenced by the category id
+
+    const query = `
+      query {
+        posts(where: {categoryNotIn: ["dGVybToyMzY3"]}, first: 1) {
+            nodes {
+              id
+              title
+              excerpt
+              slug
+              date
+              tags {
+                nodes {
+                  name
+                  slug
+                }
+              }
+              categories {
+                nodes {
+                  name
+                  slug
+                }
+              }
+              featuredImage {
+                node {
+                  sourceUrl
+                  altText
+                }
+              }
+              contentType {
+                node {
+                  name
+                }
+              }
+            }
+        }
+      }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: res.message || "Erreur lors de la récupération du post",
+        data: null,
+      };
+    }
+
+    if (res?.data?.posts?.nodes.length === 0) {
+      return {
+        success: false,
+        message: "Aucun post trouvé",
+        data: null,
+      };
+    }
+    return {
+      success: true,
+      message: "Post récupéré avec succès",
+      data: res?.data?.posts?.nodes[0],
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+    console.log(err?.message || "Erreur lors de la récupération du post");
+
+    return {
+      success: false,
+      message: "Erreur lors de la récupération du post",
+      data: null,
+    };
+  }
+}
+
 export async function getPosts(
   limit: number = 9,
   filters: Filters | null = null,

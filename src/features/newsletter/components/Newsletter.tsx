@@ -1,4 +1,5 @@
 "use client";
+
 import { MailOpen } from "lucide-react";
 import React, { useActionState, useRef } from "react";
 import Button from "../../../ui/Button";
@@ -8,6 +9,7 @@ import { subscribeToNewsletter } from "@/features/newsletter/server/actions/news
 import ErrorMessage from "@/ui/ErrorMessage";
 import SuccessMessage from "@/ui/SuccessMessage";
 import { InitialState } from "../types";
+import Link from "next/link";
 
 const initialState: InitialState = {
   success: false,
@@ -16,7 +18,11 @@ const initialState: InitialState = {
   errors: null,
 };
 
-export default function Newsletter() {
+export default function Newsletter({
+  width = "max-w-4xl",
+}: {
+  width?: string;
+}) {
   const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, isPending] = useActionState(
     subscribeToNewsletter,
@@ -26,17 +32,21 @@ export default function Newsletter() {
   const hasServerError = state?.status === 500;
   const isSuccess = state?.success && state?.status === 200;
 
-  console.log(state);
-
   return (
     <GoogleReCaptchaProvider>
-      <div className="bg-headband rounded-lg shadow-lg p-6 text-white max-w-4xl mx-auto">
+      <div
+        className={`bg-headband rounded-lg shadow-lg p-6 text-white ${width} mx-auto`}
+      >
         <div className="text-center">
           <div className="flex justify-center gap-2">
             <MailOpen size={24} />
-            <h3 className="font-semibold text-lg mb-2 text-white">
+
+            <Link
+              href="/newsletter"
+              className="font-semibold text-lg mb-2 text-white"
+            >
               Newsletter
-            </h3>
+            </Link>
           </div>
           <p className="text-gray-200 text-sm mb-4">
             {/* {Texte dynamique} */}

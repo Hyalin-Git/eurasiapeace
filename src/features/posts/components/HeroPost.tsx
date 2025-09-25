@@ -1,7 +1,7 @@
 "use server";
 
 import Card from "@/components/cards/Card";
-import { getPosts } from "../server/db/posts";
+import { getHeroPost } from "../server/db/posts";
 import NoHeroPostFound from "./NoHeroPostFound";
 
 export default async function HeroPost() {
@@ -12,11 +12,11 @@ export default async function HeroPost() {
     footer: "justify-end",
   };
 
-  const { data: post, success } = await getPosts(1);
+  const { data: post, success } = await getHeroPost();
 
-  if (!success || !post || post.length === 0) {
+  if (!success || !post) {
     return <NoHeroPostFound />;
   }
 
-  return <Card elt={post[0]} cardStyles={cardStyles} />;
+  return <Card elt={post} cardStyles={cardStyles} />;
 }

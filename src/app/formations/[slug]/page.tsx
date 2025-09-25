@@ -17,6 +17,8 @@ import FormationRecap from "@/features/formations/components/FormationRecap";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
+import { redirect } from "next/navigation";
+import { getRedirection } from "@/server/api/redirection";
 
 export async function generateMetadata({
   params,
@@ -120,6 +122,13 @@ export default async function FormationPage({
   const { data: formation, success } = await getFormation(slug);
 
   if (!success) {
+    const { data: redirection, success: redirectionSuccess } =
+      await getRedirection(slug);
+
+    if (redirectionSuccess) {
+      return redirect(redirection?.redirect_url || "");
+    }
+
     return <NotFound />;
   }
 

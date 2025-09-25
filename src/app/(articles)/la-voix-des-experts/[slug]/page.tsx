@@ -14,6 +14,8 @@ import {
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
+import { getRedirection } from "@/server/api/redirection";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -123,6 +125,13 @@ export default async function ExpertVoicePage({
   );
 
   if (!success) {
+    const { data: redirection, success: redirectionSuccess } =
+      await getRedirection(slug);
+
+    if (redirectionSuccess) {
+      return redirect(redirection?.redirect_url || "");
+    }
+
     return <NotFound />;
   }
 

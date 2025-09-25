@@ -11,6 +11,7 @@ import moment from "moment";
 import Banner from "./Banner";
 import { Article as ArticleInterface } from "@/types";
 import { useSubscription } from "@/context/SubscriptionContext";
+import DOMPurify from "isomorphic-dompurify";
 
 export default function Article({ element }: { element: ArticleInterface }) {
   const { hasEurasiaPeaceSubscription } = useSubscription();
@@ -24,8 +25,41 @@ export default function Article({ element }: { element: ArticleInterface }) {
   const isPublic = element?.contenuPublic?.isPublic ?? "Public";
   const isPaywall = showPaywall(isPublic, hasEurasiaPeaceSubscription);
 
-  const firstPart = content.slice(0, 2000);
-  const lastPart = content.slice(2000);
+  function ensureExternalLinksAttributes(html: string): string {
+    return html.replace(/<a\b([^>]*)>/gi, (match, attrs) => {
+      const hrefMatch = attrs.match(/href\s*=\s*(['"])(.*?)\1/i);
+      const href = hrefMatch ? hrefMatch[2] : "";
+      const isExternal = /^https?:\/\//i.test(href);
+      if (!isExternal) return match;
+
+      let updated = attrs;
+      if (!/target\s*=\s*/i.test(updated)) updated += ' target="_blank"';
+      if (!/rel\s*=\s*/i.test(updated)) updated += ' rel="noopener noreferrer"';
+      return `<a${updated}>`;
+    });
+  }
+
+  function splitHtmlAtBoundary(
+    html: string,
+    approx: number
+  ): { first: string; last: string } {
+    const head = html.slice(0, approx);
+    const cutIndex = head.lastIndexOf(">");
+    if (cutIndex === -1) {
+      return { first: head, last: html.slice(approx) };
+    }
+    return {
+      first: html.slice(0, cutIndex + 1),
+      last: html.slice(cutIndex + 1),
+    };
+  }
+
+  const sanitizedContent = DOMPurify.sanitize(content || "");
+  const contentWithSafeLinks = ensureExternalLinksAttributes(sanitizedContent);
+  const { first: firstPart, last: lastPart } = splitHtmlAtBoundary(
+    contentWithSafeLinks,
+    2000
+  );
 
   const category =
     element?.categories?.nodes[0] ||
@@ -68,7 +102,7 @@ export default function Article({ element }: { element: ArticleInterface }) {
 
       {/* Contenu principal */}
       <div
-        className={`relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none`}
+        className={`relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none prose-a:text-blue-600 prose-a:visited:text-purple-600 prose-a:hover:text-blue-700`}
       >
         <div dangerouslySetInnerHTML={{ __html: firstPart }} />
         <div

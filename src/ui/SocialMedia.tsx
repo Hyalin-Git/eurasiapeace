@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -32,7 +33,7 @@ export default function SocialMedia({ className }: { className?: string }) {
           />
         </Link>
         <Link
-          href="https://www.facebook.com/p/EurasiaPeace-100077017295602/"
+          href="https://www.facebook.com/profile.php?id=61580972964723"
           target="_blank"
           className="flex-1 cursor-pointer rounded transition-colors"
         >

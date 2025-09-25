@@ -14,6 +14,8 @@ import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
 import { isEmpty } from "@/utils/isEmpty";
 import BannerCTA from "@/components/banners/BannerCTA";
+import { getRedirection } from "@/server/api/redirection";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -122,6 +124,13 @@ export default async function PublicationPage({
   );
 
   if (!success) {
+    const { data: redirection, success: redirectionSuccess } =
+      await getRedirection(slug);
+
+    if (redirectionSuccess) {
+      return redirect(redirection?.redirect_url || "");
+    }
+
     return <NotFound />;
   }
 

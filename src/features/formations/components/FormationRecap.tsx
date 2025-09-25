@@ -113,7 +113,9 @@ export default function FormationRecap({
             )}
           </div>
 
-          <span className="text-md font-bold">Entreprises</span>
+          <span className="text-md font-bold">
+            Entreprises et financements publics
+          </span>
           <ul className="[&_li]:text-text-secondary [&_li]:text-sm [&_li]:flex [&_li]:items-center [&_li]:gap-2 mt-2">
             <li>
               <Calendar size={16} />
@@ -145,7 +147,9 @@ export default function FormationRecap({
               </ul>
             </div>
             <div>
-              <span className="font-semibold">Entreprises :</span>
+              <span className="font-semibold">
+                Entreprises et financements publics :
+              </span>
               <ul className="ml-2">
                 {entrepriseProgressif && (
                   <li className="text-sm text-text-secondary">

@@ -15,6 +15,8 @@ import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
 import { parseRankMathHead } from "@/lib/jsDom";
 import BannerCTA from "@/components/banners/BannerCTA";
+import { redirect } from "next/navigation";
+import { getRedirection } from "@/server/api/redirection";
 
 export async function generateMetadata({
   params,
@@ -127,6 +129,13 @@ export default async function GeopoliticalWatchPage({
     );
 
   if (!success) {
+    const { data: redirection, success: redirectionSuccess } =
+      await getRedirection(slug);
+
+    if (redirectionSuccess) {
+      return redirect(redirection?.redirect_url || "");
+    }
+
     return <NotFound />;
   }
 
