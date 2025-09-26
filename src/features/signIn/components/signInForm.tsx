@@ -27,6 +27,8 @@ export default function SignInForm({ redirect }: { redirect?: string }) {
   const hasServerError = state?.status === 500;
   const unVerfiedEmail = state?.status === 403;
 
+  console.log(state?.errors);
+
   useEffect(() => {
     async function handleAuthAndRedirect() {
       await mutate("/api/auth/verify-token");

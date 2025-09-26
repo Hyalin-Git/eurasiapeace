@@ -3,77 +3,7 @@
 import { Error } from "@/types";
 import { fetchGraphQLWithAuth } from "@/utils/authFetch";
 import DOMPurify from "isomorphic-dompurify";
-
-export async function getUser(uid: string) {
-  try {
-    if (!uid) {
-      return {
-        success: false,
-        status: 400,
-        message: "User ID is required",
-        data: null,
-      };
-    }
-
-    const query = `
-      query getUser($id: ID!) {
-        user(id: $id, idType: DATABASE_ID) {
-          databaseId
-          lastName
-          firstName
-          email
-          avatar {
-            url
-          }
-          description
-          registeredDate
-        }
-      }
-    `;
-
-    const response = await fetchGraphQLWithAuth(query, {
-      id: uid,
-    });
-
-    if (!response?.success) {
-      return {
-        success: false,
-        status: response?.status || 500,
-        message:
-          response?.message ||
-          "Unknown error occurred while fetching user data",
-        data: null,
-      };
-    }
-
-    if (!response?.data?.user) {
-      return {
-        success: false,
-        status: 404,
-        message: "User not found",
-        data: null,
-      };
-    }
-
-    return {
-      success: true,
-      status: 200,
-      message: "User data fetched successfully",
-      data: response.data,
-    };
-  } catch (e: unknown) {
-    const err = e as Error;
-
-    console.log("An error occurred while fetching user data:", err.message);
-
-    return {
-      success: false,
-      status: 500,
-      message: err.message || "Unknown error occurred while fetching user data",
-      data: null,
-    };
-  }
-}
+import { cookies } from "next/headers";
 
 export async function getUserByEmail(email: string) {
   try {
@@ -141,6 +71,62 @@ export async function getUserByEmail(email: string) {
       success: false,
       status: 500,
       message: err.message || "Unknown error occurred while fetching user data",
+      data: null,
+    };
+  }
+}
+
+export async function updateUserAvatar(uid: string, file: File) {
+  try {
+    if (!file && !uid) {
+      return {
+        success: false,
+        status: 400,
+        message: "File and user ID are required",
+        data: null,
+      };
+    }
+    const formData = new FormData();
+
+    formData.append("avatar", file);
+    formData.append("userId", uid);
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("authToken")?.value;
+
+    const res = await fetch(`${process.env.WP_API_URL}/upload-avatar`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: formData,
+      credentials: "include",
+    });
+
+    if (!res?.ok) {
+      return {
+        success: false,
+        status: res?.status || 500,
+        message: "Error occurred while updating user avatar",
+        data: null,
+      };
+    }
+
+    const data = await res.json();
+
+    return {
+      success: true,
+      status: 200,
+      message: "User avatar updated successfully",
+      data: data,
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+    console.error("Error occurred while updating user avatar:", err);
+
+    return {
+      success: false,
+      status: 500,
+      message: err?.message || "Error occurred while updating user avatar",
       data: null,
     };
   }

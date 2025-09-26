@@ -1,6 +1,6 @@
 "use client";
+import { getUser } from "@/server/db/user";
 import useSWR from "swr";
-import { getUser } from "../server/db/user";
 
 export function useUser(uid: string) {
   const getUserWithUid = getUser.bind(null, uid);

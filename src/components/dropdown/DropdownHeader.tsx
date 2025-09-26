@@ -20,7 +20,7 @@ export default function DropdownHeader({
     <div
       ref={floatingConfig.refs.setFloating}
       style={floatingConfig.floatingStyles}
-      className={`bg-background-primary rounded-lg shadow-md w-full border border-border-primary transition-all duration-100 ease-in-out ${className} ${
+      className={`bg-background-primary rounded-lg shadow-md w-full min-w-48 border border-border-primary transition-all duration-100 ease-in-out ${className} ${
         isOpen
           ? "opacity-100 visible translate-y-0"
           : "opacity-0 invisible translate-y-[-10px]"

@@ -1,6 +1,7 @@
 "use client";
+
 import { NavigationItems } from "@/features/header/types";
-import HeaderUser from "@/components/user/HeaderUser";
+import UserHeader from "@/components/header/UserHeader";
 import { useAuth } from "@/context/AuthProvider";
 import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 import Image from "next/image";
@@ -42,7 +43,7 @@ export default function MobileMenu({
 
   return (
     <div
-      className="xl:hidden flex items-center gap-4 h-full"
+      className="xl:hidden flex items-center gap-2 h-full"
       ref={mobileMenuRef}
     >
       {/* Bouton burger */}
@@ -53,6 +54,12 @@ export default function MobileMenu({
       >
         {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
+
+      {user && (
+        <div>
+          <UserHeader authUser={user} />
+        </div>
+      )}
 
       {/* Menu mobile */}
       {isMenuOpen &&
@@ -139,9 +146,6 @@ export default function MobileMenu({
                     if (item.label === "Publications" && user) {
                       return (
                         <>
-                          <div className="mb-2">
-                            <HeaderUser user={user} />
-                          </div>
                           <div
                             key={index}
                             className={`border-b border-gray-200 pb-2 ${

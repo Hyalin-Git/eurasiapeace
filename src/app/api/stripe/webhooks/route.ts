@@ -92,7 +92,11 @@ export async function POST(req: NextRequest) {
           data?.object?.items?.data[0]?.price?.lookup_key ===
           "abonnement_contributeur_special"
         ) {
-          await updateUserRole(Number(userId), ["author", "subscriber"]);
+          await updateUserRole(Number(userId), [
+            "author",
+            "subscriber",
+            "contributor",
+          ]);
         }
 
         console.log(

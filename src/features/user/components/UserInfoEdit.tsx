@@ -8,6 +8,7 @@ import { updateUser } from "../server/actions.ts/user";
 import Button from "@/ui/Button";
 import TextareaField from "@/components/form/TextareaField";
 import { useSubscription } from "@/context/SubscriptionContext";
+import { useUserRole } from "@/context/UserRoleContext";
 
 const initialState: InitialState = {
   success: false,
@@ -27,13 +28,21 @@ export default function UserInfoEdit({
   mutate: () => void;
 }) {
   const { hasContributorSubscription } = useSubscription();
+  const { userRole } = useUserRole();
   const [state, formAction, pending] = useActionState(updateUser, initialState);
+
+  const isFormateur = userRole.includes("formateur");
+  const isContributeur = userRole.includes("contributor");
+
+  const showBioField =
+    hasContributorSubscription || isFormateur || isContributeur;
 
   useEffect(() => {
     if (state?.success) {
       mutate();
+      setIsEdit(false);
     }
-  }, [state, mutate]);
+  }, [state, mutate, setIsEdit]);
 
   return (
     <Form action={formAction}>
@@ -70,7 +79,7 @@ export default function UserInfoEdit({
             />
           </div>
 
-          {hasContributorSubscription && (
+          {showBioField && (
             <div className="mt-4">
               <TextareaField
                 id="description"

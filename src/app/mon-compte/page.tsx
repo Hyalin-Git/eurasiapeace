@@ -4,7 +4,7 @@ import Separator from "@/ui/Separator";
 import UserInfo from "@/features/user/components/UserInfo";
 import UserUpdatePassword from "@/features/user/components/UserUpdatePassword";
 import { useAuth } from "@/context/AuthProvider";
-import { useUser } from "@/features/user/hooks/useUser";
+import { useUser } from "@/hooks/useUser";
 
 export default function MonCompte() {
   const { user: authUser } = useAuth();

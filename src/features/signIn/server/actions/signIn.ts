@@ -128,7 +128,9 @@ export async function signIn(prevState: InitialState, formData: FormData) {
     const hasCredentialsError =
       err?.message?.includes("Adresse e-mail") ||
       err?.message?.includes("identifiant") ||
-      err?.message?.includes("mot de passe");
+      err?.message?.includes("mot de passe") ||
+      err?.message?.includes("username") ||
+      err?.message?.includes("password");
 
     if (hasCredentialsError) {
       return {

@@ -3,9 +3,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  avatar: {
-    url: string;
-  };
+  customAvatar: string | null;
   description: string | null;
   registeredDate: string;
 }

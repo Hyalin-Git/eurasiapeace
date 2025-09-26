@@ -7,6 +7,8 @@ import Navigations from "@/features/header/components/Navigations";
 import { AuthProvider } from "@/context/AuthProvider";
 import NextTopLoader from "nextjs-toploader";
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
+import { UserRoleProvider } from "@/context/UserRoleContext";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title:
@@ -108,13 +110,16 @@ export default function RootLayout({
 
         <AuthProvider>
           <SubscriptionProvider>
-            <div className="flex flex-col min-h-screen">
-              <Header>
-                <Navigations />
-              </Header>
-              <main>{children}</main>
-              <Footer />
-            </div>
+            <UserRoleProvider>
+              <div className="flex flex-col min-h-screen">
+                <Toaster />
+                <Header>
+                  <Navigations />
+                </Header>
+                <main>{children}</main>
+                <Footer />
+              </div>
+            </UserRoleProvider>
           </SubscriptionProvider>
         </AuthProvider>
       </body>
