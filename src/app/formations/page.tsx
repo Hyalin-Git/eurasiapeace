@@ -12,7 +12,6 @@ import { FormationsSkeletons } from "@/features/formations/components/FormationS
 import Paginations from "@/components/pagination/Paginations";
 import PaginationSkeleton from "@/components/pagination/PaginationSkeleton";
 import { Metadata } from "next";
-import FormationsPackages from "@/features/formations/components/FormationsPackages";
 
 export const metadata: Metadata = {
   title: "Formations - EurasiaPeace",
@@ -125,8 +124,6 @@ export default async function FormationsPage({
     <div>
       <Banner BannerProps={bannerProps} />
       <div className="container py-10">
-        <FormationsPackages />
-
         <Filters filters={filters}>
           <div className="flex flex-col gap-4">
             <span className="text-md text-text-primary font-bold">
