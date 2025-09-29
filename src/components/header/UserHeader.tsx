@@ -100,7 +100,7 @@ export default function UserHeader({ authUser }: { authUser: AuthUser }) {
           />
         )}
 
-        <div className="flex flex-col w-full hidden md:flex">
+        <div className="flex-col w-full hidden md:flex">
           {isLoading ? (
             <>
               <div className="h-4 w-28 bg-gray-200 rounded animate-pulse mb-1" />
