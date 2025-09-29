@@ -148,6 +148,7 @@ export async function signUp(prevState: InitialState, formData: FormData) {
         message:
           emailVerification.message ||
           "Erreur lors de la création de la vérification email",
+        formData: formData,
       };
     }
 

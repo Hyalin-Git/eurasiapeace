@@ -27,9 +27,7 @@ export async function verifyRecaptcha(token: string) {
 
     const response = await res.json();
 
-    console.log(response);
-
-    if (!response.success || response.score < 0.5) {
+    if (!response.success || response.score < 0.3) {
       throw {
         success: false,
         message: "Captcha invalide",
