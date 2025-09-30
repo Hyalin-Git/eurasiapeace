@@ -9,6 +9,7 @@ import NextTopLoader from "nextjs-toploader";
 import { SubscriptionProvider } from "@/context/SubscriptionContext";
 import { UserRoleProvider } from "@/context/UserRoleContext";
 import { Toaster } from "react-hot-toast";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title:
@@ -123,6 +124,7 @@ export default function RootLayout({
           </SubscriptionProvider>
         </AuthProvider>
       </body>
+      <GoogleAnalytics gaId={process.env.GA_TRACKING_ID ?? ""} />
     </html>
   );
 }
