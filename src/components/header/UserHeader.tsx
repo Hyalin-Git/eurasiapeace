@@ -13,11 +13,13 @@ import { AuthUser } from "@/types";
 import { useSubscription } from "@/context/SubscriptionContext";
 import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
+import { useUserRole } from "@/context/UserRoleContext";
 
 export default function UserHeader({ authUser }: { authUser: AuthUser }) {
   const { data: user, isLoading } = useUser(authUser?.id || "");
   const { hasContributorSubscription, hasEurasiaPeaceSubscription } =
     useSubscription();
+  const { userRole } = useUserRole();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
@@ -65,9 +67,7 @@ export default function UserHeader({ authUser }: { authUser: AuthUser }) {
   }
 
   function displaySubscription() {
-    if (!hasContributorSubscription && !hasEurasiaPeaceSubscription) {
-      return "Visiteur";
-    }
+    if (userRole.includes("administrator")) return "Administrateur";
 
     if (hasContributorSubscription) return "Contributeur spécial";
     if (hasEurasiaPeaceSubscription) return "Abonné EurasiaPeace";

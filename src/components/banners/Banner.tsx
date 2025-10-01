@@ -18,7 +18,7 @@ export default function Banner({
 
   return (
     <div
-      className={`relative bg-headband-contact [&_*]:z-2 flex items-center w-full h-30 md:h-[320px]`}
+      className={`relative bg-headband-contact [&_*]:z-2 flex items-center w-full h-fit py-6 md:h-[320px] md:py-0`}
     >
       {src && (
         <Image
@@ -31,12 +31,14 @@ export default function Banner({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 60vw"
         />
       )}
-      <div className="absolute inset-0 bg-linear-to-r from-midnight-green to-black/40"></div>
 
+      <div className="absolute inset-0 bg-linear-to-r from-midnight-green to-black/40"></div>
       <div className="container flex justify-between">
         <div className=" flex flex-col gap-4">
           <BreadCrumb title={title} />
-          <h1 className="text-white font-medium max-w-3xl">{title}</h1>
+          <h1 className="text-white font-medium max-w-3xl text-xl md:text-4xl">
+            {title}
+          </h1>
           {content && (
             <p className="text-white/80 xl:text-lg max-w-[800px] hidden md:block text-md">
               {content}

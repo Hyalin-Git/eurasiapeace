@@ -33,9 +33,13 @@ export default function UserInfoEdit({
 
   const isFormateur = userRole.includes("formateur");
   const isContributeur = userRole.includes("contributor");
+  const isAdministrator = userRole.includes("administrator");
 
   const showBioField =
-    hasContributorSubscription || isFormateur || isContributeur;
+    hasContributorSubscription ||
+    isFormateur ||
+    isContributeur ||
+    isAdministrator;
 
   useEffect(() => {
     if (state?.success) {

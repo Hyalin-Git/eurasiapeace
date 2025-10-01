@@ -104,11 +104,11 @@ export default function Article({ element }: { element: ArticleInterface }) {
       <div
         className={`relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none prose-a:text-blue-600 prose-a:visited:text-purple-600 prose-a:hover:text-blue-700`}
       >
-        <div dangerouslySetInnerHTML={{ __html: firstPart }} />
         <div
-          dangerouslySetInnerHTML={{ __html: lastPart }}
-          className={`${isPaywall ? "hidden" : ""}`}
-        ></div>
+          dangerouslySetInnerHTML={{
+            __html: isPaywall ? firstPart : firstPart + lastPart,
+          }}
+        />
         {isPaywall && (
           <div className="absolute bg-gradient-to-b from-transparent to-gray-50 w-full h-1/2 bottom-0"></div>
         )}

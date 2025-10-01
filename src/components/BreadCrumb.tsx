@@ -17,11 +17,11 @@ export default function BreadCrumb({
   return (
     <nav>
       <ul
-        className={`flex items-center gap-2 text-sm *:flex *:items-center *:gap-2 ${
+        className={`flex flex-wrap items-center gap-2 text-sm ${
           isBgDark ? "[&_li]:text-white" : "[&_li]:text-text-primary"
         } `}
       >
-        <li>
+        <li className="flex items-center gap-2">
           <Link
             href="/"
             className={`flex items-center gap-2 ${
@@ -37,7 +37,7 @@ export default function BreadCrumb({
           const href = "/" + breadcrumb.slice(0, index + 1).join("/");
           const isLast = index === breadcrumb.length - 1;
           return (
-            <li key={index}>
+            <li key={index} className="flex items-center gap-2">
               {isLast && title ? (
                 <Link
                   href={href}
@@ -45,7 +45,7 @@ export default function BreadCrumb({
                     isBgDark
                       ? "hover:text-white/80"
                       : "hover:text-text-primary/80"
-                  } max-w-[120px] lg:max-w-[200px] sm:max-w-[180px] truncate`}
+                  } max-w-[300px]  truncate`}
                 >
                   {title}
                 </Link>
@@ -56,7 +56,7 @@ export default function BreadCrumb({
                     isBgDark
                       ? "hover:text-white/80"
                       : "hover:text-text-primary/80"
-                  } max-w-[120px] lg:max-w-[200px] sm:max-w-[180px] truncate`}
+                  } max-w-[300px] truncate`}
                 >
                   {item.charAt(0).toUpperCase() +
                     item.slice(1).replace(/-/g, " ")}

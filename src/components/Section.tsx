@@ -15,7 +15,9 @@ export default function Section({
     <section className={`pt-20 ${className}`}>
       <div>
         <div className="flex items-start gap-4">
-          {icon && <span className="hidden sm:block">{icon}</span>}
+          {icon && (
+            <span className="relative -top-1 hidden md:block">{icon}</span>
+          )}
           <h2 className="font-bold">{title}</h2>
         </div>
         <p

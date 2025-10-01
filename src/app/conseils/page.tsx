@@ -158,38 +158,43 @@ export default async function Conseils() {
   return (
     <div className="mb-12">
       <Banner BannerProps={BannerProps} />
-      <div className="flex flex-col gap-40 my-20 sm:my-40">
-        <section className="container flex flex-col-reverse xl:flex-row justify-center items-start lg:items-center gap-16">
-          <Image
-            src="/image-conseils-1.webp"
-            alt="Conseils"
-            width={450}
-            height={350}
-            className="rounded-tr-[75px] rounded-bl-[75px] rounded-4xl w-full md:w-2/3 xl:w-auto"
-          />
-          <div className="[&_h2]:text-2xl [&_h2]:font-medium !py-0 [&>div>div]:lg:items-center">
-            <div className="flex items-start gap-4">
-              <Eye size={24} className="text-midnight-green  sm:block" />
-              <h2 className="font-bold">Géopolitique appliquée à vos enjeux</h2>
-            </div>
-            <p
-              className={`text-black/50 mt-2 mb-10 text-lg max-w-4xl hidden`}
-            ></p>
-            <div className="flex flex-col gap-4 max-w-160">
-              <p>
-                Nos experts vous accompagnent dans l&apos;analyse et la gestion
-                des dynamiques géopolitiques, économiques et sécuritaires qui
-                façonnent votre environnement stratégique.
-              </p>
+      <div className="flex flex-col gap-14 xl:gap-40 my-14 xl:my-40">
+        <section className="container flex flex-col-reverse xl:flex-row justify-center gap-16">
+          <div className="w-1/2 relative h-[450px] hidden xl:block">
+            <Image
+              src="/image-conseils-1.webp"
+              alt="Conseils"
+              fill
+              quality={100}
+              className="rounded-tr-[75px] rounded-bl-[75px] rounded-4xl w-full object-fill"
+            />
+          </div>
 
-              <p>
-                Grâce à une approche rigoureuse, pluridisciplinaire et adaptée à
-                vos enjeux spécifiques, nous vous aidons à anticiper les
-                évolutions du contexte international, à identifier les risques
-                et opportunités, et à éclairer vos prises de décision dans un
-                monde en constante mutation.
-              </p>
+          <div className="flex flex-col justify-between h-full  [&_h2]:text-2xl [&_h2]:font-medium !py-0 [&>div>div]:lg:items-center">
+            <div>
+              <div className="flex items-start gap-4">
+                <h2 className="font-bold mb-4">
+                  Géopolitique appliquée à vos enjeux
+                </h2>
+              </div>
+
+              <div className="flex flex-col gap-4 max-w-160">
+                <p>
+                  Nos experts vous accompagnent dans l&apos;analyse et la
+                  gestion des dynamiques géopolitiques, économiques et
+                  sécuritaires qui façonnent votre environnement stratégique.
+                </p>
+
+                <p>
+                  Grâce à une approche rigoureuse, pluridisciplinaire et adaptée
+                  à vos enjeux spécifiques, nous vous aidons à anticiper les
+                  évolutions du contexte international, à identifier les risques
+                  et opportunités, et à éclairer vos prises de décision dans un
+                  monde en constante mutation.
+                </p>
+              </div>
             </div>
+
             <div className="flex flex-col md:flex-row items-center gap-4 mt-10">
               <LinkButton
                 href={"/contact"}
@@ -207,7 +212,7 @@ export default async function Conseils() {
           <Section
             title="À qui s'adresse notre expertise ?"
             description="Nos services s'adressent à tous les acteurs confrontés à des enjeux internationaux complexes. Chaque profil a ses besoins : nous adaptons notre accompagnement en conséquence."
-            icon={<Eye size={24} className="text-midnight-green" />}
+            icon={<Eye size={34} className="text-midnight-green" />}
             className="container [&_h2]:text-2xl [&_h2]:font-medium !py-0 "
           >
             <ServicesCards

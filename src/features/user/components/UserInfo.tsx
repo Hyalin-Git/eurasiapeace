@@ -39,6 +39,7 @@ export default function UserInfo({
   const { userRole } = useUserRole();
   const isContributeur = userRole.includes("contributor");
   const isAuthor = userRole.includes("author");
+  const isAdministrator = userRole.includes("administrator");
   const [isEdit, setIsEdit] = useState<boolean>(false);
   // const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
   const router = useRouter();
@@ -46,6 +47,9 @@ export default function UserInfo({
   if (isLoading) return <UserInfoSkeleton />;
 
   const hasBoth = hasContributorSubscription && hasEurasiaPeaceSubscription;
+
+  const canNavigateToRedactorSpace =
+    hasContributorSubscription || isAuthor || isContributeur || isAdministrator;
 
   async function handleCustomerPortal() {
     // Redirect to the customer portal for managing subscriptions
@@ -182,7 +186,7 @@ export default function UserInfo({
 
         {!isEdit && (
           <div className="flex flex-col sm:flex-row gap-4 mt-6 lg:mt-0 w-full sm:w-auto">
-            {hasContributorSubscription || isAuthor || isContributeur ? (
+            {canNavigateToRedactorSpace ? (
               <LinkButton
                 href={`${process.env.NEXT_PUBLIC_WP_API_URI}`}
                 blank={true}

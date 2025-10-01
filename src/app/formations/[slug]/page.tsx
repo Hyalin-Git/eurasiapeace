@@ -156,7 +156,7 @@ export default async function FormationPage({
           className="text-sm! text-text-third"
         />
       </Banner>
-      <div className="container flex flex-col lg:flex-row gap-15 py-10">
+      <div className="container flex flex-col lg:flex-row gap-15 py-0 md:py-10">
         {/* Main content */}
         <div className="w-full lg:w-2/3">
           {/* Nav */}

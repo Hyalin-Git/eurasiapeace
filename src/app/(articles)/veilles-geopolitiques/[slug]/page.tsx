@@ -142,7 +142,7 @@ export default async function GeopoliticalWatchPage({
   return (
     <div>
       <BannerCTA
-        title="Vous souhaitez publier une veilles géopolitique ?"
+        title="Vous souhaitez publier une veille géopolitique ?"
         href="/abonnements"
       />
       <div className="flex justify-between container py-10">

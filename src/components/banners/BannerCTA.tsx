@@ -12,7 +12,7 @@ export default function BannerCTA({
 
   return (
     <div className="hidden md:block">
-      <div className="w-full bg-gradient-to-r from-background-dark-blue to-background-light-blue rounded-none px-8 py-5 flex items-center justify-center shadow-md border-b border-white/20 backdrop-blur-sm">
+      <div className="w-full bg-gradient-to-r from-background-dark-blue to-background-light-blue rounded-none px-4 py-5 flex items-center justify-center shadow-md border-b border-white/20 backdrop-blur-sm">
         <div className="flex items-center justify-between w-full container mx-auto gap-8">
           <div className="flex items-center gap-4">
             <div className="p-2 bg-white/10 rounded-lg">

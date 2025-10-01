@@ -2,7 +2,7 @@
 
 import { BookText } from "lucide-react";
 
-export default async function NoHeroPostFound() {
+export default async function NoHeroGeoFound() {
   return (
     <div className="flex items-center justify-center h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
       <div className="flex flex-col items-center text-center p-8">

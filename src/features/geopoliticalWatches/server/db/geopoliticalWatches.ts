@@ -4,6 +4,87 @@ import { generateQuery } from "@/utils/generateQuery";
 import { Error, Filters } from "@/types";
 import { fetchGraphQL } from "@/utils/authFetch";
 
+export async function getHeroGeoWatch() {
+  try {
+    // ! Get latest geopolitical watch
+
+    const query = `
+      query {
+        veillesGeopolitique(first: 1) {
+          nodes {
+              id
+              title
+              slug
+              excerpt
+              date
+              typeDeVeilles {
+                nodes {
+                  name
+                  slug
+                }
+              }
+              tags {
+                nodes {
+                  name
+                  slug
+                }
+              }
+              featuredImage {
+                node {
+                  sourceUrl
+                  altText
+                }
+              }
+              contentType {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+    `;
+
+    const res = await fetchGraphQL(query);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message:
+          res.message ||
+          "Erreur lors de la récupération de la veille géopolitique",
+        data: null,
+      };
+    }
+
+    if (res?.data?.veillesGeopolitique?.nodes.length === 0) {
+      return {
+        success: false,
+        message: "Aucune veille géopolitique trouvée",
+        data: [],
+        pageInfo: null,
+      };
+    }
+
+    return {
+      success: true,
+      message: "Post récupéré avec succès",
+      data: res?.data?.veillesGeopolitique?.nodes[0],
+    };
+  } catch (e: unknown) {
+    const err = e as Error;
+    console.log(
+      err?.message || "Erreur lors de la récupération de la veille géopolitique"
+    );
+
+    return {
+      success: false,
+      message: "Erreur lors de la récupération de la veille géopolitique",
+      data: null,
+    };
+  }
+}
+
 export async function getGeopoliticalWatches(
   limit: number = 20,
   filters: Filters | null = null,

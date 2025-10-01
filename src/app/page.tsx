@@ -6,7 +6,6 @@ import Posts from "@/features/posts/components/Posts";
 import { Suspense } from "react";
 import GeoWatches from "@/features/geopoliticalWatches/components/GeoWatches";
 import { Formations } from "@/features/formations/components/Formations";
-import HeroPost from "@/features/posts/components/HeroPost";
 import ServicesCards from "@/components/cards/ServicesCards";
 import { BookOpen, Gem, GraduationCap } from "lucide-react";
 import {
@@ -18,6 +17,7 @@ import { FormationsSkeletons } from "@/features/formations/components/FormationS
 import GeoWatchesCarousel from "@/features/geopoliticalWatches/components/GeoWatchesCarousel";
 import GeoWatchesCarouselSkeleton from "@/features/geopoliticalWatches/components/GeoWatchesCarouselSkeleton";
 import Newsletter from "@/features/newsletter/components/Newsletter";
+import HeroGeoWatch from "@/features/geopoliticalWatches/components/HeroGeoWatch";
 
 const servicesData = [
   {
@@ -97,7 +97,7 @@ export default async function Home() {
         <div className="flex gap-10 lg:flex-row flex-col">
           <div className="w-full lg:w-1/2 mx-auto">
             <Suspense fallback={<PostSkeleton />}>
-              <HeroPost />
+              <HeroGeoWatch />
             </Suspense>
           </div>
           <div className="w-full lg:w-1/2 mx-auto">
@@ -111,7 +111,7 @@ export default async function Home() {
           description="Restez informés des évenements, analyses et développements récents"
         >
           <Suspense fallback={<PostsSkeletons count={3} />}>
-            <Posts offset={1} />
+            <Posts />
           </Suspense>
           <LinkButton
             href="/publications"
@@ -127,7 +127,7 @@ export default async function Home() {
           className="[&_p]:max-w-none [&>div>div]:justify-center text-center"
         >
           <Suspense fallback={<GeoWatchesSkeletons count={4} />}>
-            <GeoWatches numberOfWatches={4} />
+            <GeoWatches offset={1} numberOfWatches={4} />
           </Suspense>
           <LinkButton
             href="/veilles-geopolitiques"
