@@ -9,6 +9,7 @@ export default async function Posts({
   filters = null,
   search = "",
   offset = 0,
+  excludeCategories = [],
 }: {
   numberOfPosts?: number;
   filters?: {
@@ -25,13 +26,15 @@ export default async function Posts({
   } | null;
   search?: string;
   offset?: number;
+  excludeCategories?: string[];
 }) {
   // Fetch posts from the server with timeout
   const { data: posts, success } = await getPosts(
     numberOfPosts,
     filters,
     search,
-    offset
+    offset,
+    excludeCategories
   );
 
   if (!success || !posts || posts.length === 0) {

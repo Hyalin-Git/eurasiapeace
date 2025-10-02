@@ -25,11 +25,11 @@ export default async function Paginations({
     offset
   );
 
-  if (!success || !pageInfo || pageInfo.total < 9) return;
+  if (!success || !pageInfo || pageInfo.total <= limit) return;
 
   return (
     <div className="mt-8">
-      <Pagination pageInfo={pageInfo} />
+      <Pagination pageInfo={pageInfo} itemsPerPage={limit} />
     </div>
   );
 }

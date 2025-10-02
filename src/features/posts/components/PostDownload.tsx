@@ -30,20 +30,6 @@ export default function PostDownload({
   const { hasEurasiaPeaceSubscription } = useSubscription();
   const router = useRouter();
 
-  const rightCategory =
-    category?.name === "Notes d'analyse" ||
-    category?.name === "Dossiers thématiques" ||
-    category?.name === "Rapports de renseignement" ||
-    category?.name === "Note d'analyse" ||
-    category?.name === "Dossier thématique" ||
-    category?.name === "Rapport de renseignement";
-
-  if (!rightCategory) {
-    return null;
-  }
-
-  // TODO : Gérer l'achat du PDF si non abonné
-
   if (!fileUrl) return null;
 
   const isPaywall = showPaywall(isPublic, hasEurasiaPeaceSubscription);

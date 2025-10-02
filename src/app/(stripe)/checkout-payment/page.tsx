@@ -12,7 +12,7 @@ export default async function Checkout({
 
   return (
     <div
-      className={`h-full flex items-center justify-center ${
+      className={`h-full min-h-screen flex items-center justify-center ${
         success ? "bg-green-50" : canceled ? "bg-red-50" : "bg-gray-50"
       } transition-colors duration-300`}
     >

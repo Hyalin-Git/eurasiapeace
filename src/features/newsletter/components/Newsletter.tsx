@@ -1,7 +1,7 @@
 "use client";
 
 import { MailOpen } from "lucide-react";
-import React, { useActionState, useRef } from "react";
+import React, { useActionState, useRef, useEffect } from "react";
 import Button from "../../../ui/Button";
 import GoogleReCaptchaProvider from "@/context/GoogleReCaptchaProvider";
 import Form from "../../../components/form/Form";
@@ -31,6 +31,13 @@ export default function Newsletter({
 
   const hasServerError = state?.status === 500;
   const isSuccess = state?.success && state?.status === 200;
+
+  // Reset du formulaire après succès
+  useEffect(() => {
+    if (isSuccess && formRef.current) {
+      formRef.current.reset();
+    }
+  }, [isSuccess]);
 
   return (
     <GoogleReCaptchaProvider>
@@ -92,7 +99,10 @@ export default function Newsletter({
           )}
         </Form>
         <p className="text-xs text-center text-gray-200 mt-3">
-          Pas de spam, désabonnement en un clic
+          Pas de spam,{" "}
+          <Link href="/newsletter/unsubscribe" className="underline">
+            désabonnement en un clic
+          </Link>
         </p>
       </div>
     </GoogleReCaptchaProvider>

@@ -4,7 +4,8 @@ export function generateQuery(
   filters: Filters | null = null,
   searchTerm: string,
   limit: number,
-  offset: number
+  offset: number,
+  excludeCategories: string[] = []
 ) {
   const taxQueries = [];
 
@@ -60,16 +61,24 @@ export function generateQuery(
 
   // Construire les conditions de recherche
   const searchCondition = searchTerm ? `search: "${searchTerm}"` : "";
+  const excludeCategoriesCondition =
+    excludeCategories.length > 0
+      ? `categoryNotIn: [${excludeCategories
+          .map((cat) => `"${cat}"`)
+          .join(", ")}]`
+      : "";
   const taxCondition =
     taxQueries.length > 0
       ? `taxQuery: {taxArray: [${taxQueries.join(", ")}]}`
       : "";
 
   // Combiner les conditions avec des virgules si les deux existent
-  const conditions = [searchCondition, taxCondition].filter(Boolean).join(", ");
+  const conditions = [searchCondition, excludeCategoriesCondition, taxCondition]
+    .filter(Boolean)
+    .join(", ");
 
   return `where: {
-    ${conditions}
+    ${conditions ? conditions + "," : ""}
     offsetPagination: { size: ${limit}, offset: ${offset} }  
     }`;
 }

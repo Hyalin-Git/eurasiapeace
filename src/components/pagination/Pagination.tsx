@@ -6,6 +6,7 @@ import { useTopLoader } from "nextjs-toploader";
 
 export default function Pagination({
   pageInfo,
+  itemsPerPage = 9,
 }: {
   pageInfo: {
     hasPreviousPage: boolean;
@@ -13,6 +14,7 @@ export default function Pagination({
     endCursor: string;
     total: number;
   };
+  itemsPerPage?: number;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -24,7 +26,7 @@ export default function Pagination({
   const loader = useTopLoader();
 
   const { total } = pageInfo;
-  const totalPages = Math.ceil(total / 12);
+  const totalPages = Math.ceil(total / itemsPerPage);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   const hasPreviousPage = currentPage > 1;

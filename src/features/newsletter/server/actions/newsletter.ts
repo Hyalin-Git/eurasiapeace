@@ -31,10 +31,26 @@ export async function subscribeToNewsletter(
     const subscription = await addEmailToMailjet(sanitizedEmail);
 
     if (!subscription?.success) {
+      // Gestion spécifique pour email déjà abonné
+      if (
+        subscription?.status === 400 &&
+        (subscription?.message?.includes("déjà abonnée") ||
+          subscription?.message?.includes("déjà existant"))
+      ) {
+        return {
+          success: false,
+          status: 400,
+          message: "Cette adresse email est déjà abonnée à la newsletter",
+          errors: { email: ["Cette adresse email est déjà abonnée"] },
+        };
+      }
+
       return {
         success: false,
         status: subscription?.status || 500,
-        message: "Erreur lors de l'inscription à la newsletter",
+        message:
+          subscription?.message ||
+          "Erreur lors de l'inscription à la newsletter",
         errors: null,
       };
     }
@@ -47,26 +63,15 @@ export async function subscribeToNewsletter(
     };
   } catch (e: unknown) {
     const err = e as Error;
-    console.log(
-      err?.message ||
-        "Une erreur est survenue lors de l'inscription à la newsletter"
+    console.error(
+      "Erreur lors de l'inscription à la newsletter:",
+      err?.message || err
     );
-
-    if (err?.message?.includes("Email already exists")) {
-      return {
-        success: false,
-        status: 400,
-        message: "Cette adresse email est déjà inscrite à la newsletter",
-        errors: { email: ["Cette adresse email est déjà inscrite"] },
-      };
-    }
 
     return {
       success: false,
-      status: err?.status || 500,
-      message:
-        err?.message ||
-        "Une erreur est survenue lors de l'inscription à la newsletter",
+      status: 500,
+      message: "Une erreur serveur est survenue lors de l'inscription",
       errors: null,
     };
   }

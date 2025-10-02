@@ -82,10 +82,11 @@ export async function getPosts(
   limit: number = 9,
   filters: Filters | null = null,
   searchTerm: string = "",
-  offset: number = 0
+  offset: number = 0,
+  excludeCategories: string[] = []
 ) {
   try {
-    const filterQuery = generateQuery(filters, searchTerm, limit, offset);
+    const filterQuery = generateQuery(filters, searchTerm, limit, offset, excludeCategories);
 
     const query = `
      query {

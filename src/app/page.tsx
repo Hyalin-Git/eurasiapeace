@@ -111,7 +111,7 @@ export default async function Home() {
           description="Restez informés des évenements, analyses et développements récents"
         >
           <Suspense fallback={<PostsSkeletons count={3} />}>
-            <Posts />
+            <Posts excludeCategories={["dGVybToyMzY3"]} />
           </Suspense>
           <LinkButton
             href="/publications"

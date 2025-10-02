@@ -25,7 +25,6 @@ export async function generateMetadata({
     title,
     description,
     keywords,
-    robots,
     ogImage,
     ogImageAlt,
     ogImageWidth,
@@ -52,12 +51,10 @@ export async function generateMetadata({
     keywords: keywords
       ? keywords.split(",").map((k: string) => k.trim())
       : undefined,
-    robots: robots
-      ? {
-          index: robots.includes("index"),
-          follow: robots.includes("follow"),
-        }
-      : undefined,
+    robots: {
+      index: false,
+      follow: false,
+    },
     openGraph: {
       title: title || undefined,
       description: description || undefined,
