@@ -128,11 +128,23 @@ export async function POST(req: NextRequest) {
         // The subscription was updated or renewed.
         // ! Update the user subscription in the DB
 
-        await updateUserSubscription(
-          data?.object?.id, // subscriptionId
-          data?.object?.status, // status
-          data?.object?.current_period_end // expiresAt
-        );
+        if (data?.object?.metadata?.userId) {
+          userId = data?.object?.metadata?.userId;
+          await saveUserSubscription(
+            Number(userId),
+            data?.object?.customer || "",
+            data?.object?.id || "",
+            data?.object?.status || "active",
+            data?.object?.items?.data[0]?.price?.lookup_key || "",
+            data?.object?.current_period_end
+          );
+        } else {
+          await updateUserSubscription(
+            data?.object?.id, // subscriptionId
+            data?.object?.status, // status
+            data?.object?.current_period_end // expiresAt
+          );
+        }
 
         console.log(
           `Subscription updated for customerId: ${data?.object?.customer}`
