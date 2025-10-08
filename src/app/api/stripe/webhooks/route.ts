@@ -17,12 +17,7 @@ import moment from "moment";
 import "moment/locale/fr";
 import { updateUserRole } from "@/features/user/server/db/user";
 import { getUserSubscriptions } from "@/features/subscriptions/server/db";
-
-interface ErrorResponse {
-  success: boolean;
-  message: string;
-  data?: null;
-}
+import { Error } from "@/types";
 
 export async function POST(req: NextRequest) {
   let data;
@@ -44,7 +39,7 @@ export async function POST(req: NextRequest) {
         webhookSecret
       );
     } catch (e: unknown) {
-      const err = e as ErrorResponse;
+      const err = e as Error;
 
       console.log(`⚠️  Webhook signature verification failed.`);
       console.log(`Error message: ${err.message}`);
@@ -125,20 +120,47 @@ export async function POST(req: NextRequest) {
         );
         break;
       case "customer.subscription.updated":
+        console.log("Subscription updated");
         // The subscription was updated or renewed.
         // ! Update the user subscription in the DB
 
+        console.log(data?.object);
+
+        // Si userId est présent dans les métadonnées, c'est une migration
+        // On essaie d'abord de mettre à jour, puis de créer si ça échoue
         if (data?.object?.metadata?.userId) {
-          userId = data?.object?.metadata?.userId;
-          await saveUserSubscription(
-            Number(userId),
-            data?.object?.customer || "",
-            data?.object?.id || "",
-            data?.object?.status || "active",
-            data?.object?.items?.data[0]?.price?.lookup_key || "",
-            data?.object?.current_period_end
+          const userIdFromMeta = data?.object?.metadata?.userId;
+          console.log(
+            `Migration: userId ${userIdFromMeta} ajouté dans les métadonnées`
           );
+
+          // Essayer de mettre à jour d'abord
+          const updateResult = await updateUserSubscription(
+            data?.object?.id, // subscriptionId
+            data?.object?.status, // status
+            data?.object?.current_period_end // expiresAt
+          );
+
+          // Si la mise à jour échoue (abonnement n'existe pas), créer l'abonnement
+          if (!updateResult?.success) {
+            console.log(
+              `L'abonnement n'existe pas encore, création dans la DB...`
+            );
+            await saveUserSubscription(
+              Number(userIdFromMeta),
+              data?.object?.customer || "",
+              data?.object?.id || "",
+              data?.object?.status || "active",
+              data?.object?.items?.data[0]?.price?.lookup_key || "",
+              data?.object?.current_period_end
+            );
+          } else {
+            console.log(
+              `Abonnement mis à jour avec succès pour userId ${userIdFromMeta}`
+            );
+          }
         } else {
+          // Sinon, simple mise à jour
           await updateUserSubscription(
             data?.object?.id, // subscriptionId
             data?.object?.status, // status
