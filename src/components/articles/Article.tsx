@@ -20,7 +20,10 @@ export default function Article({ element }: { element: ArticleInterface }) {
   const featuredImage = element?.featuredImage?.node?.sourceUrl;
   const featuredImageAlt = element?.featuredImage?.node?.altText;
   const tags = element?.tags?.nodes;
-  const author = element?.author?.node;
+  const author = {
+    ...element?.author?.node,
+    authorCustomAvatar: element?.authorCustomAvatar,
+  };
 
   const isPublic = element?.contenuPublic?.isPublic ?? "Public";
   const isPaywall = showPaywall(isPublic, hasEurasiaPeaceSubscription);

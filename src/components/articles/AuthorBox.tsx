@@ -9,10 +9,12 @@ interface Author {
   avatar: {
     url: string;
   };
+  authorCustomAvatar: string;
 }
 
 export default function AuthorBox({ author }: { author: Author }) {
   const avatarUrl = author?.avatar?.url;
+  const authorCustomAvatar = author?.authorCustomAvatar;
   const name = author?.firstName + " " + author?.lastName;
   const description = author?.description || "Biographie non renseignée";
 
@@ -36,7 +38,7 @@ export default function AuthorBox({ author }: { author: Author }) {
         <div className="relative group">
           <div className="bg-gradient-to-r from-midnight-green to-background-light-blue w-fit rounded-full p-0.5 group-hover:animate-pulse">
             <Image
-              src={avatarUrl || "/default-avatar.webp"}
+              src={authorCustomAvatar || avatarUrl || "/default-avatar.webp"}
               alt={name}
               width={80}
               height={80}

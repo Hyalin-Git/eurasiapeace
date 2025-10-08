@@ -56,6 +56,7 @@ export interface Article {
       description: string;
     };
   };
+  authorCustomAvatar: string;
   wordCount: number;
   readingTime: number;
   contenuPublic: {

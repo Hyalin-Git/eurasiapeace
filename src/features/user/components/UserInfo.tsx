@@ -41,6 +41,7 @@ export default function UserInfo({
   const isAuthor = userRole.includes("author");
   const isAdministrator = userRole.includes("administrator");
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isImgLoading, setIsImgLoading] = useState<boolean>(false);
   // const [isEditingEmail, setIsEditingEmail] = useState<boolean>(false);
   const router = useRouter();
 
@@ -82,7 +83,16 @@ export default function UserInfo({
   // }
 
   async function handleUpdateAvatar(e: React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+
+    setIsImgLoading(true);
+    toast.loading("Mise à jour de la photo de profil...", {
+      duration: 4000,
+      position: "bottom-right",
+    });
+
     const file = e.target.files?.[0];
+
     if (file) {
       const { success } = await updateUserAvatar(user?.databaseId, file);
 
@@ -91,16 +101,18 @@ export default function UserInfo({
           "Une erreur est survenue lors de la mise à jour de la photo de profil",
           {
             duration: 6000,
-            position: "bottom-left",
+            position: "bottom-right",
           }
         );
       }
 
       toast.success("Photo de profil mis à jour avec succès", {
         duration: 6000,
-        position: "bottom-left",
+        position: "bottom-right",
       });
 
+      setIsImgLoading(false);
+      setIsEdit(false);
       mutate();
     }
   }
@@ -125,7 +137,12 @@ export default function UserInfo({
                 className="object-cover w-full h-full"
                 priority
               />
-              {isEdit && (
+              {isImgLoading && (
+                <div className="absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+                </div>
+              )}
+              {isEdit && !isImgLoading && (
                 <label
                   htmlFor="avatar"
                   className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center cursor-pointer"
@@ -137,6 +154,7 @@ export default function UserInfo({
                     name="avatar"
                     className="hidden"
                     onChange={handleUpdateAvatar}
+                    accept="image/png, image/jpeg, image/jpg, image/webp"
                   />
                 </label>
               )}

@@ -20,6 +20,7 @@ export default function SocialMedia({ className }: { className?: string }) {
             height={32}
           />
         </Link>
+
         <Link
           href={"https://fr.linkedin.com/company/eurasiapeace"}
           target="_blank"
@@ -32,6 +33,7 @@ export default function SocialMedia({ className }: { className?: string }) {
             height={32}
           />
         </Link>
+
         <Link
           href="https://www.facebook.com/profile.php?id=61580972964723"
           target="_blank"
@@ -44,6 +46,7 @@ export default function SocialMedia({ className }: { className?: string }) {
             height={32}
           />
         </Link>
+
         <Link
           href="https://www.instagram.com/eurasiapeace/"
           target="_blank"

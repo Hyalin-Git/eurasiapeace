@@ -67,24 +67,45 @@ export async function POST(req: NextRequest) {
   try {
     switch (eventType) {
       case "customer.subscription.created":
-        // The subscription was created.
         // ! Save the user subscription in the DB
 
-        const sessions = await stripe.checkout.sessions.list({
-          subscription: data?.object?.id,
-          limit: 1,
-        });
+        let userId;
 
-        const session = sessions.data[0];
-        const userId = session?.metadata?.userId;
+        // Essayer de récupérer le userId depuis les métadonnées d'abord
+        if (data?.object?.metadata?.userId) {
+          userId = data?.object?.metadata?.userId;
+          console.log(`UserID trouvé dans les métadonnées: ${userId}`);
+        } else {
+          // Sinon, essayer de récupérer depuis la session checkout
+          const sessions = await stripe.checkout.sessions.list({
+            subscription: data?.object?.id,
+            limit: 1,
+          });
+
+          const session = sessions.data[0];
+          userId = session?.metadata?.userId;
+          console.log(`UserID trouvé dans la session: ${userId}`);
+        }
+
+        // Vérifier qu'on a bien un userId
+        if (!userId) {
+          console.error(
+            "❌ UserID manquant pour l'abonnement:",
+            data?.object?.id
+          );
+          return NextResponse.json(
+            { message: "UserID manquant" },
+            { status: 400 }
+          );
+        }
 
         await saveUserSubscription(
           Number(userId),
-          data?.object?.customer || "", // customerId
-          data?.object?.id || "", // subscriptionId
-          data?.object?.status || "active", // status
-          data?.object?.items?.data[0]?.price?.lookup_key || "", // lookup_key
-          data?.object?.current_period_end // expiresAt
+          data?.object?.customer || "",
+          data?.object?.id || "",
+          data?.object?.status || "active",
+          data?.object?.items?.data[0]?.price?.lookup_key || "",
+          data?.object?.current_period_end
         );
 
         // ! IF CONTRIBUTOR SUBSCRIPTION THEN CHANGE USER ROLE TO AUTHOR IN WP
