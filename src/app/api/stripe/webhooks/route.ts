@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
           );
 
           // Si la mise à jour échoue (abonnement n'existe pas), créer l'abonnement
-          if (!updateResult?.success) {
+          if (!updateResult?.success || !updateResult?.data) {
             console.log(
               `L'abonnement n'existe pas encore, création dans la DB...`
             );
