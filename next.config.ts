@@ -4,7 +4,14 @@ const nextConfig: NextConfig = {
   // Optimisations légères
   experimental: {
     serverActions: {
-      bodySizeLimit: "2mb",
+      bodySizeLimit: "10mb",
+    },
+  },
+
+  // Configuration pour les API routes
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
     },
   },
   eslint: {

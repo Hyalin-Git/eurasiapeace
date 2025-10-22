@@ -13,20 +13,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Vérifier la taille du fichier (limite à 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: "Le fichier est trop volumineux (maximum 10MB)" },
+        { status: 413 }
+      );
+    }
+
     // Convertir le fichier en buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Compresser l'image avec Sharp (qualité maximale)
+    // Compresser l'image avec Sharp (optimisé pour la production)
     const compressedBuffer = await sharp(buffer)
-      .resize(400, 400, {
+      .resize(300, 300, {
         fit: "cover",
         withoutEnlargement: true, // Évite l'agrandissement si l'image est plus petite
       })
       .webp({
-        quality: 95, // Qualité très élevée
-        lossless: false, // Compression avec perte mais haute qualité
-        effort: 6, // Effort maximum pour la compression (0-6, 6 = meilleur)
+        quality: 85, // Qualité élevée mais optimisée pour la taille
+        lossless: false, // Compression avec perte
+        effort: 6, // Effort maximum pour la compression
       })
       .toBuffer();
 
