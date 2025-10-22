@@ -7,7 +7,7 @@ export default function Paywall() {
 
   return (
     <div className="mt-8 mb-12 bg-gradient-to-br from-blue-400 to-blue-900 border border-amber-200 rounded-lg p-8 text-center">
-      <div className="flex items-center justify-center mb-4">
+      <div className="flex flex-col gap-2 items-center justify-center mb-4">
         <svg
           className="w-16 h-16 text-white"
           fill="currentColor"
@@ -19,12 +19,14 @@ export default function Paywall() {
             clipRule="evenodd"
           />
         </svg>
-        <h3 className="text-2xl font-bold text-white">Contenu Premium</h3>
+        <h3 className="text-xl md:text-2xl font-bold text-white">
+          Contenu Premium téléchargeable en PDF
+        </h3>
       </div>
       <p className="text-white mb-6">
-        L&apos;analyse complète et les recommandations stratégiques sont
-        réservées aux membres premium. Accédez à l&apos;intégralité de nos
-        recherches géopolitiques.
+        Les dossiers thématiques, rapports de renseignements et notes
+        d&apos;analyse sont réservés aux membres premium. Accédez à
+        l&apos;intégralité de nos travaux, recherches et analyses géopolitiques.
       </p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Link

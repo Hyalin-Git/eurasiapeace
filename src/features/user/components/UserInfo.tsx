@@ -18,6 +18,7 @@ import { AuthUser } from "@/types";
 import { createPortalSession } from "@/server/api/stripe";
 import { useUserRole } from "@/context/UserRoleContext";
 import { updateUserAvatar } from "../server/db/user";
+import { compressImage } from "../server/api/user";
 import toast from "react-hot-toast";
 
 export default function UserInfo({
@@ -94,26 +95,43 @@ export default function UserInfo({
     const file = e.target.files?.[0];
 
     if (file) {
-      const { success } = await updateUserAvatar(user?.databaseId, file);
+      try {
+        // Compresser l'image via l'API
+        const compressedFile = await compressImage(file);
 
-      if (!success) {
-        toast.error(
-          "Une erreur est survenue lors de la mise à jour de la photo de profil",
-          {
-            duration: 6000,
-            position: "bottom-right",
-          }
+        const { success } = await updateUserAvatar(
+          user?.databaseId,
+          compressedFile
         );
+
+        if (!success) {
+          toast.error(
+            "Une erreur est survenue lors de la mise à jour de la photo de profil",
+            {
+              duration: 6000,
+              position: "bottom-right",
+            }
+          );
+          setIsImgLoading(false);
+          return;
+        }
+
+        toast.success("Photo de profil mis à jour avec succès", {
+          duration: 6000,
+          position: "bottom-right",
+        });
+
+        setIsImgLoading(false);
+        setIsEdit(false);
+        mutate();
+      } catch (error) {
+        console.error("Erreur lors de la compression de l'image:", error);
+        toast.error("Une erreur est survenue lors du traitement de l'image", {
+          duration: 6000,
+          position: "bottom-right",
+        });
+        setIsImgLoading(false);
       }
-
-      toast.success("Photo de profil mis à jour avec succès", {
-        duration: 6000,
-        position: "bottom-right",
-      });
-
-      setIsImgLoading(false);
-      setIsEdit(false);
-      mutate();
     }
   }
 
