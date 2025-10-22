@@ -112,6 +112,14 @@ export default function SubscriptionCard({
     }
 
     if (subscription.title === "Abonnement Contributeur Spécial") {
+      if (!hasEurasiaPeaceSubscription) {
+        return (
+          <div className="text-sm text-red-600 font-semibold text-center">
+            Vous devez d&apos;abord souscrire à l&apos;abonnement EurasiaPeace.
+          </div>
+        );
+      }
+
       if (isUserContributor) {
         return (
           <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">

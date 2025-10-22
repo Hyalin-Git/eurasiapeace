@@ -13,6 +13,7 @@ interface ErrorResponse {
 export async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
   const authToken = cookieStore.get("authToken")?.value;
+  const refreshToken = cookieStore.get("rtk")?.value;
 
   // Routes non accessibles si l'utilisateur est connecté
   const unauthenticatedRoutes = ["/connexion", "/inscription"];
@@ -24,7 +25,11 @@ export async function middleware(request: NextRequest) {
 
   const authenticatedRoutes = ["/mon-compte"];
 
-  if (authenticatedRoutes.includes(request.nextUrl.pathname) && !authToken) {
+  if (
+    authenticatedRoutes.includes(request.nextUrl.pathname) &&
+    !authToken &&
+    !refreshToken
+  ) {
     return NextResponse.redirect(new URL("/connexion", request.url));
   }
 

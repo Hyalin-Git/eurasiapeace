@@ -33,10 +33,14 @@ export function SubscriptionProvider({ children }: SubscriptionProviderProps) {
 
   useEffect(() => {
     const hasEurasia = authUser?.subscriptions?.some(
-      (sub) => sub.subscriptionPlan === "abonnement_eurasiapeace"
+      (sub) =>
+        sub.subscriptionPlan === "abonnement_eurasiapeace" &&
+        sub?.subscriptionStatus === "active"
     );
     const hasContributor = authUser?.subscriptions?.some(
-      (sub) => sub.subscriptionPlan === "abonnement_contributeur_special"
+      (sub) =>
+        sub.subscriptionPlan === "abonnement_contributeur_special" &&
+        sub?.subscriptionStatus === "active"
     );
 
     setHasEurasiaPeaceSubscription(!!hasEurasia);
@@ -46,6 +50,8 @@ export function SubscriptionProvider({ children }: SubscriptionProviderProps) {
       setSubscription("EurasiaPeace, Contributeur Spécial");
     } else if (hasEurasia) {
       setSubscription("EurasiaPeace");
+    } else if (hasContributor) {
+      setSubscription("Contributeur Spécial");
     } else {
       setSubscription("Gratuit");
     }

@@ -2,7 +2,7 @@
 
 import { generateQuery } from "@/utils/generateQuery";
 import { Error, Filters } from "@/types";
-import { fetchGraphQL } from "@/utils/authFetch";
+import { fetchGraphQL, fetchGraphQLWithAuth } from "@/utils/authFetch";
 
 export async function getFormations(
   limit: number = 10,
@@ -234,7 +234,7 @@ export async function getFormation(slug: string) {
       }
     `;
 
-    const res = await fetchGraphQL(query);
+    const res = await fetchGraphQLWithAuth(query);
 
     if (!res.success) {
       return {

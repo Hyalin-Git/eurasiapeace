@@ -192,6 +192,7 @@ export default function About() {
                     alt="Fondateur"
                     fill
                     className="w-full h-full object-cover object-[65%_50%]"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 60vw"
                   />
                 </div>
               </div>

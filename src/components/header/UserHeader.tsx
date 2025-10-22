@@ -50,7 +50,7 @@ export default function UserHeader({ authUser }: { authUser: AuthUser }) {
 
   async function handleCustomerPortal() {
     // Redirect to the customer portal for managing subscriptions
-    const customerId = user?.customerId;
+    const customerId = authUser?.customerId;
 
     if (!customerId) return;
 
@@ -114,7 +114,7 @@ export default function UserHeader({ authUser }: { authUser: AuthUser }) {
               >
                 {user?.firstName} {user?.lastName}
               </Link>
-              <span className="text-[12px]! text-gray-500/60! font-medium! truncate w-full">
+              <span className="text-[12px]! text-gray-500/60! font-medium! truncate w-full max-w-25!">
                 {displaySubscription()}
               </span>
             </>
@@ -136,7 +136,7 @@ export default function UserHeader({ authUser }: { authUser: AuthUser }) {
             </Link>
           </li>
           {(hasEurasiaPeaceSubscription || hasContributorSubscription) &&
-            user?.customerId && (
+            authUser?.customerId && (
               <li
                 className="flex items-center gap-2"
                 onClick={handleCustomerPortal}

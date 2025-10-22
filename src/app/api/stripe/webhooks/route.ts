@@ -183,7 +183,6 @@ export async function POST(req: NextRequest) {
         );
 
         // ! IF CONTRIBUTOR SUBSCRIPTION THEN CHANGE USER ROLE TO USER IN WP
-
         if (
           deletedSubscription?.data?.plan === "abonnement_contributeur_special"
         ) {
@@ -232,6 +231,7 @@ export async function POST(req: NextRequest) {
             }
           }
         }
+
         console.log(
           `Subscription deleted for customerId: ${data?.object?.customer}`
         );
