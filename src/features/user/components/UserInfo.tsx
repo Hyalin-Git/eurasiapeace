@@ -97,7 +97,9 @@ export default function UserInfo({
     if (file) {
       try {
         // Compresser l'image via l'API
-        const compressedFile = await compressImage(file);
+        const { data: compressedFile } = await compressImage(file);
+
+        if (!compressedFile) return;
 
         const { success } = await updateUserAvatar(
           user?.databaseId,
