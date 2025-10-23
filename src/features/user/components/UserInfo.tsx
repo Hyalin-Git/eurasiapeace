@@ -18,8 +18,8 @@ import { AuthUser } from "@/types";
 import { createPortalSession } from "@/server/api/stripe";
 import { useUserRole } from "@/context/UserRoleContext";
 import { updateUserAvatar } from "../server/db/user";
-import { compressImage } from "../server/api/user";
 import toast from "react-hot-toast";
+import imageCompression from "browser-image-compression";
 
 export default function UserInfo({
   authUser,
@@ -96,10 +96,27 @@ export default function UserInfo({
 
     if (file) {
       try {
-        // Compresser l'image via l'API
-        const { data: compressedFile } = await compressImage(file);
+        // Configuration de compression pour WebP avec qualité optimale
+        const options = {
+          maxSizeMB: 1, // Taille maximale en MB
+          maxWidthOrHeight: 800, // Dimension maximale en pixels
+          useWebWorker: true, // Utiliser un Web Worker pour éviter de bloquer l'UI
+          fileType: "image/webp", // Forcer la conversion en WebP
+          initialQuality: 0.8, // Qualité initiale (80% pour un bon équilibre)
+        };
 
-        if (!compressedFile) return;
+        // Compression de l'image
+        const compressedBlob = await imageCompression(file, options);
+
+        // Conversion du Blob en File pour maintenir la compatibilité
+        const compressedFile = new File(
+          [compressedBlob],
+          `${file.name.split(".")[0]}.webp`, // Nom avec extension .webp
+          {
+            type: "image/webp",
+            lastModified: Date.now(),
+          }
+        );
 
         const { success } = await updateUserAvatar(
           user?.databaseId,
