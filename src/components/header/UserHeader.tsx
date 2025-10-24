@@ -96,7 +96,8 @@ export default function UserHeader({ authUser }: { authUser: AuthUser }) {
             alt="avatar"
             width={36}
             height={36}
-            className="rounded-full min-w-9 min-h-9 w-9 h-9 md:min-w-7 md:min-h-7 md:w-7 md:h-7"
+            className="rounded-full object-cover min-w-9 min-h-9 w-9 h-9 md:min-w-7 md:min-h-7 md:w-7 md:h-7"
+            quality={95}
           />
         )}
 

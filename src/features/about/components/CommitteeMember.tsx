@@ -21,7 +21,7 @@ export default async function CommiteeMember({ member }: { member: Member }) {
               alt={member?.picture?.node?.altText || "Photo du membre"}
               width={100}
               height={100}
-              quality={100}
+              quality={95}
               className="rounded-lg"
             />
           </div>

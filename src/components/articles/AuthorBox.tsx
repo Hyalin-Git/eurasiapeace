@@ -42,7 +42,7 @@ export default function AuthorBox({ author }: { author: Author }) {
               alt={name}
               width={80}
               height={80}
-              quality={100}
+              quality={95}
               className="relative rounded-full aspect-square w-20 h-20 object-cover shadow-md"
             />
           </div>

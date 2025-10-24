@@ -51,7 +51,7 @@ export default function Testimonial({
             }
             width={40}
             height={40}
-            quality={100}
+            quality={95}
             className="absolute top-0.5 rounded-full object-cover min-w-12 min-h-12 max-w-12 max-h-12"
           />
         </div>

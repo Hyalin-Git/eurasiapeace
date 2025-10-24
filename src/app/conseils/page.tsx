@@ -165,7 +165,7 @@ export default async function Conseils() {
               src="/image-conseils-1.webp"
               alt="Conseils"
               fill
-              quality={100}
+              quality={95}
               className="rounded-tr-[75px] rounded-bl-[75px] rounded-4xl w-full object-fill"
             />
           </div>

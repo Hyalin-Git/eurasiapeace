@@ -170,7 +170,7 @@ export default function UserInfo({
                 alt={`Avatar de ${fullName}`}
                 width={96}
                 height={96}
-                quality={100}
+                quality={95}
                 className="object-cover w-full h-full"
                 priority
               />

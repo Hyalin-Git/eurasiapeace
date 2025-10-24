@@ -27,7 +27,7 @@ export default function Banner({
           fill
           className="object-cover"
           priority={true}
-          quality={100}
+          quality={95}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 60vw"
         />
       )}
@@ -53,7 +53,7 @@ export default function Banner({
               src={"/qualiopi-gqc.webp"}
               alt="Logo Qualiopi"
               fill
-              quality={100}
+              quality={95}
               className="object-contain"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 60vw"
             />
