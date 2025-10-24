@@ -1,7 +1,9 @@
 "use server";
-import { JSDOM } from "jsdom";
 
 export async function parseRankMathHead(head: string) {
+  // Import dynamique côté serveur
+  const { JSDOM } = await import("jsdom");
+
   const dom = new JSDOM(head || "");
   const doc = dom.window.document;
 
