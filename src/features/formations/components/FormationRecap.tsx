@@ -174,15 +174,19 @@ export default function FormationRecap({
             <span className="text-md font-bold">Formateur</span>
             <div className="flex items-center gap-2 mt-2">
               <Image
-                src={formateur.avatar.url || ""}
-                alt={`${formateur.firstName} ${formateur.lastName}`}
+                src={
+                  formateur?.customAvatar ||
+                  formateur?.avatar?.url ||
+                  "/default-avatar.webp"
+                }
+                alt={`${formateur?.firstName} ${formateur?.lastName}`}
                 width={40}
                 height={40}
                 className="rounded-full"
               />
               <div>
                 <span className="text-sm">
-                  {formateur.firstName} {formateur.lastName}
+                  {formateur?.firstName} {formateur?.lastName}
                 </span>
               </div>
             </div>

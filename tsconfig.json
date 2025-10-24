@@ -35,7 +35,9 @@
     ".next/types/**/*.ts",
     "src/app/api/contact/post/route.ts",
     "src/app/api/contact/post/route.tjs",
-    "src/app/(stripe)/checkout"
+    "src/app/(stripe)/checkout",
+    ".next\\dev/types/**/*.ts",
+    ".next\\dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

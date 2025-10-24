@@ -174,6 +174,7 @@ export interface Formation {
       nodes: {
         lastName: string;
         firstName: string;
+        customAvatar: string;
         avatar: {
           url: string;
         };

@@ -224,6 +224,7 @@ export async function getFormation(slug: string) {
               nodes {
                 lastName
                 firstName
+                customAvatar
                 avatar {
                   url
                 }
