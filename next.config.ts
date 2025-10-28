@@ -7,9 +7,6 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "10mb",
     },
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   async rewrites() {
     return [
       {
@@ -20,7 +17,7 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    qualities: [75, 85, 95, 100],
+    qualities: [75, 85, 95],
     remotePatterns: [
       {
         protocol: "http",

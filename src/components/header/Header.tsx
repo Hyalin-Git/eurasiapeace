@@ -21,7 +21,7 @@ export default function Header({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className={`relative ${isScrolled ? "h-[80px] " : "h-[100px]"}`}>
+    <div className={`relative ${isScrolled ? "h-[80px]" : "h-[100px]"}`}>
       <header
         className={`left-0 right-0 shadow-sm top-0 z-100 bg-background-primary fixed transition-all duration-200 ease-in-out ${
           isScrolled ? "h-[80px]" : "h-[100px]"
