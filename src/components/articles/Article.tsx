@@ -13,7 +13,13 @@ import { Article as ArticleInterface } from "@/types";
 import { useSubscription } from "@/context/SubscriptionContext";
 import DOMPurify from "isomorphic-dompurify";
 
-export default function Article({ element }: { element: ArticleInterface }) {
+export default function Article({
+  element,
+  isPreview = false,
+}: {
+  element: ArticleInterface;
+  isPreview?: boolean;
+}) {
   const { hasEurasiaPeaceSubscription } = useSubscription();
   const title = element?.title;
   const content = element?.content;
@@ -91,7 +97,7 @@ export default function Article({ element }: { element: ArticleInterface }) {
       />
 
       {/* Box de partage */}
-      <SocialShare />
+      {!isPreview && <SocialShare />}
 
       <Separator />
 
@@ -104,21 +110,29 @@ export default function Article({ element }: { element: ArticleInterface }) {
       {featuredImage && <Separator />}
 
       {/* Contenu principal */}
-      <div
-        className={`relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none prose-a:text-blue-600 prose-a:visited:text-purple-600 prose-a:hover:text-blue-700`}
-      >
+      {!isPreview ? (
         <div
-          dangerouslySetInnerHTML={{
-            __html: isPaywall ? firstPart : firstPart + lastPart,
-          }}
-        />
-        {isPaywall && (
-          <div className="absolute bg-gradient-to-b from-transparent to-gray-50 w-full h-1/2 bottom-0"></div>
-        )}
-      </div>
+          className={`relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none prose-a:text-blue-600 prose-a:visited:text-purple-600 prose-a:hover:text-blue-700`}
+        >
+          <div
+            dangerouslySetInnerHTML={{
+              __html: isPaywall ? firstPart : firstPart + lastPart,
+            }}
+          />
+          {isPaywall && (
+            <div className="absolute bg-gradient-to-b from-transparent to-gray-50 w-full h-1/2 bottom-0"></div>
+          )}
+        </div>
+      ) : (
+        <div
+          className={`relative prose prose-[1.5rem] prose-h2:text-3xl prose-h3:text-xl prose-h4:text-base prose-h5:text-sm prose-h6:text-xs max-w-none prose-a:text-blue-600 prose-a:visited:text-purple-600 prose-a:hover:text-blue-700`}
+        >
+          <div dangerouslySetInnerHTML={{ __html: contentWithSafeLinks }} />
+        </div>
+      )}
 
       {/* Paywall pour contenu premium */}
-      {isPaywall && <Paywall />}
+      {!isPreview && isPaywall && <Paywall />}
 
       {/* Author Box */}
       <AuthorBox author={author} />
