@@ -86,7 +86,13 @@ export async function getPosts(
   excludeCategories: string[] = []
 ) {
   try {
-    const filterQuery = generateQuery(filters, searchTerm, limit, offset, excludeCategories);
+    const filterQuery = generateQuery(
+      filters,
+      searchTerm,
+      limit,
+      offset,
+      excludeCategories
+    );
 
     const query = `
      query {
@@ -119,6 +125,9 @@ export async function getPosts(
                 node {
                   name
                 }
+              }
+              acfFields {
+                nombreDePagePdf
               }
             }
           }

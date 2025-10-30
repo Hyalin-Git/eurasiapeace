@@ -126,6 +126,9 @@ export interface ElementProps {
       }[];
     };
   };
+  acfFields: {
+    nombreDePagePdf: number;
+  };
   contentType: {
     node: {
       id: string;

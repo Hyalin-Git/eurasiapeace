@@ -45,6 +45,7 @@ export interface Article {
         filePath: string;
       };
     };
+    nombreDePagePdf: number;
   };
   author: {
     node: {

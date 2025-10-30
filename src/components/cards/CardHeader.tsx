@@ -3,7 +3,7 @@
 import Category from "@/components/Category";
 import CardBanner from "@/components/cards/CardBanner";
 import Tag from "@/components/tags/Tag";
-import { FastForward, Medal } from "lucide-react";
+import { BookOpenText, FastForward, FileText, Medal } from "lucide-react";
 import { ElementProps } from "./types";
 
 export default function CardHeader({
@@ -25,11 +25,23 @@ export default function CardHeader({
 
   const contentType = element?.contentType?.node?.name || "";
 
+  const pdfPageCount = element?.acfFields?.nombreDePagePdf;
+  const pagePlural = pdfPageCount > 1 ? "pages" : "page";
+
   return (
     <div>
       <div className="absolute z-1 top-2 left-2">
         <Category category={category} type={contentType} />
       </div>
+
+      {pdfPageCount && (
+        <div className="absolute z-1  top-2 right-2">
+          <Tag
+            icon={<BookOpenText size={16} />}
+            content={pdfPageCount.toString() + " " + pagePlural}
+          />
+        </div>
+      )}
 
       {/* Formation meta */}
       {variant === "formation" && <FormationVariant element={element} />}
