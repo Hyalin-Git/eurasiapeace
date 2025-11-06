@@ -9,12 +9,12 @@ interface Author {
   avatar: {
     url: string;
   };
-  authorCustomAvatar: string;
+  customAvatar: string;
 }
 
 export default function AuthorBox({ author }: { author: Author }) {
   const avatarUrl = author?.avatar?.url;
-  const authorCustomAvatar = author?.authorCustomAvatar;
+  const authorCustomAvatar = author?.customAvatar;
   const name = author?.firstName + " " + author?.lastName;
   const description = author?.description || "Biographie non renseignée";
 

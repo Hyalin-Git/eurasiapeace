@@ -26,10 +26,7 @@ export default function Article({
   const featuredImage = element?.featuredImage?.node?.sourceUrl;
   const featuredImageAlt = element?.featuredImage?.node?.altText;
   const tags = element?.tags?.nodes;
-  const author = {
-    ...element?.author?.node,
-    authorCustomAvatar: element?.authorCustomAvatar,
-  };
+  const author = element?.author?.node;
 
   const isEltPost = element?.contentType?.node?.name === "post";
   const isPublic = element?.contenuPublic?.isPublic ?? "Public";

@@ -55,6 +55,7 @@ export interface Article {
       firstName: string;
       lastName: string;
       description: string;
+      customAvatar: string;
     };
   };
   authorCustomAvatar: string;

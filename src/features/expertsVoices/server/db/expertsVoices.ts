@@ -228,6 +228,7 @@ export async function getExpertVoice(slug: string) {
               firstName
               lastName
               description
+              customAvatar
             }
           }
           wordCount

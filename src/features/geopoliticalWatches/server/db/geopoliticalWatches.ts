@@ -306,6 +306,7 @@ export async function getGeopoliticalWatch(slug: string) {
               firstName
               lastName
               description
+              customAvatar
             }
           }
           wordCount

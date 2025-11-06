@@ -290,6 +290,7 @@ export async function getPost(slug: string) {
               firstName
               lastName
               description
+              customAvatar
             }
           } 
           acfFields {
