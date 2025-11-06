@@ -31,6 +31,7 @@ export default function Article({
     authorCustomAvatar: element?.authorCustomAvatar,
   };
 
+  const isEltPost = element?.contentType?.node?.name === "post";
   const isPublic = element?.contenuPublic?.isPublic ?? "Public";
   const isPaywall = showPaywall(isPublic, hasEurasiaPeaceSubscription);
 
@@ -51,24 +52,32 @@ export default function Article({
   function splitHtmlAtBoundary(
     html: string,
     approx: number
-  ): { first: string; last: string } {
+  ): { first: string } {
     const head = html.slice(0, approx);
     const cutIndex = head.lastIndexOf(">");
     if (cutIndex === -1) {
-      return { first: head, last: html.slice(approx) };
+      return { first: head };
     }
     return {
       first: html.slice(0, cutIndex + 1),
-      last: html.slice(cutIndex + 1),
     };
   }
 
   const sanitizedContent = DOMPurify.sanitize(content || "");
   const contentWithSafeLinks = ensureExternalLinksAttributes(sanitizedContent);
-  const { first: firstPart, last: lastPart } = splitHtmlAtBoundary(
-    contentWithSafeLinks,
-    2000
-  );
+  const { first: firstPart } = splitHtmlAtBoundary(contentWithSafeLinks, 2000);
+
+  const displayContent = () => {
+    if (isEltPost && isPaywall) {
+      return contentWithSafeLinks;
+    }
+
+    if (isPaywall && !isEltPost) {
+      return firstPart;
+    }
+
+    return contentWithSafeLinks;
+  };
 
   const category =
     element?.categories?.nodes[0] ||
@@ -116,12 +125,12 @@ export default function Article({
         >
           <div
             dangerouslySetInnerHTML={{
-              __html: isPaywall ? firstPart : firstPart + lastPart,
+              __html: displayContent(),
             }}
           />
-          {isPaywall && (
-            <div className="absolute bg-gradient-to-b from-transparent to-gray-50 w-full h-1/2 bottom-0"></div>
-          )}
+          {/* {isPaywall && (
+            <div className="absolute bg-gradient-to-b from-transparent to-gray-50 w-full h-1/8 bottom-0"></div>
+          )} */}
         </div>
       ) : (
         <div
