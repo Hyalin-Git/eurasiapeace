@@ -48,10 +48,12 @@ export async function registerToFormation(
     );
 
     await sendEmail(
-      email,
+      process.env.EMAIL_FROM || "contact@eurasiapeace.org",
       `${process.env.EMAIL_FORMATION}`,
       msgTemplate.subject,
-      msgTemplate.text
+      msgTemplate.text,
+      [],
+      email
     );
 
     return {

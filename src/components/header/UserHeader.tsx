@@ -14,6 +14,7 @@ import { useSubscription } from "@/context/SubscriptionContext";
 import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
 import { useUserRole } from "@/context/UserRoleContext";
+import Picture from "../Picture";
 
 export default function UserHeader({ authUser }: { authUser: AuthUser }) {
   const { data: user, isLoading } = useUser(authUser?.id || "");
@@ -91,13 +92,11 @@ export default function UserHeader({ authUser }: { authUser: AuthUser }) {
         {isLoading ? (
           <div className="rounded-full min-w-9 min-h-9 w-9 h-9 md:min-w-7 md:min-h-7 md:w-7 md:h-7 bg-gray-200 animate-pulse" />
         ) : (
-          <Image
+          <Picture
             src={user?.customAvatar || "/default-avatar.webp"}
-            alt="avatar"
+            alt={`Photo de ${user?.firstName} ${user?.lastName}`}
             width={36}
             height={36}
-            className="rounded-full object-cover min-w-9 min-h-9 w-9 h-9 md:min-w-7 md:min-h-7 md:w-7 md:h-7"
-            quality={95}
           />
         )}
 

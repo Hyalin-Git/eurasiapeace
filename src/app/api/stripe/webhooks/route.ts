@@ -246,7 +246,7 @@ export async function POST(req: NextRequest) {
           );
 
           await sendEmail(
-            process?.env?.EMAIL_FROM,
+            process?.env?.EMAIL_FROM || "contact@eurasiapeace.org",
             data?.object?.customer_details?.email,
             purchaseTemplate.subject,
             purchaseTemplate.text,
@@ -274,7 +274,7 @@ export async function POST(req: NextRequest) {
         );
 
         await sendEmail(
-          process?.env?.EMAIL_FROM,
+          process?.env?.EMAIL_FROM || "contact@eurasiapeace.org",
           data?.object?.customer_email,
           invoicePaidTemplate.subject,
           invoicePaidTemplate.text,
@@ -301,7 +301,7 @@ export async function POST(req: NextRequest) {
         );
 
         await sendEmail(
-          process?.env?.EMAIL_FROM,
+          process?.env?.EMAIL_FROM || "contact@eurasiapeace.org",
           data?.object?.customer_email,
           invoiceFailedTemplate.subject,
           invoiceFailedTemplate.text

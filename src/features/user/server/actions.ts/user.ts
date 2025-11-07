@@ -223,7 +223,7 @@ export async function createUserEmailUpdate(
     );
 
     await sendEmail(
-      process.env.FROM_EMAIL,
+      process.env.EMAIL_FROM || "contact@eurasiapeace.org",
       sanitizedEmail,
       template.subject,
       template.text
@@ -351,7 +351,7 @@ export async function updateUserPassword(
     const template = passwordChangeSuccessTemplate(email);
 
     await sendEmail(
-      process.env.FROM_EMAIL,
+      process.env.EMAIL_FROM || "contact@eurasiapeace.org",
       email,
       template?.subject,
       template?.text

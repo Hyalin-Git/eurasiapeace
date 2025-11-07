@@ -1,5 +1,6 @@
 "use client";
 
+import Picture from "@/components/Picture";
 import { Star } from "lucide-react";
 import Image from "next/image";
 
@@ -26,12 +27,12 @@ export default function Testimonial({
             key={index}
             size={16}
             className={`text-midnight-green ${
-              testimonial.stars >= index + 1 ? "fill-midnight-green" : ""
+              testimonial?.stars >= index + 1 ? "fill-midnight-green" : ""
             }`}
           />
         ))}
       </div>
-      <p className="text-sm/7 flex-1">{testimonial.avis}</p>
+      <p className="text-sm/7 flex-1">{testimonial?.avis}</p>
       <div className="flex items-center gap-2 pt-4 border-t border-solid border-gray-200">
         <div className="relative min-w-15 min-h-15 flex items-center justify-center">
           <Image
@@ -41,12 +42,14 @@ export default function Testimonial({
             height={60}
             className="absolute w-auto h-auto"
           />
+
           <Image
             src={
-              testimonial.profilPicture.node.sourceUrl || "/default-avatar.webp"
+              testimonial?.profilPicture?.node?.sourceUrl ||
+              "/default-avatar.webp"
             }
             alt={
-              testimonial.profilPicture.node.altText ||
+              testimonial?.profilPicture?.node?.altText ||
               "Photo de profil d'un témoignage"
             }
             width={40}
@@ -56,7 +59,7 @@ export default function Testimonial({
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-lg font-medium">{testimonial.fullName}</p>
+          <p className="text-lg font-medium">{testimonial?.fullName}</p>
         </div>
       </div>
     </div>

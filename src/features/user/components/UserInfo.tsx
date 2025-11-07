@@ -20,6 +20,7 @@ import { useUserRole } from "@/context/UserRoleContext";
 import { updateUserAvatar } from "../server/db/user";
 import toast from "react-hot-toast";
 import imageCompression from "browser-image-compression";
+import Picture from "@/components/Picture";
 
 export default function UserInfo({
   authUser,
@@ -165,14 +166,12 @@ export default function UserInfo({
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-200">
             <div className="w-full h-full relative">
-              <Image
+              <Picture
                 src={user?.customAvatar || "/default-avatar.webp"}
-                alt={`Avatar de ${fullName}`}
                 width={96}
                 height={96}
-                quality={95}
+                alt={`Avatar de ${fullName}`}
                 className="object-cover w-full h-full"
-                priority
               />
               {isImgLoading && (
                 <div className="absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center">

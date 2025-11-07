@@ -57,10 +57,12 @@ export async function sendContact(prevState: InitialState, formData: FormData) {
     });
 
     const res = await sendEmail(
-      email,
+      process.env.EMAIL_FROM || "contact@eurasiapeace.org",
       process.env.EMAIL_FROM as string,
       contactTemplate.subject,
-      contactTemplate.text
+      contactTemplate.text,
+      [],
+      email
     );
 
     if (!res.success) {

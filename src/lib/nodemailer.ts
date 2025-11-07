@@ -327,16 +327,18 @@ export async function sendEmail(
     filename: string;
     path: string;
     contentType: string;
-  }> = []
+  }> = [],
+  replyTo?: string
 ) {
   try {
     const mailOptions = {
-      from: from,
+      from: from || "contact@eurasiapeace.org",
       to: to,
       subject: subject,
       text: removeHtmlTags(text),
       html: generateEmailTemplate(subject, text),
       attachments: attachments || [],
+      ...(replyTo && { replyTo: replyTo }),
     };
 
     const info = await transporter.sendMail(mailOptions);

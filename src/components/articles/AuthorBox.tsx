@@ -1,6 +1,5 @@
 import { User } from "lucide-react";
-import Image from "next/image";
-import React from "react";
+import Picture from "../Picture";
 
 interface Author {
   lastName: string;
@@ -17,7 +16,6 @@ export default function AuthorBox({ author }: { author: Author }) {
   const authorCustomAvatar = author?.customAvatar;
   const name = author?.firstName + " " + author?.lastName;
   const description = author?.description || "Biographie non renseignée";
-
   if (!author?.firstName || !author?.lastName) return null;
 
   return (
@@ -37,13 +35,12 @@ export default function AuthorBox({ author }: { author: Author }) {
       <div className="flex flex-col sm:flex-row gap-6">
         <div className="relative group">
           <div className="bg-gradient-to-r from-midnight-green to-background-light-blue w-fit rounded-full p-0.5 group-hover:animate-pulse">
-            <Image
-              src={authorCustomAvatar || avatarUrl || "/default-avatar.webp"}
-              alt={name}
+            <Picture
+              src={authorCustomAvatar || avatarUrl}
+              alt={`Photo de ${name}`}
               width={80}
               height={80}
-              quality={95}
-              className="relative rounded-full aspect-square w-20 h-20 object-cover shadow-md"
+              className="relative aspect-square w-20 h-20 object-cover shadow-md"
             />
           </div>
         </div>
