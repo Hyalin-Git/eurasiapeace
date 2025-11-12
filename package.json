@@ -23,7 +23,7 @@
     "isomorphic-dompurify": "^2.26.0",
     "jsdom": "^26.1.0",
     "jsonwebtoken": "^9.0.2",
-    "lucide-react": "^0.548.0",
+    "lucide-react": "^0.553.0",
     "moment": "^2.30.1",
     "next": "^16.0.0",
     "nextjs-toploader": "^3.8.16",
