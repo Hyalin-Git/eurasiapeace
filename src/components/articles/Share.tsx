@@ -28,33 +28,43 @@ export default function SocialShare() {
     const title = document.title;
 
     let shareUrl = "";
+    let windowFeatures = "";
 
     switch (platform) {
       case "twitter":
-        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        // Utiliser x.com (nouveau domaine) avec dimensions optimisées
+        shareUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(
           currentUrl
         )}&text=${encodeURIComponent(title)}`;
+        windowFeatures = "width=550,height=420,scrollbars=yes,resizable=yes";
         break;
       case "linkedin":
         shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
           currentUrl
         )}`;
+        windowFeatures = "width=600,height=600,scrollbars=yes,resizable=yes";
         break;
       case "facebook":
+        // Utiliser display=popup pour un chargement plus fiable
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
           currentUrl
-        )}`;
+        )}&display=popup`;
+        windowFeatures = "width=626,height=436,scrollbars=yes,resizable=yes";
         break;
       default:
         console.log("Plateforme non supportée");
         return;
     }
 
-    // Ouvrir la fenêtre de partage
+    // Centrer la fenêtre popup
+    const left = (window.screen.width - 600) / 2;
+    const top = (window.screen.height - 500) / 2;
+
+    // Ouvrir la fenêtre de partage avec noopener,noreferrer pour éviter les blocages
     window.open(
       shareUrl,
       "_blank",
-      "width=600,height=400,scrollbars=yes,resizable=yes"
+      `${windowFeatures},left=${left},top=${top},noopener,noreferrer`
     );
   }
 
