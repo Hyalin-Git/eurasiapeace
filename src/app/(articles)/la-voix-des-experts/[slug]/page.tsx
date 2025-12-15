@@ -38,6 +38,11 @@ export async function generateMetadata({
 
   const meta = await parseRankMathHead(rankMathData?.head || "");
 
+  // Image par défaut si Rank Math n'en fournit pas
+  const defaultImage = `${process.env.NEXT_PUBLIC_CLIENT_URL}/placeholder-eurasiapeace.webp`;
+  const ogImage = meta?.ogImage || defaultImage;
+  const twitterImage = meta?.twitterImage || ogImage;
+
   return {
     title: meta.title || "Contenu culturel EurasiaPeace",
     description:
@@ -71,16 +76,14 @@ export async function generateMetadata({
       tags: meta?.articleTag
         ? meta.articleTag.split(",").map((t: string) => t.trim())
         : undefined,
-      images: meta?.ogImage
-        ? [
-            {
-              url: meta.ogImage,
-              alt: meta.ogImageAlt || "EurasiaPeace",
-              width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
-              height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
-            },
-          ]
-        : undefined,
+      images: [
+        {
+          url: ogImage,
+          alt: meta.ogImageAlt || "EurasiaPeace",
+          width: meta.ogImageWidth ? parseInt(meta.ogImageWidth) : 1200,
+          height: meta.ogImageHeight ? parseInt(meta.ogImageHeight) : 630,
+        },
+      ],
     },
     twitter: {
       card:
@@ -95,14 +98,14 @@ export async function generateMetadata({
       description:
         meta?.description ||
         "Podcast, webinaire ou interview d'expert géopolitique sur les enjeux eurasiatiques.",
-      images: meta?.twitterImage
-        ? [
-            {
-              url: meta.twitterImage,
-              alt: meta.twitterImageAlt || "EurasiaPeace",
-            },
-          ]
-        : undefined,
+      images: [
+        {
+          url: twitterImage,
+          alt: meta.twitterImageAlt || "EurasiaPeace",
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
     alternates: {
       canonical: meta?.canonical || `/la-voix-des-experts/${slug}`,
