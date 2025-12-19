@@ -1,7 +1,7 @@
 "use client";
 
-import { Copy, Check } from "lucide-react";
-import React, { useState } from "react";
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 
 export default function SocialShare() {
   const [copied, setCopied] = useState(false);
@@ -28,43 +28,47 @@ export default function SocialShare() {
     const title = document.title;
 
     let shareUrl = "";
-    let windowFeatures = "";
+    let width = 600;
+    let height = 500;
+    let windowFeatures = "scrollbars=yes,resizable=yes";
 
     switch (platform) {
       case "twitter":
-        // Utiliser x.com (nouveau domaine) avec dimensions optimisées
         shareUrl = `https://x.com/intent/tweet?url=${encodeURIComponent(
           currentUrl
         )}&text=${encodeURIComponent(title)}`;
-        windowFeatures = "width=550,height=420,scrollbars=yes,resizable=yes";
+        width = 550;
+        height = 420;
         break;
       case "linkedin":
         shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
           currentUrl
         )}`;
-        windowFeatures = "width=600,height=600,scrollbars=yes,resizable=yes";
+        width = 600;
+        height = 600;
         break;
       case "facebook":
-        // Utiliser display=popup pour un chargement plus fiable
+        // Utiliser l'URL officielle sans display=popup (non supporté partout)
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
           currentUrl
-        )}&display=popup`;
-        windowFeatures = "width=626,height=436,scrollbars=yes,resizable=yes";
+        )}`;
+        width = 626;
+        height = 436;
         break;
       default:
         console.log("Plateforme non supportée");
         return;
     }
 
-    // Centrer la fenêtre popup
-    const left = (window.screen.width - 600) / 2;
-    const top = (window.screen.height - 500) / 2;
+    // Centrer la popup
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
 
-    // Ouvrir la fenêtre de partage avec noopener,noreferrer pour éviter les blocages
+    // Ouvrir la popup
     window.open(
       shareUrl,
       "_blank",
-      `${windowFeatures},left=${left},top=${top},noopener,noreferrer`
+      `width=${width},height=${height},left=${left},top=${top},${windowFeatures},noopener,noreferrer`
     );
   }
 
