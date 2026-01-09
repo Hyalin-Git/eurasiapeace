@@ -52,8 +52,8 @@ export default function Newsletter({
           <span className="text-gray-200 font-semibold">Restez informé !</span>
 
           <p className="text-gray-100 text-sm md:text-base mt-4">
-            Recevez nos articles de veille géopolitique deux fois par mois et
-            restez en connexion avec l'actualité internationale.
+            Recevez nos articles de veille géopolitique 4 à 5 fois par mois et
+            restez en connexion avec l&apos;actualité internationale.
           </p>
 
           <ul className="mt-4 sm:mt-8 [&>li]:flex [&>li]:gap-2 [&>li]:text-gray-200/90 [&>li]:text-sm [&>li:not(:last-child)]:mb-4">

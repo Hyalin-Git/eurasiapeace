@@ -78,63 +78,7 @@ export default async function NewsletterPage() {
           description="Abonnez-vous pour recevoir nos contenus clés : analyses, veilles géopolitiques et informations sur nos formations."
           className="pt-0"
         >
-          <div className="flex flex-col w-full gap-20">
-            <div className="rounded-xl border border-midnight-green/10 bg-linear-to-br from-btn-force-blue/5 to-transparent p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Sparkles className="text-text-primary" />
-                <h3 className="font-semibold">Pourquoi s&apos;abonner ?</h3>
-              </div>
-              <p className="text-black/70 mb-6">
-                Une sélection soignée de nos dernières analyses et veilles.
-                Idéal pour suivre l&apos;essentiel de l&apos;actualité
-                géopolitique et nos temps forts.
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-btn-force-blue mt-0.5" />
-                  <div>
-                    <p className="font-medium">Analyses et publications clés</p>
-                    <p className="text-black/70 text-sm">
-                      Une vue d&apos;ensemble des contenus à ne pas manquer.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-btn-force-blue mt-0.5" />
-                  <div>
-                    <p className="font-medium">Veilles géopolitiques</p>
-                    <p className="text-black/70 text-sm">
-                      Décryptages concis des évolutions majeures.
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="text-btn-force-blue mt-0.5" />
-                  <div>
-                    <p className="font-medium">Agenda & formations</p>
-                    <p className="text-black/70 text-sm">
-                      Événements, sessions et nouveautés de nos programmes.
-                    </p>
-                  </div>
-                </li>
-              </ul>
-
-              <div className="mt-6 flex flex-wrap gap-6 text-sm">
-                <div className="flex items-center gap-2 text-black/70">
-                  <Shield className="text-midnight-green" size={18} />
-                  <span>Protection des données</span>
-                </div>
-                <div className="flex items-center gap-2 text-black/70">
-                  <Bell className="text-midnight-green" size={18} />
-                  <span>1 à 2 emails / mois</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full">
-              <Newsletter />
-            </div>
-          </div>
+          <Newsletter />
         </Section>
       </div>
     </div>
