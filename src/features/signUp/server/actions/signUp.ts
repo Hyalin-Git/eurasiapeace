@@ -1,7 +1,7 @@
 "use server";
 
 import { signUpSchema } from "@/lib/zod";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 import { Error } from "@/types";
 import { InitialState } from "../../types";
 import { sendEmail } from "@/lib/nodemailer";
@@ -21,11 +21,11 @@ export async function signUp(prevState: InitialState, formData: FormData) {
     const newsletter = formData.get("newsletter") as string;
 
     // Sanitize the data to prevent XSS attacks
-    const sanitizedFirstName = DOMPurify.sanitize(firstName);
-    const sanitizedLastName = DOMPurify.sanitize(lastName);
-    const sanitizedEmail = DOMPurify.sanitize(email);
-    const sanitizedPassword = DOMPurify.sanitize(password);
-    const sanitizedConfirmPassword = DOMPurify.sanitize(confirmPassword);
+    const sanitizedFirstName = sanitizeInput(firstName);
+    const sanitizedLastName = sanitizeInput(lastName);
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPassword = sanitizeInput(password);
+    const sanitizedConfirmPassword = sanitizeInput(confirmPassword);
 
     const validation = signUpSchema.safeParse({
       firstName: sanitizedFirstName,
@@ -72,7 +72,7 @@ export async function signUp(prevState: InitialState, formData: FormData) {
         "contact@eurasiapeace.org",
         sanitizedEmail,
         subject,
-        html
+        html,
       );
     }
 
@@ -158,14 +158,14 @@ export async function signUp(prevState: InitialState, formData: FormData) {
     const emailTemplate = welcomeVerificationEmailTemplate(
       sanitizedFirstName,
       code,
-      process.env.NEXT_PUBLIC_CLIENT_URL || ""
+      process.env.NEXT_PUBLIC_CLIENT_URL || "",
     );
 
     await sendEmail(
       process.env.EMAIL_FROM || "contact@eurasiapeace.org",
       sanitizedEmail,
       emailTemplate.subject,
-      emailTemplate.text
+      emailTemplate.text,
     );
 
     return {
@@ -179,7 +179,7 @@ export async function signUp(prevState: InitialState, formData: FormData) {
     const err = e as Error;
 
     console.log(
-      err?.message || "Une erreur est survenue lors de l'inscription"
+      err?.message || "Une erreur est survenue lors de l'inscription",
     );
 
     if (err?.message?.includes("adresse e-mail")) {

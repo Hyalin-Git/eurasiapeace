@@ -11,7 +11,7 @@ import moment from "moment";
 import Banner from "./Banner";
 import { Article as ArticleInterface } from "@/types";
 import { useSubscription } from "@/context/SubscriptionContext";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeHtmlContent } from "@/utils/sanitize";
 
 export default function Article({
   element,
@@ -48,7 +48,7 @@ export default function Article({
 
   function splitHtmlAtBoundary(
     html: string,
-    approx: number
+    approx: number,
   ): { first: string } {
     const head = html.slice(0, approx);
     const cutIndex = head.lastIndexOf(">");
@@ -60,7 +60,7 @@ export default function Article({
     };
   }
 
-  const sanitizedContent = DOMPurify.sanitize(content || "");
+  const sanitizedContent = sanitizeHtmlContent(content || "");
   const contentWithSafeLinks = ensureExternalLinksAttributes(sanitizedContent);
   const { first: firstPart } = splitHtmlAtBoundary(contentWithSafeLinks, 2000);
 

@@ -2,7 +2,7 @@
 import { sendEmail } from "@/lib/nodemailer";
 import { contactSchema } from "@/lib/zod";
 import { Error } from "@/types";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 import { InitialState } from "../../types";
 import { contactEmailTemplate } from "../../utils/contactEmailTemplate";
 
@@ -17,12 +17,12 @@ export async function sendContact(prevState: InitialState, formData: FormData) {
     const rgpd = formData.get("rgpd") as string;
 
     // Sanitize the data to prevent XSS attacks
-    const sanitizedMessage = DOMPurify.sanitize(message);
-    const sanitizedSubject = DOMPurify.sanitize(subject);
-    const sanitizedLastName = DOMPurify.sanitize(lastName);
-    const sanitizedFirstName = DOMPurify.sanitize(firstName);
-    const sanitizedEmail = DOMPurify.sanitize(email);
-    const sanitizedPhone = DOMPurify.sanitize(phone);
+    const sanitizedMessage = sanitizeInput(message);
+    const sanitizedSubject = sanitizeInput(subject);
+    const sanitizedLastName = sanitizeInput(lastName);
+    const sanitizedFirstName = sanitizeInput(firstName);
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPhone = sanitizeInput(phone);
 
     // Validate the data with zod
     const validatedFields = contactSchema.safeParse({
@@ -62,7 +62,7 @@ export async function sendContact(prevState: InitialState, formData: FormData) {
       contactTemplate.subject,
       contactTemplate.text,
       [],
-      email
+      email,
     );
 
     if (!res.success) {
@@ -87,7 +87,7 @@ export async function sendContact(prevState: InitialState, formData: FormData) {
     const err = e as Error;
 
     console.log(
-      err?.message || "Une erreur est survenue lors de l'envoi du mail"
+      err?.message || "Une erreur est survenue lors de l'envoi du mail",
     );
 
     return {

@@ -3,13 +3,13 @@
 import { randomBytes } from "crypto";
 import moment from "moment";
 import { fetchGraphQLWithoutCache } from "@/utils/authFetch";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 
 export async function verifyUserCredentials(email: string, password: string) {
   try {
     // Sanitize the data to prevent XSS attacks
-    const sanitizedEmail = DOMPurify.sanitize(email);
-    const sanitizedPassword = DOMPurify.sanitize(password);
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPassword = sanitizeInput(password);
 
     const query = `
       mutation LoginUser($username: String!, $password: String!) {
@@ -67,7 +67,7 @@ export async function verifyUserCredentials(email: string, password: string) {
 
     console.log(
       "Error occurred while verifying user credentials:",
-      err?.message || "An error occurred"
+      err?.message || "An error occurred",
     );
 
     return {

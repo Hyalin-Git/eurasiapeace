@@ -2,7 +2,7 @@
 
 import { Error } from "@/types";
 import { fetchGraphQLWithAuth } from "@/utils/authFetch";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 import { cookies } from "next/headers";
 
 export async function getUserByEmail(email: string) {
@@ -195,7 +195,7 @@ export async function updateUserRole(userId: number, roles: string[]) {
 
 export async function checkIfEmailExists(email: string) {
   try {
-    const sanitizedEmail = DOMPurify.sanitize(email);
+    const sanitizedEmail = sanitizeInput(email);
 
     if (!sanitizedEmail) {
       return {
@@ -249,7 +249,7 @@ export async function checkIfEmailExists(email: string) {
 
     console.log(
       "An error occurred while checking email existence:",
-      err.message
+      err.message,
     );
 
     return {

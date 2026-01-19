@@ -7,7 +7,7 @@ import {
   updatePasswordSchema,
   updateUserSchema,
 } from "@/lib/zod";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 import { verifyUserCredentials } from "@/server/db/verifications";
 import { sendEmail } from "@/lib/nodemailer";
 import {
@@ -24,9 +24,9 @@ export async function updateUser(prevState: InitialState, formData: FormData) {
     const description = formData.get("description") as string;
 
     // Sanitize the data to prevent XSS attacks
-    const sanitizedLastName = DOMPurify.sanitize(lastName);
-    const sanitizedFirstName = DOMPurify.sanitize(firstName);
-    const sanitizedDescription = DOMPurify.sanitize(description);
+    const sanitizedLastName = sanitizeInput(lastName);
+    const sanitizedFirstName = sanitizeInput(firstName);
+    const sanitizedDescription = sanitizeInput(description);
 
     if (!uid) {
       return {
@@ -99,7 +99,7 @@ export async function updateUser(prevState: InitialState, formData: FormData) {
 
     console.log(
       "Error occurred while updating user:",
-      err || "An error occurred"
+      err || "An error occurred",
     );
 
     return {
@@ -114,7 +114,7 @@ export async function updateUser(prevState: InitialState, formData: FormData) {
 
 export async function createUserEmailUpdate(
   prevState: InitialState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const currentEmail = formData.get("current-email") as string;
@@ -123,10 +123,10 @@ export async function createUserEmailUpdate(
     const password = formData.get("password") as string;
 
     // Sanitize the data to prevent XSS attacks
-    const sanitizedCurrentEmail = DOMPurify.sanitize(currentEmail);
-    const sanitizedFirstName = DOMPurify.sanitize(firstName);
-    const sanitizedEmail = DOMPurify.sanitize(email);
-    const sanitizedPassword = DOMPurify.sanitize(password);
+    const sanitizedCurrentEmail = sanitizeInput(currentEmail);
+    const sanitizedFirstName = sanitizeInput(firstName);
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPassword = sanitizeInput(password);
 
     if (sanitizedEmail === sanitizedCurrentEmail) {
       return {
@@ -161,7 +161,7 @@ export async function createUserEmailUpdate(
 
     const { success, status, message } = await verifyUserCredentials(
       sanitizedCurrentEmail,
-      sanitizedPassword
+      sanitizedPassword,
     );
 
     if (!success) {
@@ -219,14 +219,14 @@ export async function createUserEmailUpdate(
       sanitizedFirstName,
       sanitizedEmail,
       currentEmail,
-      "https://example.com/validate-email"
+      "https://example.com/validate-email",
     );
 
     await sendEmail(
       process.env.EMAIL_FROM || "contact@eurasiapeace.org",
       sanitizedEmail,
       template.subject,
-      template.text
+      template.text,
     );
 
     return {
@@ -242,7 +242,7 @@ export async function createUserEmailUpdate(
 
     console.log(
       "Error occurred while sending email:",
-      err?.message || "An error occurred while sending email"
+      err?.message || "An error occurred while sending email",
     );
 
     return {
@@ -257,7 +257,7 @@ export async function createUserEmailUpdate(
 
 export async function updateUserPassword(
   prevState: InitialState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const uid = formData.get("uid") as string;
@@ -354,7 +354,7 @@ export async function updateUserPassword(
       process.env.EMAIL_FROM || "contact@eurasiapeace.org",
       email,
       template?.subject,
-      template?.text
+      template?.text,
     );
 
     return {
@@ -368,7 +368,7 @@ export async function updateUserPassword(
     const err = e as Error;
     console.log(
       "Error occurred while updating user password:",
-      err || "An error occurred"
+      err || "An error occurred",
     );
 
     return {

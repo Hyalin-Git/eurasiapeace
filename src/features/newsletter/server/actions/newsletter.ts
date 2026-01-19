@@ -2,18 +2,18 @@
 
 import { newsletterSchema } from "@/lib/zod";
 import { Error } from "@/types";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 import { InitialState } from "../../types";
 import { subscribeToNewsletter as addEmailToMailjet } from "@/utils/mailjet";
 
 export async function subscribeToNewsletter(
   prevState: InitialState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const email = formData.get("email") as string;
 
-    const sanitizedEmail = DOMPurify.sanitize(email);
+    const sanitizedEmail = sanitizeInput(email);
 
     const newsletterValidation = newsletterSchema.safeParse({
       email: sanitizedEmail,
@@ -65,7 +65,7 @@ export async function subscribeToNewsletter(
     const err = e as Error;
     console.error(
       "Erreur lors de l'inscription à la newsletter:",
-      err?.message || err
+      err?.message || err,
     );
 
     return {

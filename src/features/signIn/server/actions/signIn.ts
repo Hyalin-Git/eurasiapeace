@@ -1,7 +1,7 @@
 "use server";
 
 import { signInSchema } from "@/lib/zod";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 import { cookies } from "next/headers";
 import { Error } from "@/types";
 import { InitialState } from "../../types";
@@ -14,8 +14,8 @@ export async function signIn(prevState: InitialState, formData: FormData) {
     const password = formData.get("password") as string;
 
     // Sanitize the data to prevent XSS attacks
-    const sanitizedEmail = DOMPurify.sanitize(email);
-    const sanitizedPassword = DOMPurify.sanitize(password);
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPassword = sanitizeInput(password);
 
     const validation = signInSchema.safeParse({
       email: sanitizedEmail,

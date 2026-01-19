@@ -3,7 +3,7 @@
 import { Error } from "@/types";
 import { InitialState } from "../../types";
 import { codeSchema, newsletterSchema, passwordSchema } from "@/lib/zod";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeInput } from "@/utils/sanitize";
 import { randomBytes } from "crypto";
 import {
   sendEmailPasswordReset,
@@ -20,12 +20,12 @@ import moment from "moment";
 
 export async function sendPasswordResetCode(
   prevState: InitialState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const email = formData.get("email") as string;
 
-    const sanitizedEmail = DOMPurify.sanitize(email);
+    const sanitizedEmail = sanitizeInput(email);
 
     const validation = newsletterSchema.safeParse({
       email: sanitizedEmail,
@@ -85,7 +85,7 @@ export async function sendPasswordResetCode(
   } catch (e: unknown) {
     const err = e as Error;
     console.log(
-      err?.message || "An error occurred while sending the password reset code"
+      err?.message || "An error occurred while sending the password reset code",
     );
 
     return {
@@ -102,12 +102,12 @@ export async function sendPasswordResetCode(
 
 export async function verifyPasswordResetCode(
   prevState: InitialState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const code = formData.get("code") as string;
 
-    const sanitizedCode = DOMPurify.sanitize(code);
+    const sanitizedCode = sanitizeInput(code);
 
     const validation = codeSchema.safeParse({
       code: sanitizedCode,
@@ -160,7 +160,7 @@ export async function verifyPasswordResetCode(
     const err = e as Error;
     console.log(
       "An error occurred while verifying the password reset code",
-      err || "An error occurred"
+      err || "An error occurred",
     );
 
     return {
@@ -177,7 +177,7 @@ export async function verifyPasswordResetCode(
 
 export async function resetPassword(
   prevState: InitialState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const email = formData.get("email") as string;
@@ -195,9 +195,9 @@ export async function resetPassword(
       };
     }
 
-    const sanitizedEmail = DOMPurify.sanitize(email);
-    const sanitizedPassword = DOMPurify.sanitize(password);
-    const sanitizedConfirmPassword = DOMPurify.sanitize(confirmPassword);
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPassword = sanitizeInput(password);
+    const sanitizedConfirmPassword = sanitizeInput(confirmPassword);
 
     const validation = passwordSchema.safeParse({
       password: sanitizedPassword,
@@ -230,7 +230,7 @@ export async function resetPassword(
     // ! GraphQL mutation to reset the password in the database
     const updatedUserPassword = await updateUserPassword(
       user?.data?.databaseId,
-      sanitizedPassword
+      sanitizedPassword,
     );
 
     if (!updatedUserPassword.success) {
@@ -246,9 +246,8 @@ export async function resetPassword(
     }
 
     // ! Clear every password reset code for this user
-    const deletedPasswordResetCode = await deletePasswordResetCode(
-      sanitizedEmail
-    );
+    const deletedPasswordResetCode =
+      await deletePasswordResetCode(sanitizedEmail);
 
     if (!deletedPasswordResetCode.success) {
       return {
@@ -275,7 +274,7 @@ export async function resetPassword(
   } catch (e: unknown) {
     const err = e as Error;
     console.log(
-      err?.message || "An error occurred while resetting the password"
+      err?.message || "An error occurred while resetting the password",
     );
 
     return {
