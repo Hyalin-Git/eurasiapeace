@@ -11,7 +11,7 @@ import CardsRow from "@/components/cards/CardsRow";
 import PostDownload from "@/features/posts/components/PostDownload";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
-import { parseRankMathHead } from "@/lib/jsDom";
+import { parseRankMathHead } from "@/lib/cheerio";
 import { isEmpty } from "@/utils/isEmpty";
 import BannerCTA from "@/components/banners/BannerCTA";
 import { getRedirection } from "@/server/api/redirection";
@@ -123,7 +123,7 @@ export default async function PublicationPage({
   const { data: post, success } = await getPost(slug);
   const { data: relatedPosts } = await getRelatedPosts(
     post?.categories?.nodes[0]?.slug,
-    post?.id
+    post?.id,
   );
 
   if (!success) {

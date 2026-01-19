@@ -13,7 +13,7 @@ import {
 } from "@/features/expertsVoices/server/db/expertsVoices";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
-import { parseRankMathHead } from "@/lib/jsDom";
+import { parseRankMathHead } from "@/lib/cheerio";
 import { getRedirection } from "@/server/api/redirection";
 import { redirect } from "next/navigation";
 
@@ -124,7 +124,7 @@ export default async function ExpertVoicePage({
   const { data: expertVoice, success } = await getExpertVoice(slug);
   const { data: relatedExpertsVoices } = await getRelatedExpertsVoices(
     expertVoice?.typesExperts?.nodes[0]?.slug,
-    expertVoice?.id
+    expertVoice?.id,
   );
 
   if (!success) {

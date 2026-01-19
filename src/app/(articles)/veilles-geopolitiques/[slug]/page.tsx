@@ -13,7 +13,7 @@ import CardsRow from "@/components/cards/CardsRow";
 import Newsletter from "@/features/newsletter/components/Newsletter";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
-import { parseRankMathHead } from "@/lib/jsDom";
+import { parseRankMathHead } from "@/lib/cheerio";
 import BannerCTA from "@/components/banners/BannerCTA";
 import { redirect } from "next/navigation";
 import { getRedirection } from "@/server/api/redirection";
@@ -128,7 +128,7 @@ export default async function GeopoliticalWatchPage({
   const { data: relatedGeopoliticalWatches } =
     await getRelatedGeopoliticalWatches(
       geopoliticalWatch?.typeDeVeilles?.nodes[0]?.slug,
-      geopoliticalWatch?.id
+      geopoliticalWatch?.id,
     );
 
   if (!success) {

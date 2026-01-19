@@ -16,7 +16,7 @@ import Evaluations from "@/features/formations/components/Evaluations";
 import FormationRecap from "@/features/formations/components/FormationRecap";
 import { Metadata } from "next";
 import { getRankMathData } from "@/server/api/rankMath";
-import { parseRankMathHead } from "@/lib/jsDom";
+import { parseRankMathHead } from "@/lib/cheerio";
 import { redirect } from "next/navigation";
 import { getRedirection } from "@/server/api/redirection";
 

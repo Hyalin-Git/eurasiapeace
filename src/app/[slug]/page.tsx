@@ -4,7 +4,7 @@ import NotFound from "@/app/not-found";
 import { getRankMathData } from "@/server/api/rankMath";
 import { getPageContent } from "@/server/db/page";
 import { Metadata } from "next";
-import { parseRankMathHead } from "@/lib/jsDom";
+import { parseRankMathHead } from "@/lib/cheerio";
 
 export async function generateMetadata({
   params,
